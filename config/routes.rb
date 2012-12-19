@@ -1,7 +1,13 @@
 Psychopad::Application.routes.draw do
-  get "home/index"
-
   devise_for :users
+
+  authenticated :user do
+    root :to => 'home#index'
+  end
+  root :to => "home#index"
+  devise_for :users
+
+  match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -52,7 +58,7 @@ Psychopad::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'home#index'
+  # root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 

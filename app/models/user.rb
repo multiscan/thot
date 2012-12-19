@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+
+  # https://github.com/ryanb/cancan/wiki/Role-Based-Authorization
+  ROLES = %w[user admin]
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -11,4 +15,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :email, :case_sensitive => false
+
+  def role?(base_role)
+    ROLES.index(base_role.to_s) <= ROLES.index(role)
+  end
 end
