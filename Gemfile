@@ -26,7 +26,10 @@ gem "binding_of_caller", ">= 0.6.8", :group => :development
 
 gem 'haml-rails', :group => :development
 
-gem 'compass'
+# gem 'formtastic'
+# gem 'formtastic-bootstrap'
+
+gem 'thin'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

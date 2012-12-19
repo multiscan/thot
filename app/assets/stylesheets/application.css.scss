@@ -8,9 +8,16 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require formtastic
+ *= require formtastic-bootstrap
  *= require_self
- *= require_tree .
+ *= require bootstrap_and_overrides
+ *******************************************= require_tree
+ * @import "formtastic";
+ * @import "formtastic-bootstrap";
  */
+@import "bootstrap_and_overrides";
+
  .content {
   background-color: #eee;
   padding: 20px;
