@@ -24,6 +24,10 @@ ActiveRecord::Schema.define(:version => 20121219180346) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
     t.string   "name",                                       :null => false
     t.string   "role",                   :default => "user", :null => false
     t.datetime "created_at",                                 :null => false
