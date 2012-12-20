@@ -132,13 +132,24 @@ When /^I sign in with a wrong password$/ do
   sign_in
 end
 
-When /^I edit my account details$/ do
+When /^I correctly edit my account details$/ do
   click_link "Edit account"
   fill_in "user_password", :with => "ciccio"
   fill_in "user_password_confirmation", :with => "ciccio"
   fill_in "Current password", :with => @visitor[:password]
   click_button "Update"
 end
+
+When /^I erroneously edit my account details with ([^,]*), ([^,]*), and (.*)$/ do |pass, passconfirm, currpass|
+  currpass = @visitor[:password] if currpass == :correct
+  click_link "Edit account"
+  fill_in "user_password", :with => pass
+  fill_in "user_password_confirmation", :with => passconfirm
+  fill_in "Current password", :with => currpass
+  click_button "Update"
+end
+
+
 
 When /^I look at the list of users$/ do
   visit '/'
@@ -147,8 +158,6 @@ end
 When /^I visit the administrator control panel$/ do
   visit '/admin/cpanel'
 end
-
-
 
 ### THEN ###
 Then /^I should be signed in$/ do
@@ -195,13 +204,15 @@ Then /^I should see a successful sign up message$/ do
   page.should have_content "You have signed up successfully."
 end
 
-Then /^I should see an invalid email message$/ do
+Then /^I should be asked to correct errors in the submitted data$/ do
   page.should have_content "Please review the problems below"
+end
+
+Then /^I should see an invalid email message$/ do
   page.should have_content "Emailis invalid"
 end
 
 Then /^I should see a missing password message$/ do
-  page.should have_content "Please review the problems below"
   page.should have_content "Passwordcan't be blank"
 end
 
@@ -211,6 +222,18 @@ end
 
 Then /^I should see a mismatched password message$/ do
   page.should have_content "Passworddoesn't match confirmation"
+end
+
+Then /^I should see a blank current password message$/ do
+  page.should have_content "Current passwordcan't be blank"
+end
+
+Then /^I should see a invalid current password message$/ do
+  page.should have_content "Current passwordis invalid"
+end
+
+Then /^I should see a password too short message$/ do
+  page.should have_content "Passwordis too short"
 end
 
 Then /^I should see a signed out message$/ do
@@ -230,12 +253,9 @@ Then /^I should see my name$/ do
   page.should have_content @user[:name]
 end
 
-
 Then /^I should be denied access$/ do
   page.should have_content "You are not authorized to access this page."
 end
-
-
 
 # Then /^I should see "([^"]*)"$/ do |text|
 #   page.should have_content text
