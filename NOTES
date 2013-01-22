@@ -1,0 +1,72 @@
+Namespaces:
+
+There's no real "Rails way" for admin interfaces, actually - you can find every possible solution in a number of applications. DHH has implied that he prefers namespaces (with HTTP Basic authentication), but that has remained a simple implication and not one of the official Rails Opinions.
+
+That said, I've found good success with that approach lately (namespacing + HTTP Basic). It looks like this:
+
+routes.rb:
+
+map.namespace :admin do |admin|
+  admin.resources :users
+  admin.resources :posts
+end
+admin/users_controller.rb:
+
+class Admin::UsersController < ApplicationController
+  before_filter :admin_required
+  # ...
+end
+application.rb
+
+class ApplicationController < ActionController::Base
+  # ...
+
+  protected
+  def admin_required
+    authenticate_or_request_with_http_basic do |user_name, password|
+      user_name == 'admin' && password == 's3cr3t'
+    end if RAILS_ENV == 'production' || params[:admin_http]
+  end
+end
+
+
+
+
+Generations
+  always appended
+rails generate  ... --no-controller-specs --no-view-specs --no-helper-specs --skip-stylesheets --skip-javascripts --skip-helpers
+resource lab
+    name:string nick:string
+resource location
+    name:string
+resource publisher
+    name:string
+resource book
+    title:string author:string editor:string call1:string
+    call2:string call3:string call4:string collation:string
+    isbn:string edition:string publisher:reference collection:string
+    language:string abstract:text toc:text idx:text notes:text
+    publication_year:integer price:float currency:string
+resource item
+    lab:reference room:reference user:reference inv:integer
+    status:string price:float currency:string inventoriable:reference
+    inventoriable_type:string
+resource borrowing
+    user:reference item:reference return_date:date
+
+
+
+Library of Congress Query
+--------------------------
+http://www.loc.gov/standards/sru/specs/search-retrieve.html
+http://www.loc.gov/standards/sru/resources/schemas.html
+
+exemple:
+http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve&query=bath.isbn%3D<ISBN>&maximumRecords=1&recordSchema=mods
+
+
+
+a scuola ai buoni un premio, ai cattivi la punizione
+ma in seguito nella vita è meno chiara la divisione
+Giorgio  Gaber
+

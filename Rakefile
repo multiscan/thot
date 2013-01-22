@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Psychopad::Application.load_tasks
+Thot::Application.load_tasks

@@ -1,4 +1,13 @@
-Psychopad::Application.routes.draw do
+Thot::Application.routes.draw do
+  resources :deg_isbns
+
+
+  resources :items
+  resources :books
+  resources :publishers
+  resources :locations
+  resources :labs
+
   devise_for :users
 
   authenticated :user do

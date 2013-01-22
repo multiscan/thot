@@ -46,4 +46,6 @@ gem 'thin'
 # To use debugger
 # gem 'debugger'
 
+gem 'memoist'
+gem 'will_paginate', '~> 3.0'
 

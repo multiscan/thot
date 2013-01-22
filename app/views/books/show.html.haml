@@ -1,0 +1,104 @@
+-content_for(:titlebar) do
+  Book details
+
+%h2
+  =@book.title
+  - if @book.volume?
+    %small
+      \-
+      vol.
+      =@book.volume
+  - if @book.edition?
+    %small
+      \-
+      edition
+      =@book.edition
+%h3=@book.author
+- if @book.editor?
+  %h4
+    Edited by
+    =@book.editor
+
+%h4
+  Year:
+  = @book.publication_year
+  \-
+  ISBN:
+  = @book.isbn
+  \-
+  Call Nr.
+  = @book.call1
+  = @book.call2
+  = @book.call3
+  = @book.call4
+%h4
+  Publisher:
+  = link_to @book.publisher.name, @book.publisher
+  - if @book.collection?
+    \-
+    Collection:
+    =@book.collection
+
+-if @book.collation?
+  %h5
+    Collation:
+    =@book.collation
+
+%h3 Items
+%table.table
+  %thead
+    %th Inv. Number
+    %th Owner
+    %th Location
+    %th Status
+    %th User
+  %tbody
+  - @book.items.each do |item|
+    %tr
+      %td=item.inv
+      %td
+        =item.lab.nick
+        \-
+        =item.lab.name
+      %td=item.location_name
+      %td=item.status
+      %td=item.borrower_name
+
+- if @book.abstract? || @book.toc? || @book.notes?
+  -tabclass="tab-pane active"
+  -liclass="active"
+  .tabbable
+    %ul.nav.nav-tabs
+      -if @book.abstract?
+        %li{:class=>liclass}
+          -licleass=nil
+          %a{:href=>"#abstab", "data-toggle" => "tab"} Abstract
+      -if @book.toc?
+        %li{:class=>liclass}
+          -licleass=nil
+          %a{:href=>"#toctab", "data-toggle" => "tab"} TOC
+      -if @book.notes?
+        %li{:class=>liclass}
+          -licleass=nil
+          %a{:href=>"#nottab", "data-toggle" => "tab"} Notes
+    .tab-content
+      -if @book.abstract?
+        %div{:class=>tabclass, :id=>"abstab"}
+          %h3 Abstract
+          %p=long_text(@book.abstract)
+        -tabclass="tab-pane"
+      -if @book.toc?
+        %div{:class=>tabclass, :id=>"toctab"}
+          %h3 TOC
+          %p=long_text(@book.toc)
+        -tabclass="tab-pane"
+      -if @book.notes?
+        %div{:class=>tabclass, :id=>"nottab"}
+          %h3 Notes
+          %p=long_text(@book.notes)
+        -tabclass="tab-pane"
+
+%p
+  = link_to 'Edit', edit_book_path(@book)
+  \|
+  = link_to 'Back', books_path

@@ -11,9 +11,99 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121219180346) do
+ActiveRecord::Schema.define(:version => 20130119165435) do
+
+  create_table "books", :force => true do |t|
+    t.string   "title"
+    t.string   "author"
+    t.string   "editor"
+    t.string   "call1"
+    t.string   "call2"
+    t.string   "call3"
+    t.string   "call4"
+    t.string   "collation"
+    t.string   "isbn"
+    t.integer  "volume"
+    t.string   "edition"
+    t.integer  "publisher_id"
+    t.string   "collection"
+    t.string   "language"
+    t.text     "abstract"
+    t.text     "toc"
+    t.text     "idx"
+    t.text     "notes"
+    t.integer  "publication_year"
+    t.float    "price"
+    t.string   "currency"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "borrowings", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id"
+    t.date     "return_date"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "deg_isbns", :force => true do |t|
+    t.string   "isbn"
+    t.integer  "count"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "items", :force => true do |t|
+    t.integer  "lab_id"
+    t.integer  "location_id"
+    t.integer  "borrower_id"
+    t.integer  "book_id"
+    t.integer  "inv"
+    t.string   "status"
+    t.float    "price"
+    t.string   "currency"
+    t.integer  "inventoriable_id"
+    t.string   "inventoriable_type"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "labs", :force => true do |t|
+    t.string   "name"
+    t.string   "nick"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "operatorships", :force => true do |t|
+    t.integer  "lab_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "publishers", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
+    t.string   "name",                                       :null => false
+    t.string   "role",                   :default => "user", :null => false
+    t.string   "location"
+    t.string   "nebis"
+    t.integer  "legacy_id"
+    t.integer  "lab_id"
+    t.datetime "expire_at"
+    t.text     "notes"
     t.string   "email",                  :default => "",     :null => false
     t.string   "encrypted_password",     :default => "",     :null => false
     t.string   "reset_password_token"
@@ -28,8 +118,6 @@ ActiveRecord::Schema.define(:version => 20121219180346) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.string   "name",                                       :null => false
-    t.string   "role",                   :default => "user", :null => false
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
   end

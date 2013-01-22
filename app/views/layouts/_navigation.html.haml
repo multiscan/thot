@@ -1,10 +1,15 @@
-= link_to "Psychopad", root_path, :class => 'brand'
-%ul.nav
-  -if user_signed_in?
-    %li=link_to('Logout', destroy_user_session_path, :method=>'delete')
-    %li=link_to('Edit account', edit_user_registration_path)
-    -if current_user.role? :admin
-      %li= link_to('Admin', cpanel_path)
-  -else
-    %li= link_to('Login', new_user_session_path)
-    %li= link_to('Sign up', new_user_registration_path)
+.logo.container-fluid
+  %ul.nav
+    %li
+      =link_to "Thot", root_path, :class=>"brand"
+    -if user_signed_in?
+      %li=link_to('Logout', destroy_user_session_path, :method=>'delete')
+      %li=link_to('Edit account', edit_user_registration_path)
+      -if current_user.role? :admin
+        %li= link_to('Admin', cpanel_path)
+    -else
+      %li= link_to('Login', new_user_session_path)
+      %li= link_to('Sign up', new_user_registration_path)
+    -#%li
+      %form.navbar-search
+        %input.search-query{:type=>"text", :placeholder=>"Search"}

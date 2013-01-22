@@ -16,10 +16,57 @@
  */
 @import "bootstrap_and_overrides";
 
- .content {
+.content {
   background-color: #eee;
   padding: 20px;
   margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
   @include border-radius(0 0 6px 6px);
   @include box-shadow(0 1px 2px rgba(0,0,0,0.15));
 }
+
+.booklist {
+  li {
+    margin-bottom: 1em;
+    padding: 1em;
+    position: relative;
+    .title {
+      width: 100%;
+      font-size: 130%;
+    }
+    .author {
+      width: 100%;
+    }
+    .editor {
+      width: 100%
+    }
+    .publisher {
+      width: 50%;
+    }
+  }
+}
+
+/*
+.logo {
+  background-image: url(image_path("thot_36r.png")), url(image_path("thot_36l.png"));
+  background-repeat: no-repeat;
+  background-position: left center, right center;
+  // background: url(image_path("thot_36r.png")) no-repeat left center;
+  padding-left: 40px;
+  padding-right: 40px;
+  height: 40px;
+}
+*/
+.navbar {
+  .logo {
+    background-image: url(image_path("thot_36r.png")), url(image_path("thot_36l.png"));
+    background-repeat: no-repeat;
+    background-position: left center, right center;
+    padding: 0 50px;
+  }
+}
+
+span.spacer {
+  display: inline;
+  padding-left: 3em;
+}
+

@@ -2,8 +2,8 @@
 %html
   %head
     %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1.0, maximum-scale=1"}
-    %title= content_for?(:title) ? yield(:title) : "Psychopad"
-    %meta{:name=>"description", :content=>content_for?(:description) ? yield(:description) : "Psychopad"}
+    %title= content_for?(:title) ? "Thot: " + yield(:title).gsub(/<.*$/,"") : content_for?(:titlebar) ? "Thot: " + yield(:titlebar) : "Thot"
+    %meta{:name=>"description", :content=>content_for?(:description) ? yield(:description) : "Thot"}
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
@@ -18,6 +18,10 @@
         .content
           .row
             .span12
+              - if content_for?(:title)
+                .page-header
+                  %h1
+                    = yield(:title)
               = render 'layouts/messages'
               = yield
           %footer
