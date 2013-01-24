@@ -135,6 +135,8 @@ GEM
       activesupport (= 3.2.9)
       bundler (~> 1.0)
       railties (= 3.2.9)
+    rails3-jquery-autocomplete (1.0.9)
+      rails (~> 3.0)
     railties (3.2.9)
       actionpack (= 3.2.9)
       activesupport (= 3.2.9)
@@ -219,6 +221,7 @@ DEPENDENCIES
   memoist
   quiet_assets (>= 1.0.1)
   rails (= 3.2.9)
+  rails3-jquery-autocomplete (= 1.0.9)
   rolify (>= 3.2.0)
   rspec-rails (>= 2.11.4)
   sass-rails (~> 3.2.3)

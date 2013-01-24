@@ -22,7 +22,7 @@ task :isbnmerge => [:environment] do
       end
     end
     mergecount=mergecount+nm
-    puts "ISBN #{isbn} - #{count} books, #{nm} merged"
+    # puts "ISBN #{isbn} - #{count} books, #{nm} merged"
   end
   puts "----- #{mergecount} Succesfull merging in total."
 end

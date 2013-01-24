@@ -19,7 +19,7 @@ FactoryGirl.define do
     toc "MyText"
     idx "MyText"
     notes "MyText"
-    publication_year 1
+    pubyear 2000
     price 1.5
     currency "MyString"
   end

@@ -6,34 +6,4 @@
 
 %ul.booklist.unstyled
   -@books.each do |b|
-    %li.well
-      .row
-        .span9
-          %span.label.label-info=b.title
-          -if b.volume
-            vol.
-            =b.volums
-          -if b.edition && !b.edition.empty?
-            = b.edition
-            edition
-          %br
-          =b.author
-          %br
-          - if b.editor && !b.editor.empty?
-            Edited by
-            =b.editor
-          %br
-          =b.publisher.name
-        .span1
-          =b.isbn
-          %br
-          =b.call1
-          =b.call2
-          =b.call3
-          =b.call4
-          %br
-          %br
-          =link_to 'more »', b
-        .span1
-          %span.label.label-warning taken
-          %span.label.label-success available
+    = render b

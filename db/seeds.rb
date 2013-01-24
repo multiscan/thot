@@ -75,10 +75,8 @@ default_lab = Lab.find_by_nick("UNKNOWN")
 duplicate_users={}
 special_users={}
 # empty_nebis_count=0
-nlp=Legacy::Person.count
-ilp=0
+empty_email_count=0
 Legacy::Person.find(:all).each do |lp|
-  ilp = ilp + 1
   # # skip users without nebis
   # nebis=lp.nebis
   # if nebis.nil?
@@ -87,13 +85,18 @@ Legacy::Person.find(:all).each do |lp|
   #   empty_nebis_count=empty_nebis_count+1
   #   nebis="empty_#{empty_nebis_count}"
   # end
-  if lp.email.nil?
-     "Skipping user #{lp.fullname} - #{lp.email}: empty email. Saved into 'special users'"
-    special_users[lp.userId] = lp
+  unless lp.email?
+    bc=lp.books.count
+    if bc > 0
+      puts "Generating invalid e-mail (#{lp.email}) for legacy user with empty e-mail and #{bc} books: #{lp.userFirst} #{lp.userLast} - #{lp.nebis}"
+    else
+      "Skipping legacy user with empty e-mail and zero books: #{lp.userFirst} #{lp.userLast} - #{lp.nebis}"
+    end
     next
   end
+  p=nil
   if p = User.find_by_email(lp.email)
-    if p.nebis == "invalid" && lp.nebis != "invalid"
+    if ( p.nebis == "invalid" || p.nebis == "empty" ) && lp.nebis != "invalid" && lp.nebis != "empty"
        "Duplicate email: #{lp.userEmail} but usefull NEBIS"
       p.nebis=lp.nebis
       p.save
@@ -120,11 +123,10 @@ Legacy::Person.find(:all).each do |lp|
     p.lab = default_lab
     p.notes = "Original Lab: #{lp.userLab}"
   end
-  # puts "User #{ilp}/#{nlp}\n#{p.log}"
   if p.save
     # puts "ok. #{p.id}"
   else
-    puts "!!! Invalid user\n#{p.log}"
+    puts "!!! Invalid user\n#{p.log}\n#{p.errors.inspect}"
     exit
   end
 end
@@ -139,56 +141,6 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
     puts "New publisher: #{pn} -- #{p.name}"
   end
 
-  # if another book with the same ISBN was found, merge attributes.
-  # TODO: find a nicer way to merge attributes leaving to the user
-  #       the choice of what to keep!
-  #       we will do the merging later. for the moment we keep books with
-  #       duplicate ISBN also because in some cases, different volumes of the
-  #       same books have the same ISBN
-  # if lb.isbn && !lb.isbn.empty? && b=Book.find_by_isbn(lb.isbn)
-  #   puts "updating book #{b.id} with legacy book #{lb.invNumber}"
-  #   puts "title: #{b.title || 'nil'} -- #{lb.title || 'nil'}"
-  #   puts "author: #{b.author || 'nil'} -- #{lb.author || 'nil'}"
-  #   puts "publisher: #{b.publisher ? b.publisher.name : 'nil'} -- #{lb.publisher || 'nil'}"
-  #   puts "year: #{b.publication_year || 'nil'} -- #{lb.publicationYear || 'nil'}"
-  #   b.editor            ||= lb.editor
-  #   b.call1             ||= lb.call1
-  #   b.call2             ||= lb.call2
-  #   b.call3             ||= lb.call3
-  #   b.call4             ||= lb.call4
-  #   b.collation         ||= lb.collation
-  #   b.edition           ||= lb.edition
-  #   b.collection        ||= lb.collection
-  #   b.language          ||= lb.language
-  #   b.publication_year  ||= lb.publicationYear
-  #   b.abstract          ||= lb.abstract
-  #   b.toc               ||= lb.toc
-  #   b.idx               ||= lb.idx
-  #   b.notes             ||= lb.notes
-  #   b.save!
-  # else
-  #   book_params = {
-  #     :title            => lb.title        ,
-  #     :author           => lb.author       ,
-  #     :editor           => lb.editor       ,
-  #     :call1            => lb.call1        ,
-  #     :call2            => lb.call2        ,
-  #     :call3            => lb.call3        ,
-  #     :call4            => lb.call4        ,
-  #     :collation        => lb.collation    ,
-  #     :isbn             => lb.isbn         ,
-  #     :edition          => lb.edition      ,
-  #     :collection       => lb.collection   ,
-  #     :language         => lb.language     ,
-  #     :publication_year => lb.publicationYear ,
-  #     :abstract         => lb.abstract     ,
-  #     :toc              => lb.toc          ,
-  #     :idx              => lb.idx          ,
-  #     :notes            => lb.notes        ,
-  #   }
-  #   b = p ? p.books.create(book_params) : Book.create(book_params)
-  # end
-
   book_params = {
     :title            => lb.title        ,
     :author           => lb.author       ,
@@ -202,7 +154,7 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
     :edition          => lb.edition      ,
     :collection       => lb.collection   ,
     :language         => lb.language     ,
-    :publication_year => lb.publicationYear ,
+    :pubyear => lb.publicationYear ,
     :abstract         => lb.abstract     ,
     :toc              => lb.toc          ,
     :idx              => lb.idx          ,
@@ -226,5 +178,13 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
   if i.save
      "Created item #{i.inv}"
   end
-
 end
+
+# ISBN numbers with more than one book => creation of an entry in GegIsbn
+# TODO: this should be done by the Book model....
+Book.duplicated_isbn_count.each do |isbn,count|
+  i=DegIsbn.create(:isbn=>isbn, :count=>count)
+end
+
+puts "Seed done. Remember to run the following maintenance rake tasks:"
+puts "rake isbnmerge"

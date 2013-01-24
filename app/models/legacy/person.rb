@@ -9,12 +9,13 @@ class Legacy::Person < Legacy::Base
 
   def email
     e=self.userEmail
-    if e.nil? || e.empty?
-      e="user.#{self.userId}@invalid.ch"
-    else
-      e << "@invalid.ch" unless e.index("@")
-    end
-    return e
+    e="user.#{self.userId}@invalid.ch" if e.nil? || e.empty? || e.index("@").nil?
+    return e.downcase
+  end
+
+  def email?
+    e=self.userEmail
+    !(e.nil? || e.empty? || e.index("@").nil?)
   end
 
   def nebis

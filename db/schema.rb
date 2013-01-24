@@ -17,26 +17,26 @@ ActiveRecord::Schema.define(:version => 20130119165435) do
     t.string   "title"
     t.string   "author"
     t.string   "editor"
-    t.string   "call1"
-    t.string   "call2"
-    t.string   "call3"
-    t.string   "call4"
+    t.string   "call1",        :limit => 8
+    t.string   "call2",        :limit => 16
+    t.string   "call3",        :limit => 8
+    t.string   "call4",        :limit => 8
     t.string   "collation"
-    t.string   "isbn"
+    t.string   "isbn",         :limit => 24
     t.integer  "volume"
     t.string   "edition"
     t.integer  "publisher_id"
     t.string   "collection"
-    t.string   "language"
+    t.string   "language",     :limit => 16
     t.text     "abstract"
     t.text     "toc"
     t.text     "idx"
     t.text     "notes"
-    t.integer  "publication_year"
+    t.integer  "pubyear"
     t.float    "price"
-    t.string   "currency"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.string   "currency",     :limit => 8
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "borrowings", :force => true do |t|

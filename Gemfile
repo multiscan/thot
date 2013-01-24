@@ -49,3 +49,6 @@ gem 'thin'
 gem 'memoist'
 gem 'will_paginate', '~> 3.0'
 
+# http://www.mcbsys.com/techblog/2012/10/convert-a-select-drop-down-box-to-an-autocomplete-in-rails/
+# gem 'rails3-jquery-autocomplete'   # 1.0.10
+gem 'rails3-jquery-autocomplete', '1.0.9'

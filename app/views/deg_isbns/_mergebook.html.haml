@@ -1,0 +1,55 @@
+%li.well.mergeable
+  %input{:name=>"merge_book_ids[]", :type=>"checkbox", :value=>b.id, :checked=>false}
+  =link_to "all", "#", :class=>"pull-right takeall"
+  %dl.dl-horizontal
+    -if b.author?
+      %dt Author
+      %dd{"data-key"=>"author"}=b.author
+    -if b.title?
+      %dt Title
+      %dd{"data-key"=>"title"}=b.title
+    -if b.editor?
+      %dt Editor
+      %dd{"data-key"=>"editor"}=b.editor
+    -if b.volume?
+      %dt Volume
+      %dd{"data-key"=>"volume"}=b.volume
+    -if b.pubyear?
+      %dt Publication year
+      %dd{"data-key"=>"pubyear"}=b.pubyear
+    -if b.edition?
+      %dt Edition
+      %dd{"data-key"=>"edition"}=b.edition
+    -if b.collation?
+      %dt Collation
+      %dd{"data-key"=>"collation"}=b.collation
+    -if b.call1?
+      %dt Call 1
+      %dd{"data-key"=>"call1"}=b.call1
+    -if b.call2?
+      %dt Call 2
+      %dd{"data-key"=>"call2"}=b.call2
+    -if b.call3?
+      %dt Call 3
+      %dd{"data-key"=>"call3"}=b.call3
+    -if b.call4?
+      %dt Call 4
+      %dd{"data-key"=>"call4"}=b.call4
+    -if b.collection?
+      %dt Collection
+      %dd{"data-key"=>"collection"}=b.collection
+    -if b.publisher_name?
+      %dt Publisher Name
+      %dd{"data-key"=>"publisher_name"}=b.publisher_name
+    -if b.notes?
+      %dt Notes
+      %dd{"data-key"=>"notes"}=b.notes
+    -if b.idx?
+      %dt Index
+      %dd{"data-key"=>"idx"}=b.idx
+    -if b.toc?
+      %dt Table of Content
+      %dd{"data-key"=>"toc"}=b.toc
+    -if b.abstract?
+      %dt Abstract
+      %dd{"data-key"=>"abstract"}=b.abstract

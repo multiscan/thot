@@ -1,8 +1,12 @@
 class DegIsbn < ActiveRecord::Base
-  attr_accessible :isbn, :count
-  def books
-    @books ||= Book.find_all_by_isbn(self.isbn)
-    update_attribute(:count, @books.count)
-    @books
+  attr_accessible :isbn, :count, :mergeables
+  has_many :books, :class_name => "Book", :foreign_key => "isbn", :primary_key => "isbn"
+
+  def mergeables
+    []
+  end
+
+  def mergeables=(a)
+    puts "mergeables=   a=#{a.inspect}"
   end
 end

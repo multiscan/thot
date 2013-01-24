@@ -1,18 +1,28 @@
 class Book < ActiveRecord::Base
   extend Memoist
 
-  attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :publication_year, :title, :toc, :publisher
+  attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :volume
 
   has_many :items, :as => :inventoriable
   belongs_to :publisher
 
-  AttributesForEquality=["title", "author", "editor", "isbn", "edition", "volume", "publisher_id", "collection", "publication_year"]
+  AttributesForEquality=["title", "author", "editor", "isbn", "edition", "volume", "publisher_id", "collection", "pubyear"]
   AttributesForMerging=["call1", "call2", "call3", "call4", "collation", "language", "abstract", "toc", "idx", "notes", "price", "currency"]
 
-  def publisher=(name_or_publisher)
-    return if name_or_publisher.nil? || name_or_publisher.empty?
-    p = name_or_publisher.class==String ? Publisher.find_or_create_by_name(name_or_publisher) : name_or_publisher
-    self.publisher_id = p.id
+  validates_presence_of :isbn, :on => :save, :message => "can't be blank"
+  validates_numericality_of :pubyear, :greater_than_or_equal_to => 1500,
+                            :less_than_or_equal_to => 2100, :only_integer => true
+
+  def publisher_name=(name)
+    self.publisher = Publisher.find_or_create_by_name(name) unless name.blank?
+  end
+
+  def publisher_name
+    self.publisher ? self.publisher.name : nil
+  end
+
+  def publisher_name?
+    !self.publisher.nil?
   end
 
   def with_same_isbn

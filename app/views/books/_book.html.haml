@@ -1,0 +1,33 @@
+%li.well.bookli
+  .row
+    .span8
+      %span.author=book.author
+      %br
+      -#%span.label.label-info=book.title
+      %span.booktitle=book.title
+      -if book.volume?
+        %strong vol.
+        =book.volume
+      -if book.edition?
+        = book.edition
+        edition
+      %br
+      - if book.editor && !book.editor.empty?
+        %strong Edited by
+        =book.editor
+      %br
+      %span.publisher
+        =book.publisher.name
+    .span2
+      =book.isbn
+      %br
+      =book.call1
+      =book.call2
+      =book.call3
+      =book.call4
+      %br
+      %br
+      =link_to 'more »', book
+    .span1
+      %span.label.label-warning taken
+      %span.label.label-success available

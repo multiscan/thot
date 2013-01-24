@@ -3,7 +3,10 @@ Thot::Application.routes.draw do
 
 
   resources :items
-  resources :books
+  resources :books do
+    get :autocomplete_publisher_name, :on => :collection
+  end
+
   resources :publishers
   resources :locations
   resources :labs
