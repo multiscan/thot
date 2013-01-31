@@ -12,4 +12,9 @@ class Legacy::Book < Legacy::Base
     ( self.userId.nil? || self.userId>500 ) ? nil : self.userId
   end
 
+  def normalized_isbn
+    return nil unless self.isbn?
+    return nil if self.isbn =~ /[a-z][a-z][a-z]/
+    self.isbn.upcase.gsub(/[^0-9X]/, "")
+  end
 end
