@@ -1,7 +1,6 @@
 Thot::Application.routes.draw do
   resources :deg_isbns
 
-
   resources :items
   resources :books do
     get :autocomplete_publisher_name, :on => :collection
@@ -20,6 +19,7 @@ Thot::Application.routes.draw do
   devise_for :users
 
   match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
+  match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

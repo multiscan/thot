@@ -4,6 +4,7 @@ class Book < ActiveRecord::Base
   attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :volume
 
   has_many :items, :as => :inventoriable
+  has_many :available_items, :as => :inventoriable, :condition => ""
   belongs_to :publisher
 
   AttributesForEquality=["title", "author", "editor", "isbn", "edition", "volume", "publisher_id", "collection", "pubyear"]
@@ -12,6 +13,21 @@ class Book < ActiveRecord::Base
   validates_presence_of :isbn, :on => :save, :message => "can't be blank"
   validates_numericality_of :pubyear, :greater_than_or_equal_to => 1500,
                             :less_than_or_equal_to => 2100, :only_integer => true
+
+  define_index do
+    indexes title, :sortable => true
+    indexes author
+    indexes editor
+    indexes publisher.name, :as => :publisher, :sortable => true
+    indexes author.name, :as => :author, :sortable => true
+
+    # attributes
+    has publisher_id, created_at, updated_at, isbn
+  end
+
+  def status
+    self.items
+  end
 
   def publisher_name=(name)
     self.publisher = Publisher.find_or_create_by_name(name) unless name.blank?

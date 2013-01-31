@@ -70,7 +70,10 @@ end
 # mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
 # mysql.server start
 # /usr/local/opt/mysql/bin/mysql_secure_installation
-# brew install sphinx
+# brew install sphinx --mysql
+# rake thinking_sphinx:index
+# rake thinking_sphinx:rebuild
+# rake thinking_sphinx:start
 gem 'thinking-sphinx', '2.0.10'
 
 

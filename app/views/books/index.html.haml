@@ -1,9 +1,17 @@
 -content_for(:title) do
   Books
-  %small most recently added first.
+  %small= @search ? "search result" : "No filter, most recently added first."
 
-%ul.booklist.unstyled
-  -@books.each do |b|
-    = render b
+-if @search
+  %p
+    Your query:
+    = @search
+
+- if @books.count > 0
+  %ul.booklist.unstyled
+    -@books.each do |b|
+      = render b
+- else
+  %p No books where found matching your query.
 
 = link_to 'New Book', new_book_path
