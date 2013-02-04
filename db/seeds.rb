@@ -134,6 +134,7 @@ end
 # ----------------------------------------- Import books
 pn=nil
 p=nil
+nb=0
 Legacy::Book.find(:all, :order => "publisher").each do |lb|
   if lb.publisher && lb.publisher != pn
     pn=lb.publisher
@@ -142,25 +143,29 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
   end
 
   book_params = {
-    :title            => lb.title        ,
-    :author           => lb.author       ,
-    :editor           => lb.editor       ,
-    :call1            => lb.call1        ,
-    :call2            => lb.call2        ,
-    :call3            => lb.call3        ,
-    :call4            => lb.call4        ,
-    :collation        => lb.collation    ,
-    :isbn             => lb.normalized_isbn         ,
-    :edition          => lb.edition      ,
-    :collection       => lb.collection   ,
-    :language         => lb.language     ,
-    :pubyear => lb.publicationYear ,
-    :abstract         => lb.abstract     ,
-    :toc              => lb.toc          ,
-    :idx              => lb.idx          ,
-    :notes            => lb.notes        ,
+    :title            => lb.title,
+    :author           => lb.author,
+    :editor           => lb.editor,
+    :call1            => lb.call1,
+    :call2            => lb.call2,
+    :call3            => lb.call3,
+    :call4            => lb.call4,
+    :collation        => lb.collation,
+    :isbn             => lb.normalized_isbn,
+    :edition          => lb.edition,
+    :collection       => lb.collection,
+    :language         => lb.language,
+    :pubyear          => lb.normalized_year,
+    :abstract         => lb.abstract,
+    :toc              => lb.toc,
+    :idx              => lb.idx,
+    :notes            => lb.notes,
   }
-  b = p ? p.books.create(book_params) : Book.create(book_params)
+  b = p ? p.books.new(book_params) : Book.new(book_params)
+  unless b.save
+    puts "Invalid book: #{b.inspect}"
+    puts "        errs: #{b.errors}"
+  end
 
   lab = Lab.find_by_nick(lb.lab)
   u = lb.userId ? ( User.find_by_legacy_id(lb.userId) || duplicate_users[lb.userId] ) : nil
@@ -176,11 +181,20 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
 
   i.borrower = u unless u.nil?
   if i.save
-     "Created item #{i.inv}"
+     # puts "Created item #{i.inv}"
+  end
+  nb = nb+1
+  if Item.count != nb || Book.count != nb
+    puts "book: #{b.inspect}"
+    puts "      valid? #{b.valid?}"
+    puts "item: #{i.inspect}"
+    puts "      valid? #{i.valid?}"
+    puts "Legacy Book: #{lb.inspect}"
+    raise "Inconsistent Book/Item count"
   end
 end
 
-# ISBN numbers with more than one book => creation of an entry in GegIsbn
+# ISBN numbers with more than one book => creation of an entry in DegIsbn
 # TODO: this should be done by the Book model....
 Book.duplicated_isbn_count.each do |isbn,count|
   i=DegIsbn.create(:isbn=>isbn, :count=>count)
