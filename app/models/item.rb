@@ -6,6 +6,21 @@ class Item < ActiveRecord::Base
   belongs_to :borrower, :class_name => User, :foreign_key => "borrower_id"
   belongs_to :location
 
+  validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
+
+  define_index do
+    indexes inventoriable(:title), :as => :book_title
+    indexes inventoriable(:author), :as => :book_author
+    indexes inventoriable(:editor), :as => :book_editor
+
+    where "inventoriable_type = 'Book'"
+
+    # attributes
+    has borrower_id, inv, lab_id, location_id, status
+    has "books.publisher_id", :as=>:publisher_id, :type=>:integer
+    has "books.pubyear", :as=>:pubyear, :type=>:integer
+  end
+
   def location=(name_or_location)
     return if name_or_location.nil? || name_or_location.empty?
     # puts "location=#{name_or_location}"
@@ -33,6 +48,10 @@ class Item < ActiveRecord::Base
 
   def self.count_by_lab_and_status
     self.select("COUNT(lab_id) as total, lab_id, status").group("lab_id, status").order('lab_id, status').map{|i| {:lab_id => i.lab_id, :status => i.status, :count => i.total}}
+  end
+
+  def book
+    self.inventoriable_type == "Book" ? self.inventoriable : nil
   end
 
 end

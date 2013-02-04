@@ -1,4 +1,7 @@
 Thot::Application.routes.draw do
+
+  resources :searches
+
   resources :deg_isbns
 
   resources :items

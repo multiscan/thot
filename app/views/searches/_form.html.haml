@@ -1,0 +1,18 @@
+= simple_form_for(@search) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title
+    = f.input :author
+    = f.input :editor
+    = f.input :isbn
+    = f.input :year
+    = f.input :publisher_name
+    = f.input :collection
+    = f.input :location_id
+    = f.input :owner_id
+    = f.input :status
+    = f.input :user_id
+
+  .form-actions
+    = f.button :submit

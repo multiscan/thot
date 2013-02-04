@@ -4,7 +4,6 @@ class CreateItems < ActiveRecord::Migration
       t.references :lab
       t.references :location
       t.references :borrower
-      t.references :book
       t.integer :inv
       t.string :status
       t.float :price

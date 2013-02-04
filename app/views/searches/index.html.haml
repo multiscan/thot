@@ -1,0 +1,39 @@
+%h1 Listing searches
+
+%table
+  %tr
+    %th Title
+    %th Author
+    %th Editor
+    %th Isbn
+    %th Year
+    %th Publisher name
+    %th Collection
+    %th Location
+    %th Owner
+    %th Status
+    %th User
+    %th
+    %th
+    %th
+
+  - @searches.each do |search|
+    %tr
+      %td= search.title
+      %td= search.author
+      %td= search.editor
+      %td= search.isbn
+      %td= search.year
+      %td= search.publisher_name
+      %td= search.collection
+      %td= search.location_id
+      %td= search.owner_id
+      %td= search.status
+      %td= search.user_id
+      %td= link_to 'Show', search
+      %td= link_to 'Edit', edit_search_path(search)
+      %td= link_to 'Destroy', search, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Search', new_search_path
