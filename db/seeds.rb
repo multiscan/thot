@@ -179,10 +179,9 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
   )
   i.lab = lab
 
-  i.borrower = u unless u.nil?
-  if i.save
-     # puts "Created item #{i.inv}"
-  end
+  i.save!
+  i.checkout(u) unless u.nil?
+
   nb = nb+1
   if Item.count != nb || Book.count != nb
     puts "book: #{b.inspect}"

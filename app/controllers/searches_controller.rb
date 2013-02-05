@@ -1,4 +1,6 @@
 class SearchesController < ApplicationController
+  autocomplete :publisher, :name, :full => true
+
   # GET /searches
   # GET /searches.json
   def index

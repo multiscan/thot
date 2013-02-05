@@ -4,9 +4,10 @@ Thot::Application.routes.draw do
 
   resources :deg_isbns
 
-  resources :items
+  resources :items, :only=>[:index, :show, :edit, :update, :destroy]
   resources :books do
     get :autocomplete_publisher_name, :on => :collection
+    resources :items, :only=>[:new, :create]
   end
 
   resources :publishers
@@ -14,12 +15,12 @@ Thot::Application.routes.draw do
   resources :labs
 
   devise_for :users
+  resources :users, :only => [:show]
 
   authenticated :user do
     root :to => 'home#index'
   end
   root :to => "home#index"
-  devise_for :users
 
   match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
   match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'

@@ -1,0 +1,18 @@
+= simple_form_for([@book, @item]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    .row
+      .span4
+        = f.association :lab, :collection => @labs, :prompt => "Select the owner"
+      .span4
+        = f.association :location, :collection => @locations, :prompt => "Select a room for this copy"
+    .row
+      .span4
+        = f.input :currency, :collection=>@currencies, :selected => @currencies.first
+      .span4
+        = f.input :price
+    = f.input :status, :collection=>["Library", "Mystery", "Never Received", "Out of Print", "Waiting for Delivery"], :selected=>"Library"
+
+  .form-actions
+    = f.button :submit

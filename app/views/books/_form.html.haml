@@ -2,6 +2,49 @@
   = f.error_notification
 
   .form-inputs
+    - if @isbn_step
+      = hidden_field_tag 'isbn_step', true
+      = f.input :isbn
+    - else
+      = f.input :isbn, :as => :hidden
+      = f.input :author, :input_html=>{:class => "span10"}
+      = f.input :title, :input_html=>{:class => "span10"}
+      = f.input :editor, :input_html=>{:class => "span10"}
+      .row
+        .span1= f.input :volume, :input_html=>{:min => 1, :max => 10, :class=>"span1"}
+        .span2= f.input :pubyear, :input_html=>{:min => 1900, :max => 2100, :class=>"span1"}
+        .span4= f.input :edition, :input_html=>{:class=>"span4"}
+
+      .row
+        .span3= f.input :collation
+        .span2= f.input :call1, :input_html=>{:class=>"span2"}
+        .span2= f.input :call2, :input_html=>{:class=>"span2"}
+        .span2= f.input :call3, :input_html=>{:class=>"span2"}
+        .span2= f.input :call4, :input_html=>{:class=>"span2"}
+
+      .row
+        .span4= f.input :collection, :input_html=>{:class=>"span4"}
+        .span8= f.input :publisher_name, :url => autocomplete_publisher_name_books_path, :as => :autocomplete, :input_html=>{:class=>"span4"}
+
+      .tabbable
+        %ul.nav.nav-tabs
+          %li
+            %a{:href=>"#abstab", "data-toggle" => "tab"} Abstract
+          %li
+            %a{:href=>"#idxtab", "data-toggle" => "tab"} Index
+          %li
+            %a{:href=>"#toctab", "data-toggle" => "tab"} TOC
+          %li.active
+            %a{:href=>"#nottab", "data-toggle" => "tab"} Notes
+      .tab-content
+        .tab-pane.active{:id=>"abstab"}
+          =f.input :abstract, :label=>false,:input_html=>{:class=>"span10"}
+        .tab-pane{:id=>"idxtab"}
+          =f.input :idx, :label=>false, :input_html=>{:class=>"span10"}
+        .tab-pane{:id=>"toctab"}
+          =f.input :toc, :label=>false, :input_html=>{:class=>"span10"}
+        .tab-pane{:id=>"nottab"}
+          =f.input :notes, :label=>false, :input_html=>{:class=>"span10"}
 
   .form-actions
     = f.button :submit

@@ -25,7 +25,14 @@
       =book.call2
       =book.call3
       =book.call4
-      %br
+      -if can? :update, book
+        %br
+        =link_to "Edit", edit_book_path(book)
+        |
+        =link_to "Add Item", new_book_item_path(book)
+      -else
+        %br
+        %br
       %br
       =link_to 'more »', book
     .span1

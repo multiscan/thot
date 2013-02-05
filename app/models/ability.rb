@@ -31,6 +31,9 @@ class Ability
     if user.role? :admin
       can :manage, :all
     end
+    if user.role? :operator
+        can :manage, :books
+    end
 
   end
 end

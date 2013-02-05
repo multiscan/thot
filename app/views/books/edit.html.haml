@@ -1,4 +1,14 @@
-%h1 Editing book
+-content_for(:title) do
+  Edit book.
+  %small
+    ISBN:
+    =@book.isbn
+
+%p
+  \... or
+  = link_to 'add an item', new_book_item_path(@book)
+  to this book.
+
 
 = render 'form'
 

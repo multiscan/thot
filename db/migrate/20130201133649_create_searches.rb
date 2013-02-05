@@ -4,7 +4,7 @@ class CreateSearches < ActiveRecord::Migration
 
       t.string   :query                 # book (title, author, editor)
       t.string   :isbn                  # book
-      t.integer  :publisher_id          # book
+      t.string   :publisher_name        # book
       t.string   :year_range            # book
 
       t.integer  :borrower_id           # item

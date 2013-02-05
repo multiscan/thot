@@ -1,0 +1,28 @@
+-content_for(:title) do
+  Book copy details
+  %br
+  %small
+    Inventory number
+    =@item.inv
+
+%p
+  %dl.dl-horizontal
+    %dt Owner:
+    %dd
+      =@item.lab.name
+      \(
+      =link_to @item.lab.nick, @item.lab
+      \)
+    %dt Location:
+    %dd=link_to @item.location.name, @item.location
+    %dt Status:
+    %dd=item_status(@item)
+    - if can? :manage, @item
+      %dt Price:
+      %dd=item_price(@item)
+
+
+-#
+  = link_to 'Edit', edit_item_path(@item)
+  \|
+  = link_to 'Back', items_path

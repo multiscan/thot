@@ -2,17 +2,14 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :title
-    = f.input :author
-    = f.input :editor
+    = f.input :query, :label=>"Title, author or editor"
     = f.input :isbn
-    = f.input :year
-    = f.input :publisher_name
-    = f.input :collection
-    = f.input :location_id
-    = f.input :owner_id
+    = f.input :year_range
     = f.input :status
-    = f.input :user_id
+    = f.input :publisher_name
+    = f.input :location_id
+    = f.input :lab_id
+    = f.input :borrower_id
 
   .form-actions
     = f.button :submit

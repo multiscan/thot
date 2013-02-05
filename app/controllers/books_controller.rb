@@ -29,6 +29,7 @@ class BooksController < ApplicationController
   # GET /books/new
   # GET /books/new.json
   def new
+    @isbn_step = true
     @book = Book.new
 
     respond_to do |format|
@@ -45,15 +46,36 @@ class BooksController < ApplicationController
   # POST /books
   # POST /books.json
   def create
-    @book = Book.new(params[:book])
-
-    respond_to do |format|
-      if @book.save
-        format.html { redirect_to @book, notice: 'Book was successfully created.' }
-        format.json { render json: @book, status: :created, location: @book }
+    if params[:isbn_step]
+      @books=Book.new_given_isbn(params[:book][:isbn])
+      if @books.count == 1
+        @book=@books.first
+        if @book.new_record?
+          @isbn_step = false
+          render "new"
+        else
+          flash[:notice] = "A book with the same ISBN number was found on our database. Please review the data."
+          render "edit"
+        end
       else
-        format.html { render action: "new" }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        if @books.first.new_record?
+          render "new_as_merge"
+        else
+          flash[:notice] = "More than one book with ISBN #{params[:book][:isbn]} was found. Please select the one your want and then add items to it."
+          render "index"
+        end
+      end
+    else
+      @book = Book.new(params[:book])
+
+      respond_to do |format|
+        if @book.save
+          format.html { redirect_to @book, notice: 'Book was successfully created.' }
+          format.json { render json: @book, status: :created, location: @book }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @book.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

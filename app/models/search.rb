@@ -1,5 +1,8 @@
 class Search < ActiveRecord::Base
-  attr_accessible :query, :isbn, :publisher_id, :year_range, :borrower_id, :inv_range, :lab_id, :location_id, :status
+  attr_accessible :query, :isbn, :publisher_name, :year_range, :borrower_id, :inv_range, :lab_id, :location_id, :status
+  belongs_to :lab
+  belongs_to :borrower, :class_name => User, :foreign_key => "borrower_id"
+  belongs_to :location
 
   def items
     return @items unless @items.nil?
@@ -21,7 +24,20 @@ class Search < ActiveRecord::Base
     @books=nil
   end
 
+  def publisher_ids
+    @publisher_ids ||= publisher_ids_from_name(publisher_name)
+  end
+
   private
+
+  def publisher_ids_from_name(n)
+    return [] if n.blank?
+    r=Publisher.where(:name => publisher_name)
+    if r.empty?
+      r=Publisher.where("name LIKE ?", n)
+    end
+    r.empty? ? [] : r.map{|p| p.id}
+  end
 
   def books_from_items
     return [] if @items.nil? || @items.empty?
@@ -51,7 +67,7 @@ class Search < ActiveRecord::Base
     end
 
     book_conds={}
-    unless publisher_id.blank?
+    unless publisher_ids.empty?
       book_conds[:publisher_id] = publisher_id
     end
     unless year_range.blank?
@@ -59,9 +75,9 @@ class Search < ActiveRecord::Base
     end
 
     item_conds={}
-    unless borrower_id.blank?
-      item_conds[:borrower_id] = borrower_id
-    end
+    # unless borrower_id.blank?
+    #   item_conds[:borrower_id] = borrower_id
+    # end
     unless inv_range.blank?
       item_conds[:inv] = parse_range(inv_range)
     end

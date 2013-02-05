@@ -25,6 +25,10 @@ class Book < ActiveRecord::Base
     has publisher_id, created_at, updated_at, isbn
   end
 
+  def currency
+    self.attributes[:currency] || ( self.price ? ENV["DEFAULT_CURRENCY"] : nil )
+  end
+
   def status
     self.items
   end
@@ -85,6 +89,18 @@ class Book < ActiveRecord::Base
     self.save!
     b.destroy
     true
+  end
+
+  def self.new_given_isbn(n)
+    bb=Book.find_all_by_isbn(n)
+    bb=self.ask_the_web(b) if bb.empty?
+    bb=[Book.new(:isbn=>n)] if bb.empty?
+    return bb
+  end
+
+  # TODO: actually fetch data from on-line databases (LOC, amazon etc.)
+  def self.ask_the_web(n)
+    [Book.new(:isbn=>n)]
   end
 
   def self.duplicated_isbn_count
