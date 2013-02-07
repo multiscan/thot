@@ -1,5 +1,5 @@
 desc "Merge all books that look identical"
-task :isbnmerge => [:environment] do
+task :isbnmerge => [:environment, :cleanup_books] do
   mergecount=0
   Book.duplicated_isbn_count.each do |isbn, count|
     b=Book.find_all_by_isbn("#{isbn}", :order=>'id ASC')
@@ -25,4 +25,17 @@ task :isbnmerge => [:environment] do
     # puts "ISBN #{isbn} - #{count} books, #{nm} merged"
   end
   puts "----- #{mergecount} Succesfull merging in total."
+end
+
+desc "Destroy books with blank author, editor and isbn"
+task :cleanup_books => [:environment] do
+  puts "Destroying books with no author, editor, isbn..."
+  n=m=0
+  Book.where(:author => nil, :editor=>nil, :isbn=>nil, :title=>nil).each do |b|
+    n=n+1
+    m=m+b.items.count
+    b.items.destroy_all
+    b.destroy
+  end
+  puts "...#{n} books (#{m} items) destroied"
 end

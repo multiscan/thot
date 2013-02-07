@@ -20,7 +20,7 @@ Thot::Application.routes.draw do
   authenticated :user do
     root :to => 'home#index'
   end
-  root :to => "home#index"
+  root :to => "searches#new"
 
   match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
   match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'

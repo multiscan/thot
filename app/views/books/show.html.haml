@@ -1,50 +1,45 @@
 -content_for(:titlebar) do
-  Book details
-
-%h2
   =@book.title
-  - if @book.volume?
-    %small
-      \-
-      vol.
-      =@book.volume
-  - if @book.edition?
-    %small
-      \-
-      edition
-      =@book.edition
-%h3=@book.author
-- if @book.editor?
-  %h4
-    Edited by
-    =@book.editor
 
-%h4
-  Year:
-  = @book.pubyear
-  \-
-  ISBN:
-  = @book.isbn
-  \-
-  Call Nr.
-  = @book.call1
-  = @book.call2
-  = @book.call3
-  = @book.call4
-%h4
-  Publisher:
-  = link_to @book.publisher.name, @book.publisher
-  - if @book.collection?
-    \-
-    Collection:
-    =@book.collection
+-content_for(:title) do
+  =@book.title
+  %br
+  %small
+    %strong By
+    =@book.author
+    %br
+    - if @book.editor?
+      %strong Edited by
+      =@book.editor
 
--if @book.collation?
-  %h5
-    Collation:
-    =@book.collation
+.well
+  .row
+    .span6
+      %dl.dl-horizontal
+        %dt volume:
+        %dd=@book.volume
+        %dt edition:
+        %dd=@book.edition
+        %dt publication year:
+        %dd=@book.pubyear
+        %dt publisher:
+        %dd=link_to @book.publisher.name, @book.publisher
+        %dt Collection:
+        %dd=@book.collection
+    .span4
+      %dl.dl-horizontal
+        %dt ISBN:
+        %dd=@book.isbn
+        %dt Call Nr.
+        %dd
+          %span.label= @book.call1
+          %span.label= @book.call2
+          %span.label= @book.call3
+          %span.label= @book.call4
+        %dt Collation:
+        %dd=@book.collation
 
-%h3 Items
+%h3 Book copies
 %table.table
   %thead
     %th Inv. Number
@@ -61,42 +56,35 @@
         \-
         =item.lab.name
       %td=item.location_name
-      %td=item.status
-      %td=item.borrower_name
+      %td=item_status(item)
+      %td= item.borrower_name
 
-- if @book.abstract? || @book.toc? || @book.notes?
-  -tabclass="tab-pane active"
-  -liclass="active"
+%h3 More Infos
+.well
   .tabbable
     %ul.nav.nav-tabs
-      -if @book.abstract?
-        %li{:class=>liclass}
-          -licleass=nil
-          %a{:href=>"#abstab", "data-toggle" => "tab"} Abstract
-      -if @book.toc?
-        %li{:class=>liclass}
-          -licleass=nil
-          %a{:href=>"#toctab", "data-toggle" => "tab"} TOC
-      -if @book.notes?
-        %li{:class=>liclass}
-          -licleass=nil
-          %a{:href=>"#nottab", "data-toggle" => "tab"} Notes
-    .tab-content
-      -if @book.abstract?
-        %div{:class=>tabclass, :id=>"abstab"}
-          %h3 Abstract
-          %p=long_text(@book.abstract)
-        -tabclass="tab-pane"
-      -if @book.toc?
-        %div{:class=>tabclass, :id=>"toctab"}
-          %h3 TOC
-          %p=long_text(@book.toc)
-        -tabclass="tab-pane"
-      -if @book.notes?
-        %div{:class=>tabclass, :id=>"nottab"}
-          %h3 Notes
-          %p=long_text(@book.notes)
-        -tabclass="tab-pane"
+      %li
+        %a{:href=>"#abstab", "data-toggle" => "tab"} Abstract
+      %li
+        %a{:href=>"#idxtab", "data-toggle" => "tab"} Index
+      %li.active
+        %a{:href=>"#nottab", "data-toggle" => "tab"} Notes
+      %li
+        %a{:href=>"#toctab", "data-toggle" => "tab"} TOC
+  .tab-content
+    .tab-pane.active{:id=>"abstab"}
+      %h4 Abstract
+      =long_text(@book.abstract)
+    .tab-pane{:id=>"idxtab"}
+      %h4 Index
+      =@book.idx
+    .tab-pane{:id=>"nottab"}
+      %h4 Notes
+      =@book.notes
+    .tab-pane{:id=>"toctab"}
+      %h4 Table of Content
+      =@book.toc
+
 
 %p
   = link_to 'Edit', edit_book_path(@book)

@@ -1,6 +1,15 @@
+-book=item.book
 %li.well.bookli
   .row
-    .span8
+    .span1
+      %strong=link_to item.inv, item
+      %br
+      =item.lab.nick
+      %br
+      =item.location.name
+      %br
+      =item_status(item)
+    .span7
       %span.author=book.author
       %br
       -#%span.label.label-info=book.title
@@ -19,34 +28,17 @@
       %span.publisher
         =book.publisher.name
     .span2
-      =book.pubyear
-      %br
       =book.isbn
       %br
       =book.call1
       =book.call2
       =book.call3
       =book.call4
-      -if can? :update, book
+      -if can? :update, item
         %br
-        =link_to "Edit", edit_book_path(book)
-        |
-        =link_to "Add Item", new_book_item_path(book)
+        =link_to "Edit", edit_item_path(item)
       -else
         %br
         %br
       %br
       =link_to 'more »', book
-    .span1
-      - if book.count_all > 1
-        - if book.count_on_loan > 0
-          %span.label.label-warning #{book.count_on_loan} on loan
-          %br
-        - if book.count_available > 0
-          %span.label.label-success #{book.count_available} available
-          %br
-        - if book.count_missing > 0
-          %span.label.label-inverse #{book.count_missing} missing
-          %br
-      - else
-        = item_status(book.items.first)

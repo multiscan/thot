@@ -1,7 +1,6 @@
 class Search < ActiveRecord::Base
-  attr_accessible :query, :isbn, :publisher_name, :year_range, :borrower_id, :inv_range, :lab_id, :location_id, :status
+  attr_accessible :query, :isbn, :publisher_name, :year_range, :inv_range, :lab_id, :location_id, :status
   belongs_to :lab
-  belongs_to :borrower, :class_name => User, :foreign_key => "borrower_id"
   belongs_to :location
 
   def items
@@ -28,6 +27,10 @@ class Search < ActiveRecord::Base
     @publisher_ids ||= publisher_ids_from_name(publisher_name)
   end
 
+  def items_oriented?
+    !inv_range.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
+  end
+
   private
 
   def publisher_ids_from_name(n)
@@ -47,7 +50,8 @@ class Search < ActiveRecord::Base
   def items_from_books
     return [] if @books.nil? || @books.empty?
     i=[]
-    @books.each {|b| i += @book.items}
+    @books.each {|b| i += b.items}
+    return i
   end
 
   def search
@@ -56,13 +60,14 @@ class Search < ActiveRecord::Base
     # single inventory number
     if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
       inv=inv_range.strip.to_i
+      logger.debug "Simple search for inv=#{inv}"
       @items = Item.includes(:inventoriable).where(:inv=>inv)
       return
     end
-
-    # single isbn
+    # bookle isbn
     unless isbn.blank?
       @books = Book.where(:isbn => isbn)
+      logger.debug "Simple search for isbn=#{isbn}"
       return
     end
 
@@ -93,13 +98,16 @@ class Search < ActiveRecord::Base
 
     # if query is present we use search (sphinx) otherwise we use standard SQL
     if query.blank?
+      logger.debug("SQL    search: query=#{query}\n               book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
       conditions=book_conds
       conditions[:items] = item_conds
       @books = Book.includes(:items).where(conditions)
       return
     else
       # TODO: include remaining conditions on Book (year, publisher_id)
-      @items = Item.search(query, :with=>item_conds)
+      conditions=book_conds.merge(item_conds)
+      logger.debug("Sphinx search: query=#{query}\n               conds=#{conditions.inspect}")
+      @items = Item.search(query, :with=>conditions)
     end
   end
 

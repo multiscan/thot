@@ -1,39 +1,19 @@
-%p#notice= notice
+-content_for(:title) do
+  Search Result
+  %br
+  %small=@search.items_oriented? ? "by item" : "by book"
 
-%p
-  %b Title:
-  = @search.title
-%p
-  %b Author:
-  = @search.author
-%p
-  %b Editor:
-  = @search.editor
-%p
-  %b Isbn:
-  = @search.isbn
-%p
-  %b Year:
-  = @search.year
-%p
-  %b Publisher name:
-  = @search.publisher_name
-%p
-  %b Collection:
-  = @search.collection
-%p
-  %b Location:
-  = @search.location_id
-%p
-  %b Owner:
-  = @search.owner_id
-%p
-  %b Status:
-  = @search.status
-%p
-  %b User:
-  = @search.user_id
+%h2 Your search
+= render 'form'
 
-= link_to 'Edit', edit_search_path(@search)
-\|
-= link_to 'Back', searches_path
+%h2 Result
+- if @search.items_oriented?
+  %h3 By Item
+  %ul.booklist.unstyled
+    - @search.items.each do |item|
+      =render item #=render :partial => "items/item", :object => item
+-else
+  %h3 By Book
+  %ul.booklist.unstyled
+    - @search.books.each do |book|
+      =render book

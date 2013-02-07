@@ -4,11 +4,14 @@ module ApplicationHelper
   end
 
   def item_status(item)
-    c=item.current_checkout
-    if c
-      ("On loan by " + link_to(c.user.name, c.user)).html_safe
+    if item.status=="Library"
+      if c=item.current_checkout
+        "<span class='label label-warning'>on loan</span>".html_safe
+      else
+        "<span class='label label-success'>available</span>".html_safe
+      end
     else
-      item.status
+      "<span class='label label-inverse'>missing</span>".html_safe
     end
   end
 

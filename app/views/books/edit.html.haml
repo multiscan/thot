@@ -4,11 +4,11 @@
     ISBN:
     =@book.isbn
 
+-# TODO show this only if user can add books
 %p
   \... or
   = link_to 'add an item', new_book_item_path(@book)
   to this book.
-
 
 = render 'form'
 

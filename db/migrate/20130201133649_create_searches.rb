@@ -7,7 +7,6 @@ class CreateSearches < ActiveRecord::Migration
       t.string   :publisher_name        # book
       t.string   :year_range            # book
 
-      t.integer  :borrower_id           # item
       t.string   :inv_range             # item
       t.integer  :lab_id                # item
       t.integer  :location_id           # item

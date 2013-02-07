@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  attr_accessible :currency, :inv, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status, :borrower
+  attr_accessible :currency, :inv, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status
 
   belongs_to :inventoriable, :polymorphic => true
   belongs_to :lab
@@ -54,8 +54,12 @@ class Item < ActiveRecord::Base
     self.location.nil? ? "" : self.location.name
   end
 
+  def on_loan?
+    ! current_checkout.nil?
+  end
+
   def borrower_name
-    self.borrower.nil? ? "" : self.borrower.name
+    on_loan? ? current_checkout.user.name : nil
   end
 
   def self.count_by_status
@@ -73,6 +77,10 @@ class Item < ActiveRecord::Base
 
   def book
     self.inventoriable_type == "Book" ? self.inventoriable : nil
+  end
+
+  def self.statuses
+    select("status").uniq.map{|s| s.status}.compact
   end
 
 end

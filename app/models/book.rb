@@ -4,6 +4,9 @@ class Book < ActiveRecord::Base
   attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :volume
 
   has_many :items, :as => :inventoriable
+  has_many :borrowings, :class_name => "Borrowing", :foreign_key => "book_id"
+  has_many :loans, :class_name => "Borrowing", :foreign_key => "book_id", :conditions=>{:return_date=>nil}
+
   # has_many :available_items, :as => :inventoriable, :condition => ""
   belongs_to :publisher
 
@@ -32,6 +35,24 @@ class Book < ActiveRecord::Base
   def status
     self.items
   end
+
+  def count_on_loan
+    set_counts unless @on_loan_count
+    return @on_loan_count
+  end
+  def count_available
+    set_counts unless @available_count
+    return @available_count
+  end
+  def count_all
+    set_counts unless @all_count
+    return @all_count
+  end
+  def count_missing
+    set_counts unless @missing_count
+    return @missing_count
+  end
+
 
   def publisher_name=(name)
     self.publisher = Publisher.find_or_create_by_name(name) unless name.blank?
@@ -105,6 +126,16 @@ class Book < ActiveRecord::Base
 
   def self.duplicated_isbn_count
     self.select("COUNT(isbn) as total, isbn").group(:isbn).having("COUNT(isbn) > 1 AND isbn!=''").order('total').map{|b| [b.isbn,b.total]}
+  end
+
+ private
+   def set_counts
+    @all_count = items.count
+    library_count = items.where(:status=>"Library").count
+    @on_loan_count = loans.count
+    @available_count = library_count - @on_loan_count
+    @missing_count = @all_count - library_count
+    logger.debug("set_counts: @all=#{@all_count}  on_loan=#{@on_loan_count}  available=#{@available_count}  missing=#{@missing_count}  library=#{library_count}")
   end
 
   memoize :duplicate_isbn?, :missing_isbn?, :with_same_isbn
