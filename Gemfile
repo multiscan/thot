@@ -60,6 +60,14 @@ group :test do
   gem "capybara", ">= 2.0.1"
 end
 
+# For searching book infos on the web https://github.com/jayfajardo/openlibrary
+gem 'openlibrary'
+gem 'lcclasses'   # library of congress classes (to parse output from loc query)
+gem "nokogiri"
+
+# # Search logic: planty of helpers for searching only for rails 2   :(
+# gem 'searchlogic'
+
 # Full text search with Thinking Sphinx. DB must be under mysql or postgresql.
 # http://pat.github.com/ts/en/
 # http://railscasts.com/episodes/120-thinking-sphinx

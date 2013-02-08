@@ -116,6 +116,7 @@ GEM
     json (1.7.5)
     launchy (2.1.2)
       addressable (~> 2.3)
+    lcclasses (0.0.4)
     libwebsocket (0.1.7.1)
       addressable
       websocket
@@ -136,6 +137,9 @@ GEM
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
+    openlibrary (1.0.0)
+      json
+      rest-client
     orm_adapter (0.4.0)
     polyglot (0.3.3)
     quiet_assets (1.0.1)
@@ -167,6 +171,8 @@ GEM
     rake (10.0.3)
     rdoc (3.12)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     riddle (1.5.4)
     rolify (3.2.0)
     rspec-core (2.12.2)
@@ -247,8 +253,11 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   launchy (>= 2.1.2)
+  lcclasses
   memoist
   mysql2
+  nokogiri
+  openlibrary
   quiet_assets (>= 1.0.1)
   rails (= 3.2.9)
   rails3-jquery-autocomplete (= 1.0.9)

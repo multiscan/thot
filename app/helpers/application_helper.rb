@@ -1,5 +1,6 @@
 module ApplicationHelper
   def long_text(t)
+    return "" if t.blank?
     t.gsub("\n", "<br/>").gsub("\t", "<span class='spacer'>&nbsp;</span>").html_safe;
   end
 
