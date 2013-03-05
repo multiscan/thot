@@ -22,13 +22,13 @@ class GoogleBook
     volinfo["authors"].join(", ")
   end
   def publisher
-    @data["publisher"]
+    volinfo["publisher"]
   end
   def pubyear
-    @pubyear ||= parse_date(@data["publishedDate"])
+    @pubyear ||= parse_date(volinfo["publishedDate"])
   end
   def description
-    @data["description"]
+    volinfo["description"]
   end
   def collation
     unless @collation
@@ -49,14 +49,14 @@ class GoogleBook
     isbn_10 || isbn_13
   end
   def pages
-    @data["pageCount"]
+    volinfo["pageCount"]
   end
   def categories
-    @data["categories"]
+    volinfo["categories"]
   end
   def tags
     unless @tags
-      c=@data["categories"]
+      c=volinfo["categories"]
       if c
         t=[]
         c.each {|cc| t += cc.split("/")}
@@ -69,10 +69,26 @@ class GoogleBook
     @tags
   end
   def language
-    @data["language"]
+    volinfo["language"]
   end
   def imagelink
     images["large"] || images["medium"] || images["small"] || images["thumbnail"] || images["smallThumbnail"]
+  end
+
+  def to_h
+    puts "----------------------------------------- google_book::to_h"
+    puts "--- book data: #{@data.inspect}"
+    b={
+        :title => title,
+        :isbn => isbn,
+        :pubyear => pubyear,
+        :author => author,
+        :publisher_name => publisher,
+        :abstract => description,
+        :collation => collation
+      }
+      puts "--- hash: #{b.inspect}"
+      return b
   end
 
  private
@@ -88,7 +104,7 @@ class GoogleBook
   def identifiers
     unless @identifiers
       @identifiers = {}
-      (@data["industryIdentifiers"] || []).each do |i|
+      (volinfo["industryIdentifiers"] || []).each do |i|
         @identifiers[i["type"]] = i["identifier"]
       end
     end
@@ -96,27 +112,30 @@ class GoogleBook
   end
 
   def images
-    @data["imageLinks"] || {}
+    volinfo["imageLinks"] || {}
   end
 
   def size
     unless @size
-      dims=@data["dimensions"]
-      h,w,t=dims["height"], dims["width"], dims["thickness"]
-      p=[]
-      p << "h: #{h}" if h
-      p << "w: #{w}" if w
-      p << "t: #{t}" if t
-      @size = p.join(", ")
+      dims=volinfo["dimensions"]
+      if dims
+        h,w,t=dims["height"], dims["width"], dims["thickness"]
+        p=[]
+        p << "h: #{h}" if h
+        p << "w: #{w}" if w
+        p << "t: #{t}" if t
+        @size = p.join(", ")
+      else
+        @size = ""
+      end
     end
     @size
   end
 
   # TODO:
   def parse_date(s)
-    s
+    s ? s.gsub(/^.*([0-9][0-9][0-9][0-9]).*$/, '\1').to_i : nil
   end
-
 end
 
 class GoogleBookList
@@ -131,13 +150,30 @@ class GoogleBookList
     end
   end
 
+  def all
+    @items.each_index {|i| at(i)}
+    @items
+  end
+
+  def to_ah
+    all.map {|i| i.to_h}
+  end
+
   def count
     @count
   end
 
-  def [i]
+  def [](i)
+    at(i)
+  end
+
+  def at(i)
     return nil unless i<@count
-    @items[i] ||= GoogleBook(@list[i]["id"])
+    @items[i] ||= GoogleBook.new(@list["items"][i]["id"])
+  end
+
+  def first
+    at(0)
   end
 
 end
