@@ -1,11 +1,13 @@
+require 'google_book'
+
 class Book < ActiveRecord::Base
   extend Memoist
 
-  attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :volume
+  attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
 
   has_many :items, :as => :inventoriable
-  has_many :borrowings, :class_name => "Borrowing", :foreign_key => "book_id"
-  has_many :loans, :class_name => "Borrowing", :foreign_key => "book_id", :conditions=>{:return_date=>nil}
+  has_many :loans, :class_name => "Loan", :foreign_key => "book_id"
+  has_many :checkouts, :class_name => "Loan", :foreign_key => "book_id", :conditions=>{:return_date=>nil}
 
   # has_many :available_items, :as => :inventoriable, :condition => ""
   belongs_to :publisher
@@ -114,14 +116,14 @@ class Book < ActiveRecord::Base
 
   def self.new_given_isbn(n)
     bb=Book.find_all_by_isbn(n)
-    bb=self.ask_the_web(b) if bb.empty?
+    bb=self.ask_the_web(n).map{|h| Book.new(h)} if bb.empty?
     bb=[Book.new(:isbn=>n)] if bb.empty?
     return bb
   end
 
   # TODO: actually fetch data from on-line databases (LOC, amazon etc.)
   def self.ask_the_web(n)
-    [Book.new(:isbn=>n)]
+    GoogleBookList.new(n).to_ah
   end
 
   def self.duplicated_isbn_count
@@ -132,7 +134,7 @@ class Book < ActiveRecord::Base
    def set_counts
     @all_count = items.count
     library_count = items.where(:status=>"Library").count
-    @on_loan_count = loans.count
+    @on_loan_count = checkouts.count
     @available_count = library_count - @on_loan_count
     @missing_count = @all_count - library_count
     logger.debug("set_counts: @all=#{@all_count}  on_loan=#{@on_loan_count}  available=#{@available_count}  missing=#{@missing_count}  library=#{library_count}")

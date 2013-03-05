@@ -1,6 +1,6 @@
-class CreateBorrowings < ActiveRecord::Migration
+class CreateLoans < ActiveRecord::Migration
   def change
-    create_table :borrowings do |t|
+    create_table :loans do |t|
       t.references :user
       t.references :item
       t.references :book

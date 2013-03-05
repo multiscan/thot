@@ -5,8 +5,8 @@ class Item < ActiveRecord::Base
   belongs_to :lab
   # belongs_to :borrower, :class_name => User, :foreign_key => "borrower_id"
   belongs_to :location
-  has_many :borrowings, :class_name => "Borrowing", :foreign_key => "item_id", :include => :user
-  has_one :current_checkout, :class_name => "Borrowing", :foreign_key => "item_id", :conditions=>{:return_date=>nil}
+  has_many :loans, :class_name => "Loan", :foreign_key => "item_id", :include => :user
+  has_one :current_checkout, :class_name => "Loan", :foreign_key => "item_id", :conditions=>{:return_date=>nil}
 
   validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
   validates_uniqueness_of :inv, :message => "must be unique"
@@ -42,7 +42,7 @@ class Item < ActiveRecord::Base
 
   def checkout(u)
     return false if current_checkout && current_checkout.user_id != u.id
-    b=self.borrowings.new(:user=>u)
+    b=self.loans.new(:user=>u)
     b.save
   end
 

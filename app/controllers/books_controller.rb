@@ -7,7 +7,7 @@ class BooksController < ApplicationController
     if @search=params["search"]
       @books = Book.search(@search, :match_mode => :extended)
     else
-      @books = Book.order("created_at DESC", :include=>[:publisher, :items, :borrowings]).paginate(:page=>params[:page], :per_page=>50)
+      @books = Book.order("created_at DESC", :include=>[:publisher, :items, :loans]).paginate(:page=>params[:page], :per_page=>50)
     end
     respond_to do |format|
       format.html # index.html.erb

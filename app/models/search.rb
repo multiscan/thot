@@ -80,9 +80,6 @@ class Search < ActiveRecord::Base
     end
 
     item_conds={}
-    # unless borrower_id.blank?
-    #   item_conds[:borrower_id] = borrower_id
-    # end
     unless inv_range.blank?
       item_conds[:inv] = parse_range(inv_range)
     end
