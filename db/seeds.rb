@@ -144,6 +144,8 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
 
   book_params = {
     :title            => lb.title,
+    :subtitle         => nil,
+    :categories       => nil,
     :author           => lb.author,
     :editor           => lb.editor,
     :call1            => lb.call1,
@@ -200,4 +202,5 @@ Book.duplicated_isbn_count.each do |isbn,count|
 end
 
 puts "Seed done. Remember to run the following maintenance rake tasks:"
+puts "rake cleanup_books "
 puts "rake isbnmerge"

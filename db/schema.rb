@@ -11,10 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130205150933) do
+ActiveRecord::Schema.define(:version => 20130201133649) do
 
   create_table "books", :force => true do |t|
     t.string   "title"
+    t.string   "subtitle"
     t.string   "author"
     t.string   "editor"
     t.string   "call1",        :limit => 8
@@ -28,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20130205150933) do
     t.integer  "publisher_id"
     t.string   "collection"
     t.string   "language",     :limit => 16
+    t.string   "categories"
     t.text     "abstract"
     t.text     "toc"
     t.text     "idx"
@@ -37,15 +39,6 @@ ActiveRecord::Schema.define(:version => 20130205150933) do
     t.string   "currency",     :limit => 8
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
-  end
-
-  create_table "borrowings", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "item_id"
-    t.date     "return_date"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.integer  "book_id"
   end
 
   create_table "deg_isbns", :force => true do |t|
@@ -58,7 +51,6 @@ ActiveRecord::Schema.define(:version => 20130205150933) do
   create_table "items", :force => true do |t|
     t.integer  "lab_id"
     t.integer  "location_id"
-    t.integer  "borrower_id"
     t.integer  "inv"
     t.string   "status"
     t.float    "price"
@@ -74,6 +66,15 @@ ActiveRecord::Schema.define(:version => 20130205150933) do
     t.string   "nick"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "loans", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id"
+    t.integer  "book_id"
+    t.date     "return_date"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "locations", :force => true do |t|
@@ -100,7 +101,6 @@ ActiveRecord::Schema.define(:version => 20130205150933) do
     t.string   "isbn"
     t.string   "publisher_name"
     t.string   "year_range"
-    t.integer  "borrower_id"
     t.string   "inv_range"
     t.integer  "lab_id"
     t.integer  "location_id"

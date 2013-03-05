@@ -4,6 +4,8 @@ Thot::Application.routes.draw do
 
   resources :deg_isbns
 
+  resources :publisher_mergers, :only=>[:new, :create, :update]
+
   resources :items, :only=>[:index, :show, :edit, :update, :destroy]
   resources :books do
     get :autocomplete_publisher_name, :on => :collection
@@ -11,6 +13,7 @@ Thot::Application.routes.draw do
   end
 
   resources :publishers
+
   resources :locations
   resources :labs
 

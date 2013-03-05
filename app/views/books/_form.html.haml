@@ -9,6 +9,7 @@
       = f.input :isbn, :as => :hidden
       = f.input :author, :input_html=>{:class => "span10"}
       = f.input :title, :input_html=>{:class => "span10"}
+      = f.input :subtitle , :input_html=>{:class => "span10"}
       = f.input :editor, :input_html=>{:class => "span10"}
       .row
         .span1= f.input :volume, :input_html=>{:min => 1, :max => 10, :class=>"span1"}
@@ -23,8 +24,8 @@
         .span2= f.input :call4, :input_html=>{:class=>"span2"}
 
       .row
-        .span4= f.input :collection, :input_html=>{:class=>"span4"}
-        .span8= f.input :publisher_name, :url => autocomplete_publisher_name_books_path, :as => :autocomplete, :input_html=>{:class=>"span4"}
+        .span5= f.input :collection, :input_html=>{:class=>"span5"}
+        .span5= f.input :publisher_name, :url => autocomplete_publisher_name_books_path, :as => :autocomplete, :input_html=>{:class=>"span5"}
 
       .tabbable
         %ul.nav.nav-tabs

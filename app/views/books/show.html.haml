@@ -17,27 +17,27 @@
     .span6
       %dl.dl-horizontal
         %dt volume:
-        %dd=@book.volume
+        %dd=@book.volume || "-"
         %dt edition:
-        %dd=@book.edition
+        %dd=@book.edition || "-"
         %dt publication year:
-        %dd=@book.pubyear
+        %dd=@book.pubyear || "-"
         %dt publisher:
-        %dd=link_to @book.publisher.name, @book.publisher
+        %dd=@book.publisher.nil? ? "-" : link_to(@book.publisher.name, @book.publisher)
         %dt Collection:
         %dd=@book.collection
     .span4
       %dl.dl-horizontal
         %dt ISBN:
-        %dd=@book.isbn
+        %dd=@book.isbn || "-"
         %dt Call Nr.
         %dd
-          %span.label= @book.call1
-          %span.label= @book.call2
-          %span.label= @book.call3
-          %span.label= @book.call4
+          %span.label= @book.call1 || "-"
+          %span.label= @book.call2 || "-"
+          %span.label= @book.call3 || "-"
+          %span.label= @book.call4 || "-"
         %dt Collation:
-        %dd=@book.collation
+        %dd=@book.collation || "-"
 
 %h3 Book copies
 %table.table

@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b New:
+  = @publisher_merger.new
+%p
+  %b Create:
+  = @publisher_merger.create
+%p
+  %b Edit:
+  = @publisher_merger.edit
+%p
+  %b Update:
+  = @publisher_merger.update
+
+= link_to 'Edit', edit_publisher_merger_path(@publisher_merger)
+\|
+= link_to 'Back', publisher_mergers_path

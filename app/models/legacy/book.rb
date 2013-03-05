@@ -1,10 +1,16 @@
 class Legacy::Book < Legacy::Base
   self.table_name="books"
 
-  [:title, :author, :editor, :collation, :publisher, :edition, :collection, :abstract, :toc, :idx, :notes, :currency].each do |k|
+  [:title, :author, :editor, :collation, :publisher, :edition, :collection, :abstract, :toc, :idx, :notes, :currency, :call1, :call2, :call3, :call4].each do |k|
     define_method(k.to_s) {
       v=read_attribute(k)
-      return v.nil? ? nil : v.encode('utf-8', 'iso-8859-1')
+      begin
+        vv=v.nil? ? nil : v.encode('utf-8', 'iso-8859-1')
+        vv.blank? ? nil : vv
+        return vv
+      rescue
+        return nil
+      end
     }
   end
 

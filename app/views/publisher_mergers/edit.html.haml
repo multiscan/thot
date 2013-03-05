@@ -1,0 +1,39 @@
+-content_for(:title) do
+  DB Cleanup:
+  %small merge publishers
+
+
+= simple_form_for(@publisher, :url=>publisher_mergers_path, :method => :post) do |f|
+  %row
+    .span6
+      -#= f.input "mergenda_ids", :as=>:check_boxes, :collection=>@publishers
+      %ul.unstyled
+        -@publishers.each do |p|
+          %li
+            %i.icon-minus-sign.remove_from_list
+            %input{:name=>"mergenda_ids[]", :type=>"hidden", :value=>p.id}
+            =p.name
+    .span4
+      %p
+        Are you sure that you want to
+        %strong replace
+        all the publishers listed here with a new one having the name below ?
+      .form-inputs
+        = f.input :name, :label => "New name"
+      .form-actions
+        = f.button :submit, "Yes I am sure. Please merge them!"
+
+-#content_for :head do
+  :css
+    .remove_from_list:hover {border: 1px solid #f00;}
+    #selectable .ui-selecting { background: #FECA40; }
+    #selectable .ui-selected { background: #F39814; color: white; }
+  :javascript
+    jQuery(document).ready(function($) {
+      $("#selectable").selectable({
+        stop: function() {
+          $(".ui-widget-content input").prop('checked', false);
+          $(".ui-selected input").prop('checked', true);
+        }
+      });
+    });

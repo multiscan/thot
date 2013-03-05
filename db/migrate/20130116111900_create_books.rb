@@ -2,6 +2,7 @@ class CreateBooks < ActiveRecord::Migration
   def change
     create_table :books do |t|
       t.string :title
+      t.string :subtitle
       t.string :author
       t.string :editor
       t.string :call1, :limit=>8
@@ -16,6 +17,7 @@ class CreateBooks < ActiveRecord::Migration
       t.string :collection
       t.string :collation
       t.string :language, :limit=>16
+      t.string :categories
       t.text :abstract
       t.text :toc
       t.text :idx
