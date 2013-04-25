@@ -71,6 +71,7 @@ class GoogleBook
   def language
     volinfo["language"]
   end
+
   def imagelink
     images["large"] || images["medium"] || images["small"] || images["thumbnail"] || images["smallThumbnail"]
   end

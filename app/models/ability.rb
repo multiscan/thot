@@ -33,6 +33,8 @@ class Ability
     end
     if user.role? :operator
         can :manage, :books
+        # can :manage, :items
+        can :manage, :publishers
     end
 
   end

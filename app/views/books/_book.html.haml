@@ -38,15 +38,12 @@
       %br
       =link_to 'more »', book
     .span1
-      - if book.count_all > 1
-        - if book.count_on_loan > 0
-          %span.label.label-warning #{book.count_on_loan} on loan
-          %br
-        - if book.count_available > 0
-          %span.label.label-success #{book.count_available} available
-          %br
-        - if book.count_missing > 0
-          %span.label.label-inverse #{book.count_missing} missing
-          %br
-      - else
-        = item_status(book.items.first)
+      - if book.count_on_loan > 0
+        %span.label.label-warning #{book.count_on_loan} on loan
+        %br
+      - if book.count_available > 0
+        %span.label.label-success #{book.count_available} available
+        %br
+      - if book.count_missing > 0
+        %span.label.label-inverse #{book.count_missing} missing
+        %br

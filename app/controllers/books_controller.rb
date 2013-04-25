@@ -7,7 +7,9 @@ class BooksController < ApplicationController
     if @search=params["search"]
       @books = Book.search(@search, :match_mode => :extended)
     else
-      @books = Book.order("created_at DESC", :include=>[:publisher, :items, :loans]).paginate(:page=>params[:page], :per_page=>50)
+      @items = Item.order("created_at DESC", :include=>[:book]).paginate(:page=>params[:page], :per_page=>50)
+      @books = @items.map{|i| i.book}.uniq
+      # @books = Book.order("created_at DESC", :include=>[:publisher, :items, :loans]).paginate(:page=>params[:page], :per_page=>50)
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -51,6 +53,10 @@ class BooksController < ApplicationController
       if @books.count == 1
         @book=@books.first
         if @book.new_record?
+          # @labs = Lab.order('nick ASC').all
+          # @locations = Location.order('name ASC').all
+          # @currencies = ENV['CURRENCIES'].split
+          # @item = Item.new
           @isbn_step = false
           render "new"
         else
@@ -70,7 +76,7 @@ class BooksController < ApplicationController
 
       respond_to do |format|
         if @book.save
-          format.html { redirect_to @book, notice: 'Book was successfully created.' }
+          format.html { redirect_to new_book_item_path(@book), notice: 'Book was successfully created.' }
           format.json { render json: @book, status: :created, location: @book }
         else
           format.html { render action: "new" }

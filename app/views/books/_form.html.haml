@@ -46,6 +46,20 @@
           =f.input :toc, :label=>false, :input_html=>{:class=>"span10"}
         .tab-pane{:id=>"nottab"}
           =f.input :notes, :label=>false, :input_html=>{:class=>"span10"}
+      -# if @book.new_record?
+        = f.simple_fields_for :item do |item_form|
+          .row
+            .span4
+              = item_form.association :lab, :collection => @labs, :label_method => lambda { |l| l.nick }, :prompt => "Select the owner"
+            .span4
+              = item_form.association :location, :collection => @locations, :prompt => "Select a room for this copy"
+          .row
+            .span4
+              = item_form.input :currency, :collection=>@currencies, :selected => @currencies.first
+            .span4
+              = item_form.input :price
+          = f.input :status, :collection=>["Library", "Mystery", "Never Received", "Out of Print", "Waiting for Delivery"], :selected=>"Library"
+
 
   .form-actions
     = f.button :submit

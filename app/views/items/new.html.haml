@@ -1,6 +1,14 @@
 -content_for(:title) do
   New Book Copy
 
-= render 'form'
+%h3=@book.title
+%h4
+  - if @book.author.blank?
+    - unless @book.editor.blank?
+      edited by
+      =@book.editor
+  - else
+    by
+    =@book.author
 
-= link_to 'Back', items_path
+= render 'form'

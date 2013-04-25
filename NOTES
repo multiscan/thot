@@ -66,7 +66,97 @@ http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve&query=bat
 
 
 
+
+
 a scuola ai buoni un premio, ai cattivi la punizione
 ma in seguito nella vita è meno chiara la divisione
 Giorgio  Gaber
 
+
+
+
+
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<zs:searchRetrieveResponse xmlns:zs="http://www.loc.gov/zing/srw/">
+<zs:version>1.1</zs:version>
+<zs:numberOfRecords>1</zs:numberOfRecords>
+<zs:records>
+<zs:record>
+<zs:recordSchema>info:srw/schema/1/mods-v3.2</zs:recordSchema>
+<zs:recordPacking>xml</zs:recordPacking>
+<zs:recordData>
+<mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" version="3.2" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-2.xsd">
+<titleInfo>...</titleInfo>
+<name type="personal">
+<namePart>Buchberger, Bruno.</namePart>
+</name>
+<name type="personal">
+<namePart>Winkler, Franz</namePart>
+<namePart type="date">1955-</namePart>
+</name>
+<typeOfResource>text</typeOfResource>
+<genre authority="marcgt">bibliography</genre>
+<originInfo>
+<place>
+<placeTerm type="code" authority="marccountry">enk</placeTerm>
+</place>
+<place>
+<placeTerm type="text">Cambridge, U.K</placeTerm>
+</place>
+<place>
+<placeTerm type="text">New York</placeTerm>
+</place>
+<publisher>Cambridge University Press</publisher>
+<dateIssued>1998</dateIssued>
+<issuance>monographic</issuance>
+</originInfo>
+<language>
+<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+</language>
+<physicalDescription>
+<form authority="marcform">print</form>
+<extent>viii, 552 p. : ill. ; 23 cm.</extent>
+</physicalDescription>
+<note type="statement of responsibility">edited by B. Buchberger & F. Winkler.</note>
+<note>
+Papers from an intensive course for researchers (Jan. 1998) and a conference "33 Years of Gröbner Bases" held at RISC-Linz, Feb. 2-4, 1998.
+</note>
+<note>Includes bibliographical references and index.</note>
+<subject authority="lcsh">
+<topic>Gröbner bases</topic>
+</subject>
+<classification authority="lcc">QA251.3 .G76 1998</classification>
+<classification authority="ddc" edition="21">512/.24</classification>
+<relatedItem type="series">
+<titleInfo>
+<title>
+London Mathematical Society lecture note series ; 251
+</title>
+</titleInfo>
+</relatedItem>
+<identifier type="isbn">0521632986 (paperback)</identifier>
+<identifier type="lccn">97044181</identifier>
+<identifier type="uri">
+http://www.loc.gov/catdir/description/cam028/97044181.html
+</identifier>
+<identifier type="uri">http://www.loc.gov/catdir/toc/cam027/97044181.html</identifier>
+<location>
+<url displayLabel="Publisher description">
+http://www.loc.gov/catdir/description/cam028/97044181.html
+</url>
+</location>
+<location>
+<url displayLabel="Table of contents">http://www.loc.gov/catdir/toc/cam027/97044181.html</url>
+</location>
+<recordInfo>
+<recordContentSource authority="marcorg">DLC</recordContentSource>
+<recordCreationDate encoding="marc">971125</recordCreationDate>
+<recordChangeDate encoding="iso8601">20020831182157.0</recordChangeDate>
+<recordIdentifier>2600033</recordIdentifier>
+</recordInfo>
+</mods>
+</zs:recordData>
+<zs:recordPosition>1</zs:recordPosition>
+</zs:record>
+</zs:records>
+</zs:searchRetrieveResponse>

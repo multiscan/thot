@@ -4,7 +4,7 @@
   .form-inputs
     .row
       .span4
-        = f.association :lab, :collection => @labs, :prompt => "Select the owner"
+        = f.association :lab, :collection => @labs, :label_method => lambda { |l| l.nick }, :prompt => "Select the owner"
       .span4
         = f.association :location, :collection => @locations, :prompt => "Select a room for this copy"
     .row
