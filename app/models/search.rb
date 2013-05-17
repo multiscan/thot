@@ -31,7 +31,7 @@ class Search < ActiveRecord::Base
     !inv_range.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
   end
 
-  private
+ private
 
   def publisher_ids_from_name(n)
     return [] if n.blank?

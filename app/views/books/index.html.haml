@@ -7,7 +7,7 @@
     Your query:
     = @search
 
-- if @books.count > 0
+- unless @books.empty?
   %ul.booklist.unstyled
     -@books.each do |b|
       = render b

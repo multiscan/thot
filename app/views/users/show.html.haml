@@ -1,4 +1,36 @@
 -content_for(:title) do
   =@user.name
 
-= link_to 'Back', :back
+%dl.dl-horizontal
+  %dt Id / Nebis User Id
+  %dd
+    =@user.id
+    ="/"
+    = @nebis_user ? @nebis_user.id : nil
+  %dt Location
+  %dd=@user.location
+  %dt Nebis
+  %dd=link_to @user.nebis, user_url(@user.nebis)
+  %dt Email
+  %dd=@user.email
+  %dt Lab
+  %dd=@user.lab.nick
+-unless @loans.empty?
+  %h3 Checked out Items
+  %ul#booklist.booklist.unstyled
+    = render :partial => "loans/loan", :collection => @loans
+
+- if @loan
+  = render :partial => "loans/loan_form"
+
+- if @nebis_user
+  - content_for :head do
+    :javascript
+      var nebis_logout;
+      function when_ready() {
+        // nebis_logout = new NebisLogout(#{(@nebis_expire-Time.zone.now).to_i});
+        nebis_logout = new NebisLogout(#{ENV["NEBIS_LOGOUT_AFTER"].to_i});
+        $(".item_return_link").bind('ajax:success', function() {
+            $(this).closest('li').fadeOut();
+          });
+      }

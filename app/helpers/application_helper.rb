@@ -20,5 +20,20 @@ module ApplicationHelper
     item.price ? "#{item.price} #{item.currency}" :  "NA"
   end
 
+  def days_ago(n)
+    if n==0
+      "today"
+    elsif n==1
+      "yesterday"
+    elsif n<7
+      "#{n} days ago"
+    elsif n%7 == 0 && n<71
+      "#{n/7} weeks ago"
+    elsif n<71
+      "more than #{(n/7).to_i} weeks ago"
+    else
+      "more than #{(n/30).to_i} months ago"
+    end
+  end
 
 end

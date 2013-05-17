@@ -1,0 +1,29 @@
+- book=loan.book
+%li{id: "loan_li_#{loan.id}", class: "well bookli"}
+  .row
+    .span8
+      - if book.editor && !book.editor.empty?
+        %strong Edited by
+        %span.author=book.editor
+      - else
+        %span.author=book.author
+      %br
+      = link_to book.title, loan.item
+      -if book.volume?
+        %strong vol.
+        =book.volume
+      -if book.edition?
+        = book.edition
+        edition
+      %br
+      %span.publisher
+        =book.publisher.name
+    .span3
+      Taken on
+      =loan.created_at.strftime("%b %d, %Y")
+      %br
+      %span{:class => loan.overdue? ? "text-error" : "text-success"}
+        =days_ago(loan.age_in_days)
+      %br
+      -#=link_to "Return", toggle_item_url(:inv => loan.item.inv), :remote => true, :class=>"item_return_link", "data-prova" => "ciao"
+      =link_to "Return", loan, :method => :delete, :remote => true

@@ -1,3 +1,8 @@
+document ready: just define a function when_ready() wherever is needed. It will be called from the main application.js
+
+
+
+
 Namespaces:
 
 There's no real "Rails way" for admin interfaces, actually - you can find every possible solution in a number of applications. DHH has implied that he prefers namespaces (with HTTP Basic authentication), but that has remained a simple implication and not one of the official Rails Opinions.

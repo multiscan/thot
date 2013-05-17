@@ -32,6 +32,8 @@ gem "simple_form", ">= 2.0.4"
 gem 'will_paginate', '~> 3.0'
 gem "better_errors", ">= 0.2.0", :group => :development
 
+gem "turbolinks"
+
 # http://www.mcbsys.com/techblog/2012/10/convert-a-select-drop-down-box-to-an-autocomplete-in-rails/
 # gem 'rails3-jquery-autocomplete'   # 1.0.10
 gem 'rails3-jquery-autocomplete', '1.0.9'
@@ -95,5 +97,5 @@ gem 'thinking-sphinx', '2.0.10'
 # Use unicorn as the app server
 # gem 'unicorn'
 # To use debugger
-# gem 'debugger'
+gem 'debugger', :group => [:development]
 

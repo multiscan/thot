@@ -1,28 +1,89 @@
+-content_for(:titlebar) do
+  =@book.title
+
 -content_for(:title) do
-  Book copy details
+  =@book.title
   %br
   %small
-    Inventory number
-    =@item.inv
+    %strong By
+    =@book.author
+    %br
+    - if @book.editor?
+      %strong Edited by
+      =@book.editor
 
-%p
-  %dl.dl-horizontal
-    %dt Owner:
-    %dd
-      =@item.lab.name
-      \(
-      =link_to @item.lab.nick, @item.lab
-      \)
-    %dt Location:
-    %dd=link_to @item.location.name, @item.location
-    %dt Status:
-    %dd=item_status(@item)
+.well
+  .row
+    .span6
+      %dl.dl-horizontal
+        %dt volume:
+        %dd=@book.volume || "-"
+        %dt edition:
+        %dd=@book.edition || "-"
+        %dt publication year:
+        %dd=@book.pubyear || "-"
+        %dt publisher:
+        %dd=@book.publisher.nil? ? "-" : link_to(@book.publisher.name, @book.publisher)
+        %dt Collection:
+        %dd=@book.collection
+    .span4
+      %dl.dl-horizontal
+        %dt ISBN:
+        %dd=@book.isbn || "-"
+        %dt Call Nr.
+        %dd
+          %span.label= @book.call1 || "-"
+          %span.label= @book.call2 || "-"
+          %span.label= @book.call3 || "-"
+          %span.label= @book.call4 || "-"
+        %dt Collation:
+        %dd=@book.collation || "-"
+
+%h3 This Copy
+%table.table
+  %thead
+    %th Inv. Number
+    %th Owner
+    %th Location
+    %th Status
+    %th User
     - if can? :manage, @item
-      %dt Price:
-      %dd=item_price(@item)
+      %th Price
+  %tbody
+    %tr
+      %td=@item.inv
+      %td
+        =@item.lab.nick
+        \-
+        =@item.lab.name
+      %td=@item.location_name
+      %td=item_status(@item)
+      %td=@item.borrower_name
+      - if can? :manage, @item
+        %td= item_price(@item)
 
-
--#
-  = link_to 'Edit', edit_item_path(@item)
-  \|
-  = link_to 'Back', items_path
+%h3 More Infos
+.well
+  .tabbable
+    %ul.nav.nav-tabs
+      %li.active
+        %a{:href=>"#abstab", "data-toggle" => "tab"} Abstract
+      %li
+        %a{:href=>"#idxtab", "data-toggle" => "tab"} Index
+      %li
+        %a{:href=>"#nottab", "data-toggle" => "tab"} Notes
+      %li
+        %a{:href=>"#toctab", "data-toggle" => "tab"} TOC
+  .tab-content
+    .tab-pane.active{:id=>"abstab"}
+      %h4 Abstract
+      =long_text(@book.abstract)
+    .tab-pane{:id=>"idxtab"}
+      %h4 Index
+      =@book.idx
+    .tab-pane{:id=>"nottab"}
+      %h4 Notes
+      =@book.notes
+    .tab-pane{:id=>"toctab"}
+      %h4 Table of Content
+      =@book.toc

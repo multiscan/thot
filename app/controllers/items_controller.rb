@@ -18,6 +18,7 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    @book = @item.book
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @item }
@@ -89,6 +90,36 @@ class ItemsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to items_url }
       format.json { head :no_content }
+    end
+  end
+
+  # get /items/:inv/toggle
+  def toggle
+    puts "----------------- items/#{params[:inv]}/toggle"
+    respond_to do |format|
+      if @user=nebis_user
+        @item = Item.find_by_inv(params[:inv])
+        if @item
+          if @item.on_loan?
+            if @item.checkin
+              format.html { redirect_to @user, notice: "Item returned to library" }
+
+            else
+              format.html { redirect_to @item, error: "Filed to return item to Library. Please identify yourself by scanning your Nebis code" }
+            end
+          else
+            if @item.checkout(@user)
+              format.html { redirect_to @user, notice: "Item checked out. Please return it as soon as you don't need it anymore" }
+            else
+              format.html { redirect_to @item, error: "This item is not supposed to be available for checkout" }
+            end
+          end
+        else
+          format.html { redirect_to @user, error: "Record not found" }
+        end
+      else
+        format.html { redirect_to root_path, error: "Please first identify yourself by scanning your Nebis code" }
+      end
     end
   end
 

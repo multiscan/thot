@@ -1,0 +1,8 @@
+%h3 Checkout a new book
+= simple_form_for @loan, :html => {:class=>"form-inline"}, :remote=>true do |f|
+  = f.error_notification
+  .row
+    .span3
+      = f.input :inv, :label => false, :placeholder => "inventory number"
+    .span3
+      = f.button :submit, :value => "Checkout"

@@ -7,11 +7,14 @@ Thot::Application.routes.draw do
   resources :publisher_mergers, :only=>[:new, :create, :update]
 
   resources :items, :only=>[:index, :show, :edit, :update, :destroy]
+  match '/items/:inv/toggle' => 'items#toggle', :as => 'toggle_item'
+
   resources :books do
     get :autocomplete_publisher_name, :on => :collection
     resources :items, :only=>[:new, :create]
   end
 
+  resources :loans, :only => [:create, :destroy]
   resources :publishers
 
   resources :locations
@@ -20,13 +23,22 @@ Thot::Application.routes.draw do
   devise_for :users
   resources :users, :only => [:show]
 
-  authenticated :user do
-    root :to => 'home#index'
+  namespace :nebis do
+    get 'extend'
   end
-  root :to => "searches#new"
+
+  authenticated :user do
+    root :to => "searches#new"
+  end
 
   match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
   match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
+
+  namespace :admin do
+    resources :users
+  end
+
+  root :to => "searches#new"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

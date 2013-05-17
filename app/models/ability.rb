@@ -32,9 +32,9 @@ class Ability
       can :manage, :all
     end
     if user.role? :operator
-        can :manage, :books
-        # can :manage, :items
-        can :manage, :publishers
+        can :create, :users
+        can :manage, :items
+        can :manage, [:books, :publishers, :degisbn]
     end
 
   end

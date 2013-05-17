@@ -4,7 +4,7 @@ class CreateLoans < ActiveRecord::Migration
       t.references :user
       t.references :item
       t.references :book
-      t.date :return_date
+      t.datetime :return_date
 
       t.timestamps
     end

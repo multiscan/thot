@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  before_filter :nebis_session
+
   # GET /users
   # GET /users.json
   def index
@@ -13,7 +16,22 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
+    id=params[:id]
+    # if :id is a nebis code, then also set nebis user
+    if  id.start_with?("E")
+      @user = User.find_by_nebis(id)
+      nebis_user_login(@user)
+    else
+      @user = User.find(id)
+    end
+    logger.debug "----------------------------------"
+    logger.debug "@nebis_user=#{@nebis_user.inspect}"
+    logger.debug "----------------------------------"
+
+    @loans = @user.loans.where(:return_date => nil)
+    unless nebis_user.nil?
+      @loan = @nebis_user.loans.new
+    end
 
     respond_to do |format|
       format.html # show.html.erb
