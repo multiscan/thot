@@ -18,19 +18,28 @@
 //= require bootstrap
 //= require jquery.tablesorter
 //= require turbolinks
+//= require nebis
+
+
+
 //= require_tree .
 
 
-function ready() {
-  if (typeof when_ready == 'function') {
-    when_ready();
+$(document).ready(thot_ready);
+$(document).on('page:load', thot_ready);
+
+function thot_ready() {
+  console.debug("1");
+  if (typeof when_ready_for_view == 'function') {
+    console.debug("2");
+    when_ready_for_view();
   }
+  if (typeof when_ready_for_layout == 'function') {
+    console.debug("2");
+    when_ready_for_layout();
+  }
+
 }
-
-$(document).ready(ready);
-$(document).on('page:load', ready);
-
-
 
 function thot_toggle(inv) {
   console.debug("Calling checkout with inv="+inv);
@@ -51,47 +60,47 @@ function add_alert(cls, content) {
   $(msg).insertAfter("div.page-header");
 }
 
-function NebisLogout(t) {
-  console.debug("NebisLogout constructor with t="+t);
-  var _this = this;
-  this.dt = t*1000;
-  this.timeoutLabel = $('#nebis_timeout');
-  this.tickInterval = 0;
-  this.timeLeft = function() {
-    return this.t0-jQuery.now();
-  };
-  this.resetCountdown = function() {
-    this.t0 = jQuery.now() + this.dt;
-    setTimeout(function(){_this.alert();}, this.timeLeft()-5000);
-    console.debug("Setting for logout in " + this.secondsToGo() + " seconds");
-  }
-  this.secondsToGo = function() {
-    return Math.round(this.timeLeft()/1000);
-  };
-  this.tick = function() {
-    if (this.secondsToGo()>=0) {
-      this.timeoutLabel.text(this.secondsToGo());
-    } else {
-      clearInterval(this.tickInterval);
-      $('#nebis_timeout_dialog').modal('hide');
-    }
-  };
-  this.alert = function() {
-    // var _this = this;
-    this.timeoutLabel.text(this.secondsToGo());
-    this.tickInterval = setInterval(function(){_this.tick();}, 1000);
-    $('#nebis_timeout_dialog').modal('show');
-  };
-  this.resetCountdown();
-  $('#reset_timer_link').bind('ajax:success', function(evt, data) {_this.resetCountdown(); $('#nebis_timeout_dialog').modal('hide');});
-  $('#reset_timer_link').bind('ajax:error', function(evt, data) {
-      resp=JSON.parse(data.responseText);
-      $('#nebis_timeout_dialog').modal('hide');
-      console.debug("resp="+resp);
-      console.debug("resp.alert="+resp.alert+"    resp[alert]="+resp["alert"]);
-      add_alert("error", resp.alert);
-    });
-}
+// function NebisLogout(t) {
+//   console.debug("NebisLogout constructor with t="+t);
+//   var _this = this;
+//   this.dt = t*1000;
+//   this.timeoutLabel = $('#nebis_timeout');
+//   this.tickInterval = 0;
+//   this.timeLeft = function() {
+//     return this.t0-jQuery.now();
+//   };
+//   this.resetCountdown = function() {
+//     this.t0 = jQuery.now() + this.dt;
+//     setTimeout(function(){_this.alert();}, this.timeLeft()-5000);
+//     console.debug("Setting for logout in " + this.secondsToGo() + " seconds");
+//   }
+//   this.secondsToGo = function() {
+//     return Math.round(this.timeLeft()/1000);
+//   };
+//   this.tick = function() {
+//     if (this.secondsToGo()>=0) {
+//       this.timeoutLabel.text(this.secondsToGo());
+//     } else {
+//       clearInterval(this.tickInterval);
+//       $('#nebis_timeout_dialog').modal('hide');
+//     }
+//   };
+//   this.alert = function() {
+//     // var _this = this;
+//     this.timeoutLabel.text(this.secondsToGo());
+//     this.tickInterval = setInterval(function(){_this.tick();}, 1000);
+//     $('#nebis_timeout_dialog').modal('show');
+//   };
+//   this.resetCountdown();
+//   $('#reset_timer_link').bind('ajax:success', function(evt, data) {_this.resetCountdown(); $('#nebis_timeout_dialog').modal('hide');});
+//   $('#reset_timer_link').bind('ajax:error', function(evt, data) {
+//       resp=JSON.parse(data.responseText);
+//       $('#nebis_timeout_dialog').modal('hide');
+//       console.debug("resp="+resp);
+//       console.debug("resp.alert="+resp.alert+"    resp[alert]="+resp["alert"]);
+//       add_alert("error", resp.alert);
+//     });
+// }
 
 // -----------------------------------------------------------------------------
 // http://www.mcbsys.com/techblog/2012/10/convert-a-select-drop-down-box-to-an-autocomplete-in-rails/

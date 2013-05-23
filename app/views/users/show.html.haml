@@ -27,8 +27,8 @@
   - content_for :head do
     :javascript
       var nebis_logout;
-      function when_ready() {
-        // nebis_logout = new NebisLogout(#{(@nebis_expire-Time.zone.now).to_i});
+      function when_ready_for_view() {
+        console.debug("3");
         nebis_logout = new NebisLogout(#{ENV["NEBIS_LOGOUT_AFTER"].to_i});
         $(".item_return_link").bind('ajax:success', function() {
             $(this).closest('li').fadeOut();

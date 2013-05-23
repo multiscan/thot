@@ -9,15 +9,6 @@ class LoansController < ApplicationController
           format.html { redirect_to @user, notice: 'Item was successfully checked out' }
           format.json { render json: @loan }
           format.js
-          # format.js do
-          #   render :inline do |page|
-          #     page.insert_html :bottom, :booklist, :partial => 'loan', :object => @loan
-          #   end
-          # end
-             # js: "$('page').insert_html :bottom, :booklist, :partial => 'loan', :object => @loan"}
-          # format.js { render js: "$('page').insert_html :bottom, :booklist, :partial => 'loan', :object => @loan"}
-          # format.js { render js: "alert('ciao mona');"}
-          # $(page).insert_html :bottom, :booklist,
         else
           format.html { redirect_to @user, error: "An error occurred while checking out the requested item" }
           format.json { render json: @loan.errors, status: :unprocessable_entity }
@@ -40,7 +31,7 @@ class LoansController < ApplicationController
         if @loan.checkin
           format.html { redirect_to users_url }
           format.json { head :no_content }
-          format.js
+          format.js   # { render :js => "$('#loan_li_#{@loan.id}').fadeOut();" }
         else
           format.html { redirect_to users_url, :error=>"Error while returning item #{@loan.item.id}" }
           format.json { head :no_content }
