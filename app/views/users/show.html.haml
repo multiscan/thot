@@ -15,22 +15,35 @@
   %dd=@user.email
   %dt Lab
   %dd=@user.lab.nick
--unless @loans.empty?
-  %h3 Checked out Items
-  %ul#booklist.booklist.unstyled
-    = render :partial => "loans/loan", :collection => @loans
 
 - if @loan
-  = render :partial => "loans/loan_form"
+  .row
+    .span6
+      %p
+        Hello #{@user.name}, please fill the form below with its inventory number of the item your would like to check out or click on
+        %em return
+        link of the item you'd like to return to the library.
+      %p You can also your se the bar-code scanner to add/remove a book from your list.
+    .span6
+      = render :partial => "loans/loan_form"
+
+%h3 Checked out Items
+-if @loans.empty?
+  %p#emptybooklist
+    No items.
+%ul#booklist.booklist.unstyled
+  = render :partial => "loans/loan", :collection => @loans
+
 
 - if @nebis_user
   - content_for :head do
     :javascript
       var nebis_logout;
       function when_ready_for_view() {
-        console.debug("3");
         nebis_logout = new NebisLogout(#{ENV["NEBIS_LOGOUT_AFTER"].to_i});
-        $(".item_return_link").bind('ajax:success', function() {
-            $(this).closest('li').fadeOut();
-          });
+        barcode_scanner.setNebis("#{@user.nebis}");
+        // $(".item_return_link").bind('ajax:success', function() {
+        //     $(this).closest('li').fadeOut();
+        //   });
+        //})
       }

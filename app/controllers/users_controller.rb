@@ -28,11 +28,10 @@ class UsersController < ApplicationController
     logger.debug "@nebis_user=#{@nebis_user.inspect}"
     logger.debug "----------------------------------"
 
-    @loans = @user.loans.where(:return_date => nil)
+    @loans = @user.loans.where(:return_date => nil).order('id DESC')
     unless nebis_user.nil?
       @loan = @nebis_user.loans.new
     end
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }

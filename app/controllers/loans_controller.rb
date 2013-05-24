@@ -5,7 +5,11 @@ class LoansController < ApplicationController
     respond_to do |format|
       if @user = nebis_user
         @loan = Loan.checkout(@user, params[:loan]["inv"]||params[:loan]["item_id"].to_i)
-        if @loan && @loan.save
+        if @loan && !@loan.new_record?
+          format.html { redirect_to @user, notice: 'The item you tried to check out is already in your list.' }
+          format.json { render json: @loan }
+          format.js { render :js => "thot.alert('notice', 'Item #{@loan.inv} is already in your list.');"}
+        elsif @loan && @loan.save
           format.html { redirect_to @user, notice: 'Item was successfully checked out' }
           format.json { render json: @loan }
           format.js
@@ -35,12 +39,12 @@ class LoansController < ApplicationController
         else
           format.html { redirect_to users_url, :error=>"Error while returning item #{@loan.item.id}" }
           format.json { head :no_content }
-          format.js { render :js => 'add_alert("error", "Error while returning item #{@loan.item.id}");', :status => :internal_server_error }
+          format.js { render :js => 'thot.alert("error", "Error while returning item #{@loan.item.id}");', :status => :internal_server_error }
         end
       else
         format.html { redirect_to users_url, :error=>"Error while returning item #{@loan.item.id}" }
         format.json { head :no_content }
-        format.js { render :js => 'add_alert("error", "Forbidden.");', :status => :forbidden }
+        format.js { render :js => 'thot.alert("error", "Forbidden.");', :status => :forbidden }
       end
     end
   end

@@ -1,0 +1,20 @@
+class Thot
+  constructor: () ->
+    #
+
+  ready: () ->
+    window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>); # max delay between scanner-generated keypress (ms)
+    window.inactivity_monitor = new InactivityMonitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
+
+    when_ready_for_layout() if (typeof when_ready_for_layout == 'function')
+    when_ready_for_view() if (typeof when_ready_for_view == 'function')
+
+  alert: (cls, content) ->
+    # msg = sprintf('<div class="alert alert-%s"><a class="close" data-dismiss="alert">×</a><div>%s</div></div>', cls, content)
+    # jQuery(msg).insertAfter("div.page-header")
+
+  scrollTo: (e) ->
+    # c = jQuery('body')
+    # b.scrollTop(e.offset().top - b.offset().top + b.scrollTop())
+
+window.thot = new Thot

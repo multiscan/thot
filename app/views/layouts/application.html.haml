@@ -28,8 +28,3 @@
           %footer
             =render 'layouts/footer'
     = render 'layouts/nebis_timeout'
-  :javascript
-    function when_ready_for_layout() {
-      console.debug("L");
-      barcode_scanner = new BarcodeScanner(30, "http://www.thot.com");
-    }

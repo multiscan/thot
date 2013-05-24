@@ -1,1 +1,3 @@
-$("#booklist").append($("<%= escape_javascript(render(@loan)) %>").hide().fadeIn('slow'));
+$("#emptybooklist").hide();
+jQuery("#booklist").prepend($("<%= escape_javascript(render(@loan)) %>").hide().fadeIn('slow'));
+jQuery('#loan_inv').val("");

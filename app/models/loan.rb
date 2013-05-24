@@ -11,6 +11,8 @@ class Loan < ActiveRecord::Base
   validates_presence_of :item_id, :on => :create, :message => "can't be blank"
   validates_uniqueness_of :return_date, :scope => :item_id, :if => Proc.new {|l| l.return_date.nil? }, :message => "This item is alredy checked out"
 
+  # create a loan object for a new item i borrowed by user u
+  # if the item was already registered as in the hand of another user, we first pretend the former user returned it (checkin)
   def self.checkout(u, i)
     user = u.is_a?(User) ? u : User.find(u)
     item = i.is_a?(Item) ? u : ( i.is_a?(String) ? Item.find_by_inv(i) : Item.find(i) )

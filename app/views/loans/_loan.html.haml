@@ -26,4 +26,4 @@
         =days_ago(loan.age_in_days)
       %br
       -#=link_to "Return", toggle_item_url(:inv => loan.item.inv), :remote => true, :class=>"item_return_link", "data-prova" => "ciao"
-      =link_to "Return", loan, :method => :delete, :remote => true
+      =link_to "Return", loan, :method => :delete, :remote => true, :data => {:inv => loan.inv}

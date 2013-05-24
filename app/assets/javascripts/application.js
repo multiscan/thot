@@ -18,47 +18,18 @@
 //= require bootstrap
 //= require jquery.tablesorter
 //= require turbolinks
-//= require nebis
+//= require thot
+//= require barcode_scanner
+//= require inactivity_monitor
+//= require nebis_logout
 
 
-
+// not used:
 //= require_tree .
 
+$(document).ready(thot.ready);
+$(document).on('page:load', thot.ready);
 
-$(document).ready(thot_ready);
-$(document).on('page:load', thot_ready);
-
-function thot_ready() {
-  console.debug("1");
-  if (typeof when_ready_for_view == 'function') {
-    console.debug("2");
-    when_ready_for_view();
-  }
-  if (typeof when_ready_for_layout == 'function') {
-    console.debug("2");
-    when_ready_for_layout();
-  }
-
-}
-
-function thot_toggle(inv) {
-  console.debug("Calling checkout with inv="+inv);
-  $("#loan_inv").val(inv);
-
-  // $.ajax({
-  //     url: "/items/"+inv+"/toggle.js",
-  //     type: "GET",
-  //     dataType: 'html',
-  //     success: function(resp){
-  //       console.debug("returned from ajax");
-  //     }
-  // });
-}
-
-function add_alert(cls, content) {
-  msg='<div class="alert alert-'+cls+'"><a class="close" data-dismiss="alert">×</a><div>'+content+'</div></div>';
-  $(msg).insertAfter("div.page-header");
-}
 
 // function NebisLogout(t) {
 //   console.debug("NebisLogout constructor with t="+t);
