@@ -1,12 +1,18 @@
-class Admin::UsersController < ApplicationController
-  before_filter :authenticate_user!
-  before_filter :administrator_only!
+class Adm::UsersController < ApplicationController
+  before_filter :authenticate_admin!
+  load_and_authorize_resource :except => :autocomplete_location_name
+
+  # autocomplete :location, :name, :full => true
 
   # GET /admin/users
   # GET /admin/users.json
   def index
-    @users = User.all(:include=>[:lab, :loans], :order => :name)
-
+    # @users =
+    #   if current_admin.role?("admin")
+    #     User.all(:include=>[:lab, :loans], :order => :name)
+    #   else
+    #     User.where({:lab_id => current_admin.labs.map{|l| l.id}}, :include=>[:lab, :loans], :order => :name)
+    #   end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -16,8 +22,8 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users/1
   # GET /admin/users/1.json
   def show
-    @user = Admin::User.find(params[:id])
-
+    # @user = Admin::User.find(params[:id])
+    @loans = @user.loans
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -37,7 +43,7 @@ class Admin::UsersController < ApplicationController
 
   # GET /admin/users/1/edit
   def edit
-    @user = Admin::User.find(params[:id])
+    # @user = Admin::User.find(params[:id])
   end
 
   # POST /admin/users
@@ -47,7 +53,7 @@ class Admin::UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to [:adm, @user], notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }

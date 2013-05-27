@@ -1,0 +1,41 @@
+-content_for(:title) do
+  Listing Users
+
+%table.table.sortable
+  %thead
+    %hr
+      %th Id
+      %th Nebis
+      %th Name
+      %th Lab
+      %th Room
+      %th N. of Loans
+      %th
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.id
+        %td= link_to user.nebis, user_path(user.nebis)
+        %td= link_to user.name, "mailto:#{user.email}"
+        %td= user.lab_nick
+        %td= user.location
+        %td= user.loans.count
+        %td
+          = link_to 'Show', [:adm, user]
+          - if can? :update, user
+            |
+            = link_to 'Edit', edit_adm_user_path(user)
+          - if can? :destroy, user
+            |
+            = link_to 'Destroy', [:adm, user], method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New User', new_adm_user_path if can? :create, User
+
+-content_for :head do
+  :javascript
+    console.debug("tablesorter");
+    jQuery(document).ready(function($) {
+      $("table.sortable").tablesorter();
+    });

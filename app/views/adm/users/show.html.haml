@@ -1,0 +1,25 @@
+-content_for(:title) do
+  =@user.name
+
+%dl.dl-horizontal
+  %dt Id / Nebis User Id
+  %dd
+    =@user.id
+    ="/"
+    = @nebis_user ? @nebis_user.id : nil
+  %dt Location
+  %dd=@user.location
+  %dt Nebis
+  %dd=link_to @user.nebis, user_url(@user.nebis)
+  %dt Email
+  %dd=@user.email
+  %dt Lab
+  %dd=@user.lab.nick
+
+%h3 Checked out Items
+-if @loans.empty?
+  %p#emptybooklist
+    No items.
+%ul#booklist.booklist.unstyled
+  = render :partial => "loans/loan", :collection => @loans
+

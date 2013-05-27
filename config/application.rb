@@ -66,5 +66,7 @@ module Thot
     config.assets.version = '1.0'
 
     config.action_mailer.default_url_options = { :host => "thot.epfl.ch" }
+
+    # config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/*"].find_all { |f| File.stat(f).directory? }
   end
 end

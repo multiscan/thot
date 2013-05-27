@@ -1,5 +1,5 @@
 -content_for(:title) do
-  Listing Users
+  Listing Operators
 
 %table.table.sortable
   %thead
@@ -7,28 +7,25 @@
       %th Id
       %th Name
       %th E-mail
-      %th Lab
-      %th N. of Loans
       %th Role
       %th
-      %th
-      %th
   %tbody
-    - @users.each do |user|
+    - @admins.each do |user|
       %tr
         %td= user.id
         %td= user.name
         %td= user.email
-        %td= user.lab_nick
-        %td= user.loans.count
         %td= user.role
-        %td= link_to 'Show', [:admin, user]
-        %td= link_to 'Edit', edit_admin_user_path(user)
-        %td= link_to 'Destroy', [:admin, user], method: :delete, data: { confirm: 'Are you sure?' }
+        %td
+          = link_to 'Show', adm_admin_path(user)
+          |
+          = link_to 'Edit', edit_adm_admin_path(user)
+          |
+          = link_to 'Destroy', adm_admin_path(user), method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 
-= link_to 'New User', new_admin_user_path
+= link_to 'New User', new_adm_admin_path
 
 -content_for :head do
   :javascript

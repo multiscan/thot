@@ -1,0 +1,9 @@
+-content_for(:title) do
+  Edit user
+  =@user.name
+
+= render 'form'
+
+= link_to 'Show', [:adm, @user]
+\|
+= link_to 'Back to users listing', adm_users_path

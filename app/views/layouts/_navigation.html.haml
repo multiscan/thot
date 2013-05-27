@@ -5,8 +5,8 @@
     -if admin_signed_in?
       %li=link_to('Logout', destroy_admin_session_path, :method=>'delete')
       -#%li=link_to('Edit account', edit_admin_registration_path)
-      %li=link_to("Me", current_admin)
-      -if current_user.role? :admin
+      -#%li=link_to("Me", current_admin)
+      -if current_admin.role? :admin
         %li= link_to('Admin', cpanel_path)
     -else
       %li= link_to('Login', new_admin_session_path)

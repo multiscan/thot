@@ -1,6 +1,7 @@
 Thot::Application.routes.draw do
 
   devise_for :admins
+  # resources :admins
 
   resources :searches
 
@@ -22,7 +23,7 @@ Thot::Application.routes.draw do
   resources :locations
   resources :labs
 
-  devise_for :users
+  # devise_for :users
   resources :users, :only => [:show]
 
   namespace :nebis do
@@ -32,12 +33,16 @@ Thot::Application.routes.draw do
   authenticated :user do
     root :to => "searches#new"
   end
+  get 'nebis/:nebis', :to => 'users#show_by_nebis', :as => 'nebis'
 
   match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
   match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
 
-  namespace :admin do
-    resources :users
+  namespace :adm do
+    resources :admins
+    resources :users do
+      # get :autocomplete_location_name, :on => :collection
+    end
   end
 
   root :to => "searches#new"

@@ -1,6 +1,20 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  # override CanCan's default as it is only ment to for with current_user
+  def current_ability
+    @current_ability ||= case
+                         when current_admin
+                           Abilities::AdminAbility.new(current_admin)
+                         when current_user
+                           Abilities::UserAbility.new(current_user)
+                         when nebis_user
+                           Abilities::NebisAbility.new(nebis_user)
+                         else
+                           Abilities::Ability.new
+                         end
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
   end
@@ -9,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def administrator_only!
     # raise User::NotAuthorized unless current_user.admin?
-    if current_user.admin?
+    if current_admin.admin?
       true
     else
       user_not_authorized

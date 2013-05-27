@@ -1,6 +1,8 @@
 # https://github.com/ryanb/cancan/wiki/Role-Based-Authorization
 # https://github.com/ryanb/cancan
-class Ability
+# http://mikepackdev.com/blog_posts/12-managing-devise-s-current-user-current-admin-and-current-troll-with-cancan
+
+class Abilities::AdminAbility
   include CanCan::Ability
 
   def initialize(admin)
@@ -27,16 +29,26 @@ class Ability
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
-
     admin ||= Admin.new # guest user (not logged in)
     if admin.role? :admin
       can :manage, :all
+      return
     end
     if admin.role? :operator
+        lab_ids=admin.labs.map{|l| l.id}
         # TODO: operator can only operate on items/users belonging to labs he is operator for
-        can :create, :users
-        can :manage, :items
-        can :manage, [:books, :publishers, :degisbn]
+        can :create, User
+        can [:read, :update], User, :lab_id => lab_ids
+
+        can :create, Item
+        can [:read, :update, :destroy], Item, :lab_id => lab_ids
+        # can [:read, :update, :destroy], Item do |item|
+        #    admin.labs.include?(item.lab)
+        # end
+        can [:read, :create, :update], [Book, Publisher, DegIsbn]
+        can :destroy, Book do |book|
+          book.items.empty?
+        end
     end
 
   end

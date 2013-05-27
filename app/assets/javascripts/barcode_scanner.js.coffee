@@ -28,9 +28,9 @@ class window.BarcodeScanner
           nebis=@inputString
           console.log("this was a camipro card number: %s", nebis);
           if (nebis != @nebis)
-            url=@baseUrl + "users/" + nebis
+            url=@baseUrl + "nebis/" + nebis
             # TODO: remove this line when done debugging !!!!
-            # url=@baseUrl + "users/" + "E0593158"
+            # url=@baseUrl + "nebis/" + "E0593158"
             console.log("Shoudl redirect to " + url)
             location.href = url
         else if @inputString.match(/^[0-9][0-9][0-9][0-9][0-9]*$/)
