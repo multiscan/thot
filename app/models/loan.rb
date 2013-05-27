@@ -5,7 +5,7 @@ class Loan < ActiveRecord::Base
   belongs_to :item, :class_name => "Item", :foreign_key => "item_id", :include => :inventoriable
   # belongs_to :book, :class_name => "Book", :foreign_key => "book_id"
 
-  before_save :autoset_book
+  # before_save :autoset_book
 
   validates_presence_of :user_id, :on => :create, :message => "can't be blank"
   validates_presence_of :item_id, :on => :create, :message => "can't be blank"
