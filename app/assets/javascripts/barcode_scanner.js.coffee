@@ -30,7 +30,7 @@ class window.BarcodeScanner
           if (nebis != @nebis)
             url=@baseUrl + "users/" + nebis
             # TODO: remove this line when done debugging !!!!
-            url=@baseUrl + "users/" + "E0593158"
+            # url=@baseUrl + "users/" + "E0593158"
             console.log("Shoudl redirect to " + url)
             location.href = url
         else if @inputString.match(/^[0-9][0-9][0-9][0-9][0-9]*$/)

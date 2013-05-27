@@ -20,10 +20,13 @@
   .row
     .span6
       %p
-        Hello #{@user.name}, please fill the form below with its inventory number of the item your would like to check out or click on
+        Hello #{@user.name}, please fill the form with the inventory number of
+        the item your would like to check out or click on the
         %em return
-        link of the item you'd like to return to the library.
-      %p You can also your se the bar-code scanner to add/remove a book from your list.
+        link corresponding to the item that you are returning to the library.
+      %p
+        You can also your use the bar-code scanner to add or remove a book from
+        your list.
     .span6
       = render :partial => "loans/loan_form"
 
@@ -34,16 +37,28 @@
 %ul#booklist.booklist.unstyled
   = render :partial => "loans/loan", :collection => @loans
 
-
+-# =============================================================================
 - if @nebis_user
   - content_for :head do
     :javascript
-      var nebis_logout;
       function when_ready_for_view() {
-        nebis_logout = new NebisLogout(#{ENV["NEBIS_LOGOUT_AFTER"].to_i});
+        // window.nebis_logout = new NebisLogout(10);
+        window.nebis_logout = new NebisLogout(#{ENV["NEBIS_LOGOUT_AFTER"].to_i});
         barcode_scanner.setNebis("#{@user.nebis}");
-        // $(".item_return_link").bind('ajax:success', function() {
-        //     $(this).closest('li').fadeOut();
-        //   });
-        //})
       }
+  - content_for :foot do
+    %div{:id => "nebis_timeout_dialog", :class => "modal hide fade"}
+      .modal-header
+        %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
+        %h3 Nebis Session Timeout
+      .modal-body
+        %p
+          The session that you have activated by scanning your nebis code will
+          %b timeout
+          in
+          %span#nebis_timeout
+            = @nebis_timeout
+          seconds
+      .modal-footer
+        %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} Close
+        =link_to "Reset Timer", nebis_extend_url(:json), :remote=>true, :class=>"btn btn-primary", :id=>"reset_timer_link"
