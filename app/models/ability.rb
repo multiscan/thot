@@ -3,7 +3,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(admin)
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
@@ -27,11 +27,13 @@ class Ability
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
-    user ||= User.new # guest user (not logged in)
-    if user.role? :admin
+
+    admin ||= Admin.new # guest user (not logged in)
+    if admin.role? :admin
       can :manage, :all
     end
-    if user.role? :operator
+    if admin.role? :operator
+        # TODO: operator can only operate on items/users belonging to labs he is operator for
         can :create, :users
         can :manage, :items
         can :manage, [:books, :publishers, :degisbn]

@@ -1,15 +1,9 @@
-class DeviseCreateUsers < ActiveRecord::Migration
+class DeviseCreateAdmins < ActiveRecord::Migration
   def change
-    create_table(:users) do |t|
-      t.string :name, :null => false
-      t.string :location
-      t.string :nebis, :default => "NA"
-      t.integer :legacy_id
+    create_table(:admins) do |t|
 
-      t.references :admin    # who created the user
-      t.references :lab
-      t.datetime :expire_at
-      t.text :notes
+      t.string :name, :null => false
+      t.string :role, :null => false, :default => Admin::ROLES[0]
 
       ## Database authenticatable
       t.string :email,              :null => false, :default => ""
@@ -30,10 +24,10 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :last_sign_in_ip
 
       ## Confirmable
-      t.string   :confirmation_token
-      t.datetime :confirmed_at
-      t.datetime :confirmation_sent_at
-      t.string   :unconfirmed_email # Only if using reconfirmable
+      # t.string   :confirmation_token
+      # t.datetime :confirmed_at
+      # t.datetime :confirmation_sent_at
+      # t.string   :unconfirmed_email # Only if using reconfirmable
 
       ## Lockable
       # t.integer  :failed_attempts, :default => 0 # Only if lock strategy is :failed_attempts
@@ -43,16 +37,13 @@ class DeviseCreateUsers < ActiveRecord::Migration
       ## Token authenticatable
       # t.string :authentication_token
 
-
       t.timestamps
     end
 
-    add_index :users, :email,                :unique => true
-    # add_index :users, :nebis,                :unique => false
-    # add_index :users, :reset_password_token, :unique => true
-    # add_index :users, :confirmation_token,   :unique => true
-    # add_index :users, :unlock_token,         :unique => true
-    # add_index :users, :authentication_token, :unique => true
+    add_index :admins, :email,                :unique => true
+    add_index :admins, :reset_password_token, :unique => true
+    # add_index :admins, :confirmation_token,   :unique => true
+    # add_index :admins, :unlock_token,         :unique => true
+    # add_index :admins, :authentication_token, :unique => true
   end
 end
-

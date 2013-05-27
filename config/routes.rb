@@ -1,5 +1,7 @@
 Thot::Application.routes.draw do
 
+  devise_for :admins
+
   resources :searches
 
   resources :deg_isbns

@@ -1,13 +1,13 @@
 # ------------------------------------------------------------------- Base Users
-user = User.find_or_create_by_email(
+admin = Admin.find_or_create_by_email(
               :name => ENV['ADMIN_NAME'].dup,
               :email => ENV['ADMIN_EMAIL'].dup,
               :password => ENV['ADMIN_PASSWORD'].dup,
               :password_confirmation => ENV['ADMIN_PASSWORD'].dup
             )
-user.role='admin'
-user.confirmed_at = DateTime.now
-user.save
+admin.role='admin'
+# admin.confirmed_at = DateTime.now
+admin.save
 
 # if Rails.env == "development"
 #   user = User.find_or_create_by_email(
@@ -112,10 +112,10 @@ Legacy::Person.find(:all).each do |lp|
     :location   => lp.userLocation,
     :nebis      => lp.nebis,
     :legacy_id  => lp.userId,
-    :password   => ENV['DEFAULT_USER_PASSWORD'].dup,
-    :password_confirmation => ENV['DEFAULT_USER_PASSWORD'].dup
+    # :password   => ENV['DEFAULT_USER_PASSWORD'].dup,
+    # :password_confirmation => ENV['DEFAULT_USER_PASSWORD'].dup
   )
-  p.confirmed_at = DateTime.now
+  # p.confirmed_at = DateTime.now
   lab=Lab.find_by_nick(lp.userLab)
   if lab
     p.lab=lab

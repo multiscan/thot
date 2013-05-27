@@ -2,8 +2,8 @@ class Loan < ActiveRecord::Base
   attr_accessible :item, :user
 
   belongs_to :user, :class_name => "User", :foreign_key => "user_id"
-  belongs_to :item, :class_name => "Item", :foreign_key => "item_id"
-  belongs_to :book, :class_name => "Book", :foreign_key => "book_id"
+  belongs_to :item, :class_name => "Item", :foreign_key => "item_id", :include => :inventoriable
+  # belongs_to :book, :class_name => "Book", :foreign_key => "book_id"
 
   before_save :autoset_book
 
@@ -56,11 +56,15 @@ class Loan < ActiveRecord::Base
      ( ( self.return_date || Time.zone.now ) - self.created_at ).to_i / 1.day
   end
 
+  def book
+    @book ||= item.book
+  end
+
  private
 
-  def autoset_book
-    write_attribute :book_id, item.inventoriable_id if item.inventoriable_type == "Book"
-    return true
-  end
+  # def autoset_book
+  #   write_attribute :book_id, item.inventoriable_id if item.inventoriable_type == "Book"
+  #   return true
+  # end
 
 end

@@ -3,6 +3,7 @@ class CreateItems < ActiveRecord::Migration
     create_table :items do |t|
       t.references :lab
       t.references :location
+      t.references :admin
       t.integer :inv
       t.string :status
       t.float :price

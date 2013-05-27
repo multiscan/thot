@@ -24,9 +24,6 @@ class UsersController < ApplicationController
     else
       @user = User.find(id)
     end
-    logger.debug "----------------------------------"
-    logger.debug "@nebis_user=#{@nebis_user.inspect}"
-    logger.debug "----------------------------------"
 
     @loans = @user.loans.where(:return_date => nil).order('id DESC')
     unless nebis_user.nil?

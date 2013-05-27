@@ -51,7 +51,7 @@ end
 
 group :development, :test do
   gem "rspec-rails", ">= 2.11.4", :group => [:development, :test]
-  gem "factory_girl_rails", ">= 4.1.0", :group => [:development, :test]
+  gem "factory_girl_rails", ">= 4.1.0", :require => false
 end
 
 group :test do
