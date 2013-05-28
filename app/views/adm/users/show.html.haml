@@ -1,5 +1,6 @@
 -content_for(:title) do
   =@user.name
+  %small user details
 
 %dl.dl-horizontal
   %dt Id / Nebis User Id
@@ -9,8 +10,9 @@
     = @nebis_user ? @nebis_user.id : nil
   %dt Location
   %dd=@user.location
-  %dt Nebis
-  %dd=link_to @user.nebis, user_url(@user.nebis)
+  -if can? :update, @user
+    %dt Nebis
+    %dd=link_to @user.nebis, nebis_url(@user.nebis)
   %dt Email
   %dd=@user.email
   %dt Lab
