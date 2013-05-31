@@ -1,0 +1,20 @@
+%tr
+  %td= link_to user.id, [:adm, user]
+  %td= link_to user.nebis, nebis_path(user.nebis)
+  %td= user.name
+  %td= user.lab_nick
+  %td= user.location
+  %td= user.loans.count
+  %td
+    = link_to 'Show', [:adm, user]
+    - if can? :update, user
+      |
+      = link_to 'Edit', edit_adm_user_path(user)
+    - if can? :destroy, user
+      |
+      = link_to 'Destroy', [:adm, user], method: :delete, data: { confirm: 'Are you sure?' }
+    |
+    %a{:href=> "mailto:#{user.email}"}
+      %i.icon-envelope
+      mail
+

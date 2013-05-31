@@ -1,0 +1,2 @@
+module Adm::LabsHelper
+end

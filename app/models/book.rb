@@ -6,9 +6,10 @@ class Book < ActiveRecord::Base
   attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
 
   has_many :items, :as => :inventoriable
-  has_many :loans, :class_name => "Loan", :foreign_key => "book_id"
-  has_many :checkouts, :class_name => "Loan", :foreign_key => "book_id", :conditions=>{:return_date=>nil}
-
+  # has_many :loans, :class_name => "Loan", :foreign_key => "book_id"
+  # has_many :checkouts, :class_name => "Loan", :foreign_key => "book_id", :conditions=>{:return_date=>nil}
+  has_many :loans, :through => :items
+  has_many :checkouts, :class_name => "Loan", :through => :items, :source => :loans, :conditions=>{:return_date=>nil}
   # has_many :available_items, :as => :inventoriable, :condition => ""
   belongs_to :publisher
 
@@ -54,7 +55,6 @@ class Book < ActiveRecord::Base
     set_counts unless @missing_count
     return @missing_count
   end
-
 
   def publisher_name=(name)
     self.publisher = Publisher.find_or_create_by_name(name) unless name.blank?

@@ -1,0 +1,28 @@
+-content_for(:title) do
+  Labs
+
+%table.table.sortable
+  %thead
+    %hr
+      %th Nick
+      %th Name
+      %th No. Users
+      %th No. Items
+      %th
+  %tbody
+    - @labs.each do |lab|
+      %tr
+        %td= lab.nick
+        %td= lab.name
+        %td= lab.users.count
+        %td= lab.items.count
+
+        %td
+          = link_to 'Show', adm_lab_path(lab)
+          \|
+          = link_to 'Edit', edit_adm_lab_path(lab)
+          -#%td= link_to 'Destroy', lab, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Lab', new_adm_lab_path

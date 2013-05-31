@@ -34,7 +34,7 @@ class Adm::UsersController < ApplicationController
   # GET /admin/users/new.json
   def new
     @user = Admin::User.new
-
+    @labs = current_admin.labs
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }

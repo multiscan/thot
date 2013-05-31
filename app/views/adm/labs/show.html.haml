@@ -1,0 +1,10 @@
+-content_for(:title) do
+  =@lab.nick
+  %small=@lab.name
+
+= link_to 'Edit lab info', edit_adm_lab_path(@lab)
+
+%h3 Operators
+= render :partial => "adm/admins/admins"
+%h3 Users
+=render :partial => "adm/users/users"

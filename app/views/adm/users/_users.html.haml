@@ -1,0 +1,12 @@
+%table.table.sortable
+  %thead
+    %hr
+      %th Id
+      %th Nebis
+      %th Name
+      %th Lab
+      %th Room
+      %th N. of Loans
+      %th
+  %tbody
+    = render :partial => "adm/users/user", :collection => @users

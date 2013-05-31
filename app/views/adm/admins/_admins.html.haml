@@ -1,0 +1,12 @@
+%table.table.sortable
+  %thead
+    %hr
+      %th Id
+      %th Name
+      %th
+        E-mail
+        %i.icon-envelope
+      %th Role
+      %th
+  %tbody
+    =render :partial => "adm/admins/admin", :collection => @admins

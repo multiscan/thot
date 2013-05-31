@@ -1,14 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  # check_authorization
 
   # override CanCan's default as it is only ment to for with current_user
   def current_ability
     @current_ability ||= case
-                         when current_admin
+                         when defined? current_admin && current_admin
                            Abilities::AdminAbility.new(current_admin)
-                         when current_user
+                         when defined? current_user  && current_user
                            Abilities::UserAbility.new(current_user)
-                         when nebis_user
+                         when defined? nebis_user && nebis_user
                            Abilities::NebisAbility.new(nebis_user)
                          else
                            Abilities::Ability.new

@@ -40,6 +40,7 @@ Thot::Application.routes.draw do
 
   namespace :adm do
     resources :admins
+    resources :labs
     resources :users do
       # get :autocomplete_location_name, :on => :collection
     end

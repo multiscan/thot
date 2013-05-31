@@ -6,6 +6,8 @@ class Thot
     window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>); # max delay between scanner-generated keypress (ms)
     window.inactivity_monitor = new InactivityMonitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
 
+    $("table.sortable").tablesorter();
+
     when_ready_for_layout() if (typeof when_ready_for_layout == 'function')
     when_ready_for_view() if (typeof when_ready_for_view == 'function')
 

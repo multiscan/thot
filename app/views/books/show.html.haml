@@ -85,8 +85,8 @@
       %h4 Table of Content
       =@book.toc
 
-
 %p
-  = link_to 'Edit', edit_book_path(@book)
-  \|
-  = link_to 'Back', books_path
+  - if can? :update, @book
+    = link_to 'Edit', edit_book_path(@book)
+    \|
+  = link_to 'Back', :back

@@ -1,0 +1,11 @@
+%tr
+  %td= link_to admin.id, adm_admin_path(admin)
+  %td= admin.name
+  %td= link_to admin.email, "mailto:#{admin.email}"
+  %td= admin.role
+  %td
+    = link_to 'Show', adm_admin_path(admin)
+    |
+    = link_to 'Edit', edit_adm_admin_path(admin)
+    |
+    = link_to 'Destroy', adm_admin_path(admin), method: :delete, data: { confirm: 'Are you sure?' }

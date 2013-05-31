@@ -1,6 +1,25 @@
-%p#notice= notice
+-content_for(:title) do
+  =@admin.name
+  %small
+    \-
+    =@admin.role
 
-
-= link_to 'Edit', edit_adm_admin_path(@adm_admin)
-\|
-= link_to 'Back', adm_admins_path
+%h3 Managed Labs
+%table.table
+  %thead
+    %hr
+      %th Nick
+      %th Name
+      %th No. Users
+      %th No. Items
+  %tbody
+    - @admin.labs.each do |lab|
+      %tr
+        %td= lab.nick
+        %td= lab.name
+        %td
+          = lab.users.count
+          \(
+          = link_to(adm_lab)
+          \)
+        %td= lab.items.count

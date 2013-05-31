@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   validates_presence_of :email
   validates_uniqueness_of :email, :case_sensitive => false
 
-  belongs_to :lab
+  belongs_to :lab                          # , :counter_cache => true
   has_many :loans, :include => [:item]
 
   def log

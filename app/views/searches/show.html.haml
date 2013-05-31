@@ -1,19 +1,19 @@
 -content_for(:title) do
   Search Result
   %br
-  %small=@search.items_oriented? ? "by item" : "by book"
+  %small=@search.items_oriented? ? "#{@search.items.count} items found" : "#{@search.books.count} books found"
 
 %h2 Your search
 = render 'form'
 
-%h2 Result
+%h2
+  = @search.items_oriented? ? "Items:" : "Books"
+
 - if @search.items_oriented?
-  %h3 By Item
   %ul.booklist.unstyled
     - @search.items.each do |item|
       =render item #=render :partial => "items/item", :object => item
 -else
-  %h3 By Book
   %ul.booklist.unstyled
     - @search.books.each do |book|
       =render book

@@ -1,35 +1,6 @@
 -content_for(:title) do
   Listing Operators
 
-%table.table.sortable
-  %thead
-    %hr
-      %th Id
-      %th Name
-      %th E-mail
-      %th Role
-      %th
-  %tbody
-    - @admins.each do |user|
-      %tr
-        %td= user.id
-        %td= user.name
-        %td= user.email
-        %td= user.role
-        %td
-          = link_to 'Show', adm_admin_path(user)
-          |
-          = link_to 'Edit', edit_adm_admin_path(user)
-          |
-          = link_to 'Destroy', adm_admin_path(user), method: :delete, data: { confirm: 'Are you sure?' }
+= render :partial => "admins"
 
-%br
-
-= link_to 'New User', new_adm_admin_path
-
--content_for :head do
-  :javascript
-    console.debug("tablesorter");
-    jQuery(document).ready(function($) {
-      $("table.sortable").tablesorter();
-    });
+= link_to 'New Operator', new_adm_admin_path
