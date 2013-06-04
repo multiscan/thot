@@ -1,0 +1,21 @@
+-content_for(:title) do
+  Listing Locations
+
+%table.table.sortable
+  %thead
+    %hr
+      %th Id
+      %th Name
+  %tbody
+    - @locations.each do |location|
+      %tr
+        %td= location.id
+        %td= location.name
+        %td
+          = link_to 'Show', [:adm, location]
+          |
+          = link_to 'Edit', edit_adm_location_path(location)
+          |
+          = link_to 'Destroy', [:adm, location], method: :delete, data: { confirm: 'Are you sure?' }
+
+= link_to 'New Location', new_adm_location_path

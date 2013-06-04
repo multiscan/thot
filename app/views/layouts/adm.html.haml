@@ -1,0 +1,11 @@
+!!! 5
+%html
+  %head
+    %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1.0, maximum-scale=1"}
+    %title= content_for?(:title) ? "Thot: " + yield(:title).gsub(/<.*$/,"") : content_for?(:titlebar) ? "Thot: " + yield(:titlebar) : "Thot"
+    %meta{:name=>"description", :content=>content_for?(:description) ? yield(:description) : "Thot"}
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "adm"
+    = csrf_meta_tags
+    = yield(:head)
+  = render 'layouts/body'

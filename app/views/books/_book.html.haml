@@ -29,9 +29,9 @@
       =book.call4
       -if can? :update, book
         %br
-        =link_to "Edit", edit_book_path(book)
+        =link_to "Edit", edit_adm_book_path(book)
         |
-        =link_to "Add Item", new_book_item_path(book)
+        =link_to "Add Item", new_adm_book_item_path(book)
       -else
         %br
         %br

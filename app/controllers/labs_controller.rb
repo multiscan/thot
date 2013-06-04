@@ -1,2 +1,0 @@
-class LabsController < ApplicationController
-end

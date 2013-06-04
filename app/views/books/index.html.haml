@@ -8,10 +8,7 @@
     = @search
 
 - unless @books.empty?
-  %ul.booklist.unstyled
-    -@books.each do |b|
-      = render b
+  = render :partial => "books"
+  = will_paginate @paginate
 - else
   %p No books where found matching your query.
-
-= link_to 'New Book', new_book_path

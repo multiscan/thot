@@ -1,4 +1,4 @@
-class IsbnDedupController < ApplicationController
+class IsbnDedupController < AdmController
 
   def index
     @degisbns=DegIsbn.order("count ASC")

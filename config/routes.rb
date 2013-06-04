@@ -1,52 +1,47 @@
 Thot::Application.routes.draw do
 
-  devise_for :admins
-  # resources :admins
-
+  # ---------------------------------------------------------- for library users
+  resources :books, :only => [:index, :show]
+  resources :items, :only=>[:index, :show]
+  resources :loans, :only => [:create, :destroy]
+  resources :publishers, :only => [:show]
   resources :searches
 
-  resources :deg_isbns
-
-  resources :publisher_mergers, :only=>[:new, :create, :update]
-
-  resources :items, :only=>[:index, :show, :edit, :update, :destroy]
-  match '/items/:inv/toggle' => 'items#toggle', :as => 'toggle_item'
-
-  resources :books do
-    get :autocomplete_publisher_name, :on => :collection
-    resources :items, :only=>[:new, :create]
-  end
-
-  resources :loans, :only => [:create, :destroy]
-  resources :publishers
-
-  resources :locations
-  resources :labs
 
   # devise_for :users
   resources :users, :only => [:show]
-
-  namespace :nebis do
-    get 'extend'
-  end
-
-  authenticated :user do
-    root :to => "searches#new"
-  end
   get 'nebis/:nebis', :to => 'users#show_by_nebis', :as => 'nebis'
 
-  match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
-  match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
-
+  # -------------------------------------------- for Operators and Administrator
+  devise_for :admins
   namespace :adm do
     resources :admins
+    resources :books, :only => [:new, :edit, :create, :update, :destroy] do
+      get :autocomplete_publisher_name, :on => :collection
+      resources :items, :only=>[:new, :create]
+    end
+    resources :deg_isbns
+    resources :items, :only=>[:index, :show, :edit, :update, :destroy]
     resources :labs
+    resources :locations
+    resources :publishers, :only => [:index, :new, :edit, :create, :update, :destroy]
+    resources :publisher_mergers, :only=>[:new, :create, :update]
     resources :users do
       # get :autocomplete_location_name, :on => :collection
     end
   end
 
+  match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
+  match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
+
   root :to => "searches#new"
+
+  # ----------------------------------------------------------------------------
+  # authenticated :user do
+  #   root :to => "searches#new"
+  # end
+
+  # match '/items/:inv/toggle' => 'items#toggle', :as => 'toggle_item'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

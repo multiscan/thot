@@ -18,6 +18,8 @@
   %dt Lab
   %dd=@user.lab.nick
 
+%p
+  = link_to "Back to users listing", adm_users_path
 %h3 Checked out Items
 -if @loans.empty?
   %p#emptybooklist

@@ -1,0 +1,58 @@
+-content_for(:title) do
+  DB Cleanup:
+  %small merge publishers
+
+= simple_form_for([:adm, @publisher], :url=>adm_publisher_mergers_path, :method => :post) do |f|
+  %row
+    .span6
+      -#= f.input "mergenda_ids", :as=>:check_boxes, :collection=>@publishers
+      %ul#selectable.unstyled
+        -@publishers.each do |p|
+          %li.ui-widget-content
+            %label.checkbox
+              %input{:name=>"mergenda_ids[]", :type=>"checkbox", :value=>p.id, :checked=>false, :class=>"ui-widget-content"}= p.name
+
+    .span4
+      %p
+        Select the publisher's names that you want to merge and enter here the
+        new name for the new publisher that will replace those that you have selected.
+        You can also avoid typing by choising one of the names proposed in the selector below.
+        Field can be edited in any case.
+      .form-inputs
+        = f.input :name, :label => "New name", :input_html=>{:class=>'span4'}
+        %select#selectedselector
+          %option uno
+          %option due
+      .form-actions
+        = f.button :submit, "Merge"
+
+-content_for :head do
+  :css
+    #selectable .ui-selecting { background: #FECA40; }
+    #selectable .ui-selected { background: #F39814; color: white; }
+  :javascript
+    jQuery(document).ready(function($) {
+      $("#selectedselector").hide();
+      $("#selectedselector").change(function(){
+        console.debug("cambiato selettore");
+        $("#publisher_name").val($(this).val());
+      });
+      $("#selectable").selectable({
+        stop: function() {
+          var choices=[];
+          $(".ui-widget-content input").prop('checked', false);
+          $(".ui-selected input").prop('checked', true);
+          var options=$("#selectedselector");
+          $("#publisher_name").val("");
+          options.empty();
+          $(".ui-selected label").each(function(index) {
+            var v=$(this).text().trim();
+            options.append($("<option></option>").attr("value", v).text(v));
+          });
+          options.show();
+        }
+      });
+      // $(.publisher_name).doubleclick(function() {
+      //   alert('Double cliccked');
+      // });
+    });

@@ -1,5 +1,4 @@
-class Adm::AdminsController < ApplicationController
-  before_filter :authenticate_admin!
+class Adm::AdminsController < AdmController
   before_filter :administrator_only!
 
   # GET /adm/admins

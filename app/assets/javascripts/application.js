@@ -24,12 +24,15 @@
 //= require nebis_logout
 
 
-// not used:
-//= require_tree .
+function on_ready() {
+  // alert("This is application.js");
+  thot.load_inactivity_monitor();
+  thot.load_barcode_scanner();
+  thot.ready();
+}
 
-$(document).ready(thot.ready);
-$(document).on('page:load', thot.ready);
-
+$(document).ready(on_ready);
+$(document).on('page:load', on_ready);
 
 // function NebisLogout(t) {
 //   console.debug("NebisLogout constructor with t="+t);

@@ -1,6 +1,13 @@
-%p#notice= notice
 
+-content_for(:title) do
+  =@publisher.name
+  %small publisher
 
-= link_to 'Edit', edit_publisher_path(@publisher)
-\|
-= link_to 'Back', publishers_path
+- if @books.count > 0
+  %h3 Books
+  = render :partial => "books/books"
+
+- if can?(:edit, @publisher)
+  = link_to 'Edit', edit_adm_publisher_path(@publisher)
+  \|
+= link_to 'Back', adm_publishers_path

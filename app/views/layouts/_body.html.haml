@@ -1,0 +1,20 @@
+%body{:class=>"#{controller_name} #{action_name}"}
+  %header.navbar.navbar-fixed-top
+    %nav.navbar-inner
+      .container
+        = render 'layouts/navigation'
+  #main{:role => "main"}
+    .container
+      -#= link_to 'back', :back
+      .content
+        .row
+          .span12
+            - if content_for?(:title)
+              .page-header
+                %h1
+                  = yield(:title)
+            = render 'layouts/messages'
+            = yield
+        %footer
+          =render 'layouts/footer'
+  = yield(:foot)

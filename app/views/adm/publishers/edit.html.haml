@@ -1,0 +1,8 @@
+-content_for(:title) do
+  Editing publisher
+
+= render 'form'
+
+= link_to 'Show', [:adm, @publisher]
+\|
+= link_to 'Back', adm_publishers_path

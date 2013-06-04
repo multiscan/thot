@@ -1,0 +1,8 @@
+-content_for(:title) do
+  =@location.name
+  %small location
+
+
+= link_to 'Edit', edit_adm_location_path(@location)
+\|
+= link_to 'Back', adm_locations_path

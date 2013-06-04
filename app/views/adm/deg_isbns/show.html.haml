@@ -1,0 +1,10 @@
+-content_for(:title) do
+  Books with ISBN
+  =@degisbn.isbn
+  %br
+  %small
+    Can we merge something?
+    =link_to "yes", edit_adm_deg_isbn_path(@degisbn)
+%ul.booklist.unstyled
+  -@books.each do |b|
+    = render b

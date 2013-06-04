@@ -39,7 +39,9 @@ class Abilities::AdminAbility
         # TODO: operator can only operate on items/users belonging to labs he is operator for
         can :create, User
         can [:read, :update], User, :lab_id => lab_ids
-
+        can :destroy, User do |u|
+            u.loans.count == 0 && lab_ids.include?(u.lab_id)
+        end
         can :create, Item
         can [:read, :update, :destroy], Item, :lab_id => lab_ids
         # can [:read, :update, :destroy], Item do |item|

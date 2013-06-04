@@ -3,20 +3,28 @@ class Thot
     #
 
   ready: () ->
-    window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>); # max delay between scanner-generated keypress (ms)
-    window.inactivity_monitor = new InactivityMonitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
-
-    $("table.sortable").tablesorter();
+    # load TableSorter on .sortable tables
+    jQuery("table.sortable").tablesorter();
+    # load typeahead auto-complete list to
+    jQuery("input.typeahead").each () ->
+      collection = jQuery(this).data("collection")
+      jQuery(this).typeahead({source: collection})
 
     when_ready_for_layout() if (typeof when_ready_for_layout == 'function')
     when_ready_for_view() if (typeof when_ready_for_view == 'function')
 
+  load_inactivity_monitor: () ->
+    window.inactivity_monitor = new InactivityMonitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
+
+  load_barcode_scanner: () ->
+    window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>);
+
   alert: (cls, content) ->
-    # msg = sprintf('<div class="alert alert-%s"><a class="close" data-dismiss="alert">×</a><div>%s</div></div>', cls, content)
-    # jQuery(msg).insertAfter("div.page-header")
+    msg = sprintf('<div class="alert alert-%s"><a class="close" data-dismiss="alert">×</a><div>%s</div></div>', cls, content)
+    jQuery(msg).insertAfter("div.page-header")
 
   scrollTo: (e) ->
-    # c = jQuery('body')
-    # b.scrollTop(e.offset().top - b.offset().top + b.scrollTop())
+    c = jQuery('body')
+    b.scrollTop(e.offset().top - b.offset().top + b.scrollTop())
 
 window.thot = new Thot

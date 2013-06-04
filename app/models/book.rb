@@ -123,7 +123,8 @@ class Book < ActiveRecord::Base
 
   # TODO: actually fetch data from on-line databases (LOC, amazon etc.)
   def self.ask_the_web(n)
-    GoogleBookList.new(n).to_ah
+    bl=GoogleBookList.new(n)
+    bl.to_ah
   end
 
   def self.duplicated_isbn_count

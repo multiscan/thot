@@ -1,0 +1,9 @@
+-content_for(:title) do
+  =@location.name
+  %small editing
+
+= render 'form'
+
+= link_to 'Show', [:adm, @location]
+\|
+= link_to 'Back', adm_locations_path

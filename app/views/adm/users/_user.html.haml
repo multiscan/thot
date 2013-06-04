@@ -10,11 +10,11 @@
     - if can? :update, user
       |
       = link_to 'Edit', edit_adm_user_path(user)
-    - if can? :destroy, user
-      |
-      = link_to 'Destroy', [:adm, user], method: :delete, data: { confirm: 'Are you sure?' }
     |
     %a{:href=> "mailto:#{user.email}"}
       %i.icon-envelope
       mail
+    - if can? :destroy, user
+      |
+      = link_to 'Destroy', [:adm, user], method: :delete, data: { confirm: 'Are you sure?' }
 

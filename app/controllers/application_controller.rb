@@ -22,16 +22,6 @@ class ApplicationController < ActionController::Base
 
   # rescue_from User::NotAuthorized, :with => :user_not_authorized
 
-  def administrator_only!
-    # raise User::NotAuthorized unless current_user.admin?
-    if current_admin.admin?
-      true
-    else
-      user_not_authorized
-      false
-    end
-  end
-
   def redirect_back_or_default(default, *options)
     tag_options = {}
     options.first.each { |k,v| tag_options[k] = v } unless options.empty?
@@ -80,9 +70,9 @@ class ApplicationController < ActionController::Base
     session[:nebis_expire] = @nebis_expire
   end
 
-  def user_not_authorized
+  def user_not_authorized(p=root_path)
     flash[:error] = "You don't have access to this section."
-    redirect_back_or_default
+    redirect_back_or_default(p)
   end
 
 end

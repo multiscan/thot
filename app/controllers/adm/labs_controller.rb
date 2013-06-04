@@ -1,5 +1,4 @@
-class Adm::LabsController < ApplicationController
-  before_filter :authenticate_admin!
+class Adm::LabsController < AdmController
   before_filter :administrator_only!
 
   # GET /adm/labs

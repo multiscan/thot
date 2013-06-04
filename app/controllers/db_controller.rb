@@ -1,3 +1,0 @@
-class DbController < ApplicationController
-
-end

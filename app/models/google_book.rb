@@ -148,6 +148,9 @@ class GoogleBookList
       # WARNING: I keep only the first page...
       @count = @list["items"].size
       @items=Array.new(@count, nil)
+    else
+      @count = 0
+      @items = []
     end
   end
 

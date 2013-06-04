@@ -1,0 +1,23 @@
+-content_for(:title) do
+  Listing publishers
+
+%table.table.sortable
+  %thead
+    %hr
+      %th Id
+      %th Name
+      %th Book Count
+  %tbody
+    - @publishers.each do |publisher|
+      %tr
+        %td= publisher.id
+        %td= publisher.name
+        %td= publisher.books.count
+        %td
+          = link_to 'Show', [:adm, publisher]
+          |
+          = link_to 'Edit', edit_adm_publisher_path(publisher)
+          |
+          = link_to 'Destroy', [:adm, publisher], method: :delete, data: { confirm: 'Are you sure?' }
+
+= link_to 'New Publisher', new_adm_publisher_path

@@ -139,7 +139,7 @@ class LocBook
   end
 end
 
-class GoogleBookList
+class LocBookList
   def initialize(isbn)
     url="https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}"
     @list=ActiveSupport::JSON.decode(open(url).read)
@@ -170,7 +170,7 @@ class GoogleBookList
 
   def at(i)
     return nil unless i<@count
-    @items[i] ||= GoogleBook.new(@list["items"][i]["id"])
+    @items[i] ||= LocBook.new(@list["items"][i]["id"])
   end
 
   def first

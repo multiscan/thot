@@ -1,0 +1,11 @@
+-content_for(:title) do
+  New Book
+  %small
+    \-
+    - if @isbn_step
+      step 1
+    - else
+      step 2
+= render 'form'
+
+= link_to 'Back', :back

@@ -1,5 +1,4 @@
-class Adm::UsersController < ApplicationController
-  before_filter :authenticate_admin!
+class Adm::UsersController < AdmController
   load_and_authorize_resource :except => :autocomplete_location_name
 
   # autocomplete :location, :name, :full => true
@@ -22,7 +21,7 @@ class Adm::UsersController < ApplicationController
   # GET /admin/users/1
   # GET /admin/users/1.json
   def show
-    # @user = Admin::User.find(params[:id])
+    # @user = User.find(params[:id])
     @loans = @user.loans
     respond_to do |format|
       format.html # show.html.erb
@@ -33,7 +32,7 @@ class Adm::UsersController < ApplicationController
   # GET /admin/users/new
   # GET /admin/users/new.json
   def new
-    @user = Admin::User.new
+    @user = User.new
     @labs = current_admin.labs
     respond_to do |format|
       format.html # new.html.erb
@@ -43,13 +42,14 @@ class Adm::UsersController < ApplicationController
 
   # GET /admin/users/1/edit
   def edit
-    # @user = Admin::User.find(params[:id])
+    @labs = current_admin.labs
+    # @user = User.find(params[:id])
   end
 
   # POST /admin/users
   # POST /admin/users.json
   def create
-    @user = Admin::User.new(params[:user])
+    @user = User.new(params[:user])
 
     respond_to do |format|
       if @user.save
@@ -65,11 +65,11 @@ class Adm::UsersController < ApplicationController
   # PUT /admin/users/1
   # PUT /admin/users/1.json
   def update
-    @user = Admin::User.find(params[:id])
+    @user = User.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to [:adm, @user], notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -81,12 +81,17 @@ class Adm::UsersController < ApplicationController
   # DELETE /admin/users/1
   # DELETE /admin/users/1.json
   def destroy
-    @user = Admin::User.find(params[:id])
-    @user.destroy
+    @user = User.find(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
+      if can? :destroy, @user
+        @user.destroy
+        format.html { redirect_to adm_users_url, notice: "User #{@user.name} destroyed." }
+        format.json { head :no_content }
+      else
+        format.html { user_not_authorized(adm_users_url) }
+        format.json { render json: no_content, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :case_sensitive => false
 
   belongs_to :lab                          # , :counter_cache => true
-  has_many :loans, :include => [:item]
-
+  has_many :loans, :conditions => { :return_date => nil }
+  has_many :all_loans, :class_name => "Loan"
   def log
     "  name: #{self.name}\n  email: #{self.email}\n  nebis: #{self.nebis}\n  location: #{self.location}\n  legacy_id: #{self.legacy_id}\n  notes: #{self.notes}"
   end

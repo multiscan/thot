@@ -1,0 +1,17 @@
+-content_for(:title) do
+  Edit book.
+  %small
+    ISBN:
+    =@book.isbn
+
+-# TODO show this only if user can add books
+%p
+  \... or
+  = link_to 'add an item', new_adm_book_item_path(@book)
+  to this book.
+
+= render 'form'
+
+= link_to 'Show', adm_book_path(@book)
+\|
+= link_to 'Back', :back

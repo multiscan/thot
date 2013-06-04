@@ -38,4 +38,8 @@ class Admin < ActiveRecord::Base
     self.role == "admin"
   end
 
+  def used_locations
+    self.labs.map{|l| l.locations}.flatten!.uniq
+  end
+
 end

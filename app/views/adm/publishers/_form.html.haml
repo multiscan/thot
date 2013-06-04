@@ -1,0 +1,6 @@
+= simple_form_for([:adm, @publisher]) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :name, :input_html=>{:class => "span10"}
+  .form-actions
+    = f.button :submit
