@@ -29,7 +29,8 @@ gem "figaro", ">= 0.5.0"
 # view helpers
 gem "bootstrap-sass", ">= 2.1.1.0"
 gem "simple_form", ">= 2.0.4"
-gem 'will_paginate', '~> 3.0'
+gem 'will_paginate', '~> 3.0.3'
+gem 'will_paginate-bootstrap'
 gem "better_errors", ">= 0.2.0", :group => :development
 
 gem "turbolinks"
@@ -73,6 +74,7 @@ gem "nokogiri"
 # Full text search with Thinking Sphinx. DB must be under mysql or postgresql.
 # http://pat.github.com/ts/en/
 # http://railscasts.com/episodes/120-thinking-sphinx
+# https://github.com/pat/thinking-sphinx
 # --------------------
 # Devel install on mac
 # --------------------

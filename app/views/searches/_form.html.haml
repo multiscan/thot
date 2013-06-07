@@ -11,6 +11,11 @@
       .span3= f.input :status, :collection => Item.statuses
       .span3= f.association :location, :collection => Location.order('Name ASC')
       .span3= f.association :lab, :label_method => lambda { |l| l.nick }
+    .row
+      - if admin_signed_in?
+        .span3= f.input :inv_range, :label => "Inventory number, range or list", :placeholder => "123 or 123-166 or 123,125,189"
+        .span3= f.input :inv_date_fr, :label => "Inventory created from", :as => :date
+        .span3= f.input :inv_date_to, :label => "Inventory created to", :as => :date
   .form-actions
     = f.button :submit, "Go!"
 

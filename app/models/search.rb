@@ -1,26 +1,113 @@
 class Search < ActiveRecord::Base
-  attr_accessible :query, :isbn, :publisher_name, :year_range, :inv_range, :lab_id, :location_id, :status
+  attr_accessible :query, :isbn, :publisher_name, :year_range, :inv_range,
+                  :lab_id, :location_id, :status, :inv_date_fr, :inv_date_to
   belongs_to :lab
   belongs_to :location
 
   def items
-    return @items unless @items.nil?
-    search
-    return @items unless @items.nil?
-    @items = items_from_books
+    @items ||= items_oriented? ? @entries : items_from_books
   end
 
   def books
-    return @books unless @books.nil?
-    search
-    return @books unless @books.nil?
-    @books = books_from_items
+    @books ||= items_oriented? ? books_from_items : @entries
   end
 
-  # reset search (invidate search results)
-  def search!
+  # pagination shortcuts
+  def per_page
+    (@entries.nil? || @entries.empty?) ? 0 : @entries.per_page
+  end
+
+  def current_page
+    (@entries.nil? || @entries.empty?) ? 0 : @entries.current_page
+  end
+
+  def total_entries
+    (@entries.nil? || @entries.empty?) ? 0 : @entries.total_entries
+  end
+
+  def total_pages
+    (@entries.nil? || @entries.empty?) ? 0 : @entries.total_pages
+  end
+
+  def size
+    (@entries.nil? || @entries.empty?) ? 0 : @entries.size
+  end
+
+  def search(params={})
+    paginate_params = {:page => 1, :per_page => 50}.merge(params[:paginate] || {})
+    @entries=nil
     @items=nil
-    @books=nil
+    @book=nil
+
+    # single inventory number
+    if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
+      inv=i # inv_range.strip.to_i
+      logger.debug "Simple search for inv=#{inv}"
+      @entries = Item.where(:inv=>inv)
+      return
+    end
+
+    # bookle isbn
+    unless isbn.blank?
+      @entries = Book.where(:isbn => isbn)
+      logger.debug "Simple search for isbn=#{isbn}"
+      return
+    end
+
+    # book conditions
+    book_conds={}
+    unless publisher_ids.empty?
+      book_conds[:publisher_id] = publisher_id
+    end
+    unless year_range.blank?
+      book_conds[:pubyear] = parse_range(year_range)
+    end
+
+    # items conditions
+    item_conds={}
+    unless inv_range.blank?
+      item_conds[:inv] = parse_range(inv_range)
+    end
+    unless lab_id.blank?
+      item_conds[:lab_id] = lab_id
+    end
+    unless location_id.blank?
+      item_conds[:location_id] = location_id
+    end
+    unless status.blank?
+      item_conds[:status] = status.strip
+    end
+    unless inv_date_to.blank? && inv_date_fr.blank?
+      fr = inv_date_fr.blank? ? Date.new(1970) : inv_date_fr  # .to_date not necessary because converted automatically
+      to = inv_date_to.blank? ? Date.tomorrow : inv_date_to
+      item_conds[:created_at] =  fr..to
+    end
+
+    # if query is present we use search (sphinx) otherwise we use standard SQL
+    if item_conds.empty? && book_conds.empty? && query.blank?
+    end
+
+    if query.blank?
+      if item_conds.empty? && book_conds.empty?
+        @entries = []
+        return
+      end
+      if book_conds.empty?
+        logger.debug("SQL    search only on items: item_conds=#{item_conds.inspect}")
+        @entries = Item.includes(:inventoriable).where(item_conds).paginate(paginate_params)
+      else
+        logger.debug("SQL    search: book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
+        conditions=book_conds
+        conditions[:items] = item_conds
+        @entries = Book.includes(:items).where(conditions).paginate(paginate_params)
+      end
+    else
+      # TODO: include remaining conditions on Book (year, publisher_id)
+      conditions=book_conds.merge(item_conds)
+      logger.debug("Sphinx search: query=#{query}\n               conds=#{conditions.inspect}")
+      @entries = Item.search(query, {:with=>conditions}.merge(paginate_params))
+    end
+
   end
 
   def publisher_ids
@@ -28,7 +115,7 @@ class Search < ActiveRecord::Base
   end
 
   def items_oriented?
-    !inv_range.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
+    !inv_range.blank? || !inv_date_fr.blank? || !inv_date_to.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
   end
 
  private
@@ -43,70 +130,19 @@ class Search < ActiveRecord::Base
   end
 
   def books_from_items
-    return [] if @items.nil? || @items.empty?
-    @items.map{|i| i.book}.uniq
+    return [] if @entries.nil? || @entries.empty?
+    # @items.map{|i| i.book}.uniq
+    ids = items.map{|i| i.inventoriable_id}
+    Book.find(ids)
   end
 
   def items_from_books
-    return [] if @books.nil? || @books.empty?
+    return [] if @entries.nil? || @entries.empty?
     i=[]
-    @books.each {|b| i += b.items}
+    books.each {|b| i += b.items}
     return i
   end
 
-  def search
-    return unless @items.nil? && @book.nil?
-
-    # single inventory number
-    if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
-      inv=inv_range.strip.to_i
-      logger.debug "Simple search for inv=#{inv}"
-      @items = Item.includes(:inventoriable).where(:inv=>inv)
-      return
-    end
-    # bookle isbn
-    unless isbn.blank?
-      @books = Book.where(:isbn => isbn)
-      logger.debug "Simple search for isbn=#{isbn}"
-      return
-    end
-
-    book_conds={}
-    unless publisher_ids.empty?
-      book_conds[:publisher_id] = publisher_id
-    end
-    unless year_range.blank?
-      book_conds[:pubyear] = parse_range(year_range)
-    end
-
-    item_conds={}
-    unless inv_range.blank?
-      item_conds[:inv] = parse_range(inv_range)
-    end
-    unless lab_id.blank?
-      item_conds[:lab_id] = lab_id
-    end
-    unless location_id.blank?
-      item_conds[:location_id] = location_id
-    end
-    unless status.blank?
-      item_conds[:status] = status.strip
-    end
-
-    # if query is present we use search (sphinx) otherwise we use standard SQL
-    if query.blank?
-      logger.debug("SQL    search: query=#{query}\n               book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
-      conditions=book_conds
-      conditions[:items] = item_conds
-      @books = Book.includes(:items).where(conditions)
-      return
-    else
-      # TODO: include remaining conditions on Book (year, publisher_id)
-      conditions=book_conds.merge(item_conds)
-      logger.debug("Sphinx search: query=#{query}\n               conds=#{conditions.inspect}")
-      @items = Item.search(query, :with=>conditions)
-    end
-  end
 
   def parse_range(y)
     ys=y.strip
@@ -131,9 +167,6 @@ class Search < ActiveRecord::Base
     Product.find(:all, :conditions => item_conditions)
   end
 
-
-
-
   def title_book_conditions
     ["books.title LIKE ?", "%#{title}%"] unless title.blank?
   end
@@ -142,22 +175,21 @@ class Search < ActiveRecord::Base
     ["books.title LIKE ?", "%#{title}%"] unless title.blank?
   end
 
+  # def keyword_conditions
+  #   ["products.name LIKE ?", "%#{keywords}%"] unless keywords.blank?
+  # end
 
-  def keyword_conditions
-    ["products.name LIKE ?", "%#{keywords}%"] unless keywords.blank?
-  end
+  # def minimum_price_conditions
+  #   ["products.price >= ?", minimum_price] unless minimum_price.blank?
+  # end
 
-  def minimum_price_conditions
-    ["products.price >= ?", minimum_price] unless minimum_price.blank?
-  end
+  # def maximum_price_conditions
+  #   ["products.price <= ?", maximum_price] unless maximum_price.blank?
+  # end
 
-  def maximum_price_conditions
-    ["products.price <= ?", maximum_price] unless maximum_price.blank?
-  end
-
-  def category_conditions
-    ["products.category_id = ?", category_id] unless category_id.blank?
-  end
+  # def category_conditions
+  #   ["products.category_id = ?", category_id] unless category_id.blank?
+  # end
 
   def book_conditions
     [book_conditions_clauses.join(' AND '), *conditions_options]

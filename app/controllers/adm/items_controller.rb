@@ -1,11 +1,13 @@
 class Adm::ItemsController < AdmController
   before_filter :set_book, :only => [:new, :create]
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:index]
 
   # GET /items
   # GET /items.json
   def index
     # @items = Item.all
+    @labs  = current_admin.labs
+    @items = Item.where(:lab_id => @labs).order("created_at DESC").paginate(:page=>params[:page], :per_page=>50)
 
     respond_to do |format|
       format.html # index.html.erb

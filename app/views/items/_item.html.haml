@@ -6,7 +6,7 @@
       %br
       =item.lab.nick
       %br
-      =item.location.name
+      = item.location.nil? ? "?" : item.location.name
       %br
       =item_status(item)
     .span7
@@ -26,19 +26,17 @@
         =book.editor
       %br
       %span.publisher
-        =book.publisher.name
-    .span2
+        =book.publisher_name
+    .span3
       =book.isbn
       %br
-      =book.call1
-      =book.call2
-      =book.call3
-      =book.call4
+      %span.label= book.call1 || "-"
+      %span.label= book.call2 || "-"
+      %span.label= book.call3 || "-"
+      %span.label= book.call4 || "-"
       -if can? :update, item
         %br
-        =link_to "Edit", edit_item_path(item)
+        =link_to "Edit", edit_adm_item_path(item)
       -else
         %br
         %br
-      %br
-      =link_to 'more »', book

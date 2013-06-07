@@ -1,17 +1,7 @@
-%h1 Listing items
+-content_for(:title) do
+  Items
 
-%table
-  %tr
-    %th
-    %th
-    %th
+%ul.booklist.unstyled
+  =render :partial => "adm/items/item", :collection => @items
 
-  - @items.each do |item|
-    %tr
-      %td= link_to 'Show', item
-      %td= link_to 'Edit', edit_item_path(item)
-      %td= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Item', new_item_path
+= will_paginate @items

@@ -1,19 +1,28 @@
 -content_for(:title) do
   Search Result
   %br
-  %small=@search.items_oriented? ? "#{@search.items.count} items found" : "#{@search.books.count} books found"
+  %small #{@search.total_entries} items found
 
 %h2 Your search
 = render 'form'
 
-%h2
-  = @search.items_oriented? ? "Items:" : "Books"
+- if @search.total_entries > 0
+  %h3
+    = @search.items_oriented? ? "Items" : "Books"
+  %p
+    Found
+    = @search.total_entries
+    entries.
+    - if @search.total_pages > 1
+      Showing #{@search.size} entries (page #{@search.current_page} of #{@search.total_pages})
+  - if @search.items_oriented?
+    %ul.booklist.unstyled
+      = render partial: "items/item", collection: @search.items
+  -else
+    %ul.booklist.unstyled
+      =render partial: "books/book", collection: @search.books
 
-- if @search.items_oriented?
-  %ul.booklist.unstyled
-    - @search.items.each do |item|
-      =render item #=render :partial => "items/item", :object => item
--else
-  %ul.booklist.unstyled
-    - @search.books.each do |book|
-      =render book
+  = will_paginate (@search), :renderer => BootstrapPagination::Rails
+- else
+  %p
+    no results to show.

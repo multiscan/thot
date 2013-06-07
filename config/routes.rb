@@ -2,7 +2,7 @@ Thot::Application.routes.draw do
 
   # ---------------------------------------------------------- for library users
   resources :books, :only => [:index, :show]
-  resources :items, :only=>[:index, :show]
+  resources :items, :only=>[:show]
   resources :loans, :only => [:create, :destroy]
   resources :publishers, :only => [:show]
   resources :searches
