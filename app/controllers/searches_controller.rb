@@ -17,7 +17,10 @@ class SearchesController < ApplicationController
   def show
     @search = Search.find(params[:id])
     @search.search(paginate: {page: params[:page], :per_page => 50})
+
+
     respond_to do |format|
+      format.pdf
       format.html # show.html.erb
       format.json { render json: @search }
     end

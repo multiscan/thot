@@ -26,6 +26,10 @@ gem "rolify", ">= 3.2.0"
 # app configuration: config/application.yml
 gem "figaro", ">= 0.5.0"
 
+# pdf rendering
+gem 'prawn'
+gem 'prawn_rails'
+
 # view helpers
 gem "bootstrap-sass", ">= 2.1.1.0"
 gem "simple_form", ">= 2.0.4"

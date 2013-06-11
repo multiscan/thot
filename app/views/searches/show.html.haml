@@ -7,6 +7,9 @@
 = render 'form'
 
 - if @search.total_entries > 0
+  - if admin_signed_in?
+    %p
+      = link_to "Print labels", search_path(@search)+".pdf"
   %h3
     = @search.items_oriented? ? "Items" : "Books"
   %p
