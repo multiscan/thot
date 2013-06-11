@@ -43,41 +43,46 @@ module ApplicationHelper
       [1, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 1, 1], [1, 0, 0, 1, 0], [0, 1, 0, 1, 0],
     ]
 
+    MM2P = 2.834645669291339
+
     def auto_grid_start(opts)
       define_grid(opts)
       @ag_nx = opts[:columns]
       @ag_ny = opts[:rows]
       @ag_ix = 0
       @ag_iy = 0
+      @np = false
     end
 
     def auto_grid_next_bounding_box
+      if @np
+        start_new_page
+        @np = false
+      end
       grid(@ag_iy, @ag_ix).bounding_box do
-
         yield
       end
       @ag_ix = ( @ag_ix + 1 ) % @ag_nx
       if @ag_ix == 0
         @ag_iy = ( @ag_iy + 1 ) % @ag_ny
-        start_new_page if @ag_iy == 0
+        @np = @ag_iy == 0
       end
     end
 
     # interleaved 2 of 5 barcode
-    def inv_barcode(n, w, h)
+    def inv_barcode(n, ox, oy, w, h)
       digits = n.to_s.split("").map{|d| d.to_i}
       digits.unshift 0 if digits.length%2 != 0
-      tw = 9*(1+digits.size)
-      dw = w.to_f / tw
-      puts "dw=#{dw}"
-
-      ww=[dw, 3*dw]
-      x=0
+      tw = 9*(1+digits.size)    # total width in units of narrow bar width
+      dw = w.to_f / tw          # narrow bar width
+      ww=[dw, 3*dw]             # [narrow bar width, wide bar width]
+      x = ox                    # pen position
+      y = oy
 
       # begin (nnnn)
-      fill_rectangle [x,0], ww[0], h
+      fill_rectangle [x,y], ww[0], h
       x = x + ww[0] + ww[0]
-      fill_rectangle [x,0], ww[0], h
+      fill_rectangle [x,y], ww[0], h
       x = x + ww[0] + ww[0]
 
       # number
@@ -88,20 +93,38 @@ module ApplicationHelper
         0.upto(4) do |i|
           lw=ww[lc[i]]
           sw=ww[sc[i]]
-          fill_rectangle [x,0], lw, h
+          fill_rectangle [x,y], lw, h
           x = x + lw + sw
         end
       end
 
       # end (wnn)
-      fill_rectangle [x,0], ww[1], h
+      fill_rectangle [x,y], ww[1], h
       x = x + ww[1] + ww[0]
-      fill_rectangle [x,0], ww[0], h
+      fill_rectangle [x,y], ww[0], h
     end
 
-    def inv_barcode_size(n)
-      9*(1+(n+1)/2)
+    def label(item)
+      w=bounds.right - bounds.left
+      h=bounds.top - bounds.bottom
+      bh=28.mm
+      bw=24.mm
+      # stroke_bounds
+      bounding_box([(w-bw)/2, h-(h-bh)/2], :width => bw, :height => bh) do
+        text item.lab.nick, :align => :center, :size => 12
+        text item.book.call1 || "  ", :align => :center, :size => 12
+        text item.book.call2 || "  ", :align => :center, :size => 12
+        text item.book.call3 || "  ", :align => :center, :size => 12
+        inv_barcode(item.inv, 4.mm, 24, 16.mm, 12)
+        text_box "#{item.inv.to_s.split("").join(" ")}", :at => [4.mm, 8], :size => 8, :width => 16.mm, :align => :center
+      end
+      rotate(90, :origin => [0,0]) do
+        inv_barcode(item.inv, (h-bh)/2, -2.mm, bh, (w-bw)/2-2.mm)
+        inv_barcode(item.inv, (h-bh)/2, -w+(w-bw)/2, bh, (w-bw)/2-2.mm)
+      end
+
     end
+
   end
 
 end

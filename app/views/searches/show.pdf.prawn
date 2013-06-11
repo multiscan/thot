@@ -1,16 +1,59 @@
 require "prawn/measurement_extensions"
 
-def ciccio(p)
-  p.text("ciccio")
-end
-
-prawn_document(
-                page_size: "A4",
+case params[:lf]
+when "3x8m"
+  prawn_document(
+                  page_size: "A4",
+                  page_layout: :portrait,
+                  left_margin: 8.mm,
+                  right_margin: 8.mm,
+                  top_margin: 13.mm,
+                  bottom_margin: 13.mm,
+                  info: {
+                    :Title => "Thot Book Labels",
+                    :Author => "#{current_admin.name}",
+                    :Subject => "Printable Labels for Library Books",
+                    :Creator => "thot.epfl.ch",
+                    :Producer => "EPFL",
+                    :CreationDate => Time.now
+                  }
+                ) do |p|
+    # p.text "ab=#{p.bounds.absolute_bottom}  at=#{p.bounds.absolute_top}  al=#{p.bounds.absolute_left}  ar=#{p.bounds.absolute_right}"
+    p.auto_grid_start(:columns => 3, :rows => 8)
+    @items.each do |item|
+      p.auto_grid_next_bounding_box { p.label(item) }
+    end
+  end
+when "3x8"
+  prawn_document(
+                  page_size: "A4",
+                  page_layout: :portrait,
+                  left_margin: 0,
+                  right_margin: 0,
+                  top_margin: 0,
+                  bottom_margin: 0,
+                  info: {
+                    :Title => "Thot Book Labels",
+                    :Author => "#{current_admin.name}",
+                    :Subject => "Printable Labels for Library Books",
+                    :Creator => "thot.epfl.ch",
+                    :Producer => "EPFL",
+                    :CreationDate => Time.now
+                  }
+                ) do |p|
+    p.auto_grid_start(:columns => 3, :rows => 8)
+    @items.each do |item|
+      p.auto_grid_next_bounding_box { p.label(item) }
+    end
+  end
+when "dymo_p"
+  prawn_document(
+                page_size: [36.mm, 89.mm],
                 page_layout: :portrait,
-                left_margin: 100,
-                right_margin: 100,
-                top_margin: 100,
-                bottom_margin: 100,
+                left_margin: 0,
+                right_margin: 0,
+                top_margin: 0,
+                bottom_margin: 0,
                 info: {
                   :Title => "Thot Book Labels",
                   :Author => "#{current_admin.name}",
@@ -20,39 +63,71 @@ prawn_document(
                   :CreationDate => Time.now
                 }
               ) do |p|
+    @items.each do |item|
+      p.rotate(90, :origin => [0,0]) do
+        p.translate(0,-36.mm) do
+          p.label(item)
+        end
+      end
+      p.start_new_page
+    end
+  end
+else
+  prawn_document(
+                  page_size: [89.mm, 36.mm],
+                  page_layout: :portrait,
+                  left_margin: 0,
+                  right_margin: 0,
+                  top_margin: 0,
+                  bottom_margin: 0,
+                  info: {
+                    :Title => "Thot Book Labels",
+                    :Author => "#{current_admin.name}",
+                    :Subject => "Printable Labels for Library Books",
+                    :Creator => "thot.epfl.ch",
+                    :Producer => "EPFL",
+                    :CreationDate => Time.now
+                  }
+                ) do |p|
+    @items.each do |item|
+      p.label(item)
+      p.start_new_page
+    end
+  end
+
+
+  # p.auto_grid_next_bounding_box do
+  #   # p.stroke_color 100, 0, 0, 0
+  #   p.text "-1-"
+  #   p.text "[#{p.bounds.left},#{p.bounds.top}] -> [#{p.bounds.right}, #{p.bounds.bottom}]"
+  #   p.stroke_bounds
+  #   # p.inv_barcode("0123456789", 100, 20)
+  # end
+  # p.auto_grid_next_bounding_box do
+  #   # p.stroke_color 0, 100, 0, 0
+  #   p.text "-2-"
+  #   p.inv_barcode("0123456789", 100, 20)
+  # end
+  # p.auto_grid_next_bounding_box do
+  #   # p.stroke_color 0, 0, 100, 0
+  #   p.text "-3-"
+  #   p.stroke_bounds
+  #   # p.inv_barcode("0123456789", 100, 20)
+  # end
+  # p.auto_grid_next_bounding_box do
+  #   # p.stroke_color 0, 0, 0, 100
+  #   p.text "-4-"
+  #   # p.inv_barcode("0123456789", 100, 20)
+  # end
+  # p.auto_grid_next_bounding_box do
+  #   p.text "-5-"
+  #   # p.inv_barcode("0123456789", 100, 20)
+  # end
 
   # p.set2of5dict
   # p.stroke_rectangle [0,0], 400, 100
   # p.inv_barcode("0123456789", 400, 100)
-  p.canvas do
-    p.auto_grid_start(:columns => 3, :rows => 8)
-    p.auto_grid_next_bounding_box do
-      # p.stroke_color 100, 0, 0, 0
-      p.text "-1-"
-      p.text "[#{p.bounds.left},#{p.bounds.top}] -> [#{p.bounds.right}, #{p.bounds.bottom}]"
-      p.stroke_bounds
-      # p.inv_barcode("0123456789", 100, 20)
-    end
-    p.auto_grid_next_bounding_box do
-      # p.stroke_color 0, 100, 0, 0
-      p.text "-2-"
-      p.inv_barcode("0123456789", 100, 20)
-    end
-    p.auto_grid_next_bounding_box do
-      # p.stroke_color 0, 0, 100, 0
-      p.text "-3-"
-      p.stroke_bounds
-      # p.inv_barcode("0123456789", 100, 20)
-    end
-    p.auto_grid_next_bounding_box do
-      # p.stroke_color 0, 0, 0, 100
-      p.text "-4-"
-      # p.inv_barcode("0123456789", 100, 20)
-    end
-    p.auto_grid_next_bounding_box do
-      p.text "-5-"
-      # p.inv_barcode("0123456789", 100, 20)
-    end
+  # p.canvas do
         # p.grid(4,0).show
   # p.grid(6,1).show
   # p.grid([6,2], [7,3]).show
@@ -63,7 +138,7 @@ prawn_document(
   #   p.fill_circle [p.bounds.left, p.bounds.bottom], 30
     # p.define_grid(:columns => 3, :rows => 8, :gutter => 10)
   #   # p.grid.show_all
-  end
+  # end
 
   # p.text "top: #{p.bounds.top}"
   # p.text "bottom: #{p.bounds.bottom}"
