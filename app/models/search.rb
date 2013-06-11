@@ -4,6 +4,10 @@ class Search < ActiveRecord::Base
   belongs_to :lab
   belongs_to :location
 
+  validates :inv_range, format: { with: /(^\s*[0-9]+\s*$)|(^\s*[0-9]+\s*((\.\.|-)\s*[0-9]+)?\s*$)|(^\s*[0-9]+(\s*,s*[0-9]+)*\s*$)/,
+    message: "Format for range: N or N1..N2 or N1-N2 or N1,N2,N3 (where N is a number)" }, :allow_nil => true
+
+
   def items
     @items ||= items_oriented? ? @entries : items_from_books
   end
@@ -154,7 +158,7 @@ class Search < ActiveRecord::Base
       return f..t
     elsif ys.index(",")
       return ys.split(",").map{|y| y.strip.to_i}
-    elsif ys =~ /[0-9]+/
+    elsif ys =~ /^\s*[0-9]+\s*/
       return ys.to_i
     end
   end

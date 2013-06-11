@@ -16,6 +16,7 @@
 //= require jquery-ui
 //= require autocomplete-rails
 //= require bootstrap
+//= require bootstrap-datepicker
 //= require jquery.tablesorter
 //= require turbolinks
 //= require thot

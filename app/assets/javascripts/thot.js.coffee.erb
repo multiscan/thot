@@ -9,6 +9,7 @@ class Thot
     jQuery("input.typeahead").each () ->
       collection = jQuery(this).data("collection")
       jQuery(this).typeahead({source: collection})
+    jQuery("input.date_picker").datepicker();
 
     when_ready_for_layout() if (typeof when_ready_for_layout == 'function')
     when_ready_for_view() if (typeof when_ready_for_view == 'function')

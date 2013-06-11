@@ -14,8 +14,8 @@
     .row
       - if admin_signed_in?
         .span3= f.input :inv_range, :label => "Inventory number, range or list", :placeholder => "123 or 123-166 or 123,125,189"
-        .span3= f.input :inv_date_fr, :label => "Inventory created from", :as => :date
-        .span3= f.input :inv_date_to, :label => "Inventory created to", :as => :date
+        .span3= f.input :inv_date_fr, :label => "Inventory created from", :as => :date_picker
+        .span3= f.input :inv_date_to, :label => "Inventory created to", :as => :date_picker
   .form-actions
     = f.button :submit, "Go!"
 
