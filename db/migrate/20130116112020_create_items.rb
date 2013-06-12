@@ -5,7 +5,6 @@ class CreateItems < ActiveRecord::Migration
       t.references :location
       t.references :shelf
       t.references :admin
-      t.references :inventory
       t.integer :inv
       t.string :status
       t.float :price

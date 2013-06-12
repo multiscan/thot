@@ -1,4 +1,5 @@
-= might_paginate(@items)
+- if @items.size > 10
+  = might_paginate(@items)
 %ul.booklist.unstyled
   =render :partial => "items/item", :collection => @items
 = might_paginate(@items)
