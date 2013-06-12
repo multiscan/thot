@@ -1,0 +1,8 @@
+%table.table.sortable
+  %thead
+    %hr
+      %th Id
+      %th Location
+      %th No. Items
+  %tbody
+    = render :partial => "adm/shelves/shelf", :collection => @shelves

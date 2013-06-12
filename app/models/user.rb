@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :location, :nebis, :legacy_id
   # attr_accessible :name, :email, :password, :password_confirmation, :location, :nebis, :legacy_id
-  attr_accessible :name, :email, :location, :nebis, :legacy_id, :lab_id, :notes
+  attr_accessible :name, :email, :nebis, :legacy_id, :lab_id, :notes
 
   # attr_accessible :title, :body
   validates_presence_of :name
@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   has_many :loans, :conditions => { :return_date => nil }
   has_many :all_loans, :class_name => "Loan"
   def log
-    "  name: #{self.name}\n  email: #{self.email}\n  nebis: #{self.nebis}\n  location: #{self.location}\n  legacy_id: #{self.legacy_id}\n  notes: #{self.notes}"
+    "  name: #{self.name}\n  email: #{self.email}\n  nebis: #{self.nebis}\n  legacy_id: #{self.legacy_id}\n  notes: #{self.notes}"
   end
 
   def lab_nick

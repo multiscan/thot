@@ -1,7 +1,6 @@
 -content_for(:title) do
   Items
 
-%ul.booklist.unstyled
-  =render :partial => "adm/items/item", :collection => @items
+= render :partial => "items/items"
 
-= will_paginate @items
+= might_paginate @items

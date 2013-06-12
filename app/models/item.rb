@@ -4,6 +4,8 @@ class Item < ActiveRecord::Base
   belongs_to :inventoriable, :polymorphic => true
   belongs_to :lab                          # , :counter_cache => true
   belongs_to :location
+  belongs_to :inventory, :class_name => "Inventory", :foreign_key => "inventory_id"
+  belongs_to :shelf, :class_name => "Shelf", :foreign_key => "shelf_id"
   has_many :loans, :class_name => "Loan", :foreign_key => "item_id", :include => :user
   has_one :current_checkout, :class_name => "Loan", :foreign_key => "item_id", :conditions=>{:return_date=>nil}
 

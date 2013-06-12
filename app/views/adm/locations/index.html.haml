@@ -6,16 +6,24 @@
     %hr
       %th Id
       %th Name
+      %th No. Items
+      %th No. Shelves
   %tbody
     - @locations.each do |location|
       %tr
         %td= location.id
         %td= location.name
+        %td= location.items.count
+        %td{:id => "shc_#{location.id}"}= location.shelves.count
         %td
           = link_to 'Show', [:adm, location]
           |
           = link_to 'Edit', edit_adm_location_path(location)
+          - if can? :destroy, location
+            |
+            = link_to 'Destroy', [:adm, location], method: :delete, data: { confirm: 'Are you sure?' }
           |
-          = link_to 'Destroy', [:adm, location], method: :delete, data: { confirm: 'Are you sure?' }
+          = link_to "Add a Shelf", [:adm, location, Shelf.new], method: :post, remote: true
+
 
 = link_to 'New Location', new_adm_location_path

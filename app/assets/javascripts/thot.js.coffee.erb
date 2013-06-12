@@ -20,6 +20,14 @@ class Thot
   load_barcode_scanner: () ->
     window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>);
 
+  increase_counter: (id) ->
+    c=jQuery(id);
+    c.text(parseInt(c.text())+1)
+
+  fade_and_remove: (id) ->
+    jQuery(id).fadeOut('slow') ->
+      jQuery(this).remove()
+
   alert: (cls, content) ->
     msg = sprintf('<div class="alert alert-%s"><a class="close" data-dismiss="alert">×</a><div>%s</div></div>', cls, content)
     jQuery(msg).insertAfter("div.page-header")

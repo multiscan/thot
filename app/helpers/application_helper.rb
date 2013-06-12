@@ -36,6 +36,9 @@ module ApplicationHelper
     end
   end
 
+  def might_paginate(v)
+    will_paginate (v), :renderer => BootstrapPagination::Rails
+  end
 
   class Prawn::Document
     TWO_OF_FIVE_ENCODING = [

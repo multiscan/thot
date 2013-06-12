@@ -109,7 +109,7 @@ Legacy::Person.find(:all).each do |lp|
   p = User.new(
     :name       => lp.fullname,
     :email      => lp.email,
-    :location   => lp.userLocation,
+    # :location   => lp.userLocation,
     :nebis      => lp.nebis,
     :legacy_id  => lp.userId,
     # :password   => ENV['DEFAULT_USER_PASSWORD'].dup,

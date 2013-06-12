@@ -1,7 +1,5 @@
 class Adm::UsersController < AdmController
-  load_and_authorize_resource :except => :autocomplete_location_name
-
-  # autocomplete :location, :name, :full => true
+  load_and_authorize_resource
 
   # GET /admin/users
   # GET /admin/users.json

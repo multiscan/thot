@@ -30,7 +30,7 @@
     %ul.booklist.unstyled
       =render partial: "books/book", collection: @search.books
 
-  = will_paginate (@search), :renderer => BootstrapPagination::Rails
+  = might_paginate @search
 - else
   %p
     no results to show.

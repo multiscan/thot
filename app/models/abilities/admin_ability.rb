@@ -47,9 +47,16 @@ class Abilities::AdminAbility
         # can [:read, :update, :destroy], Item do |item|
         #    admin.labs.include?(item.lab)
         # end
-        can [:read, :create, :update], [Book, Publisher, DegIsbn]
+        can [:read, :create, :update], [Book, Publisher, DegIsbn, Location]
         can :destroy, Book do |book|
           book.items.empty?
+        end
+        can :destroy, Location do |location|
+          location.items.empty?
+        end
+        can [:read, :create], Shelf
+        can :destroy, Shelf do |shelf|
+            shelf.items.empty?
         end
     end
 

@@ -8,18 +8,8 @@
     .row
       .span6= f.input :email, :input_html => {:class => "span5"}
       .span3= f.input :lab_id, :collection => @labs, :label_method => :nick
-      .span3= f.input :location, :label=>"Room/Location"
-      -#.span3= f.input :location, :url => autocomplete_location_name_adm_users_path, :as => :autocomplete
 
     = f.input :notes, :placeholder => "Any special note about this user goes here", :input_html => {:class => "span12"}
 
   .form-actions
     = f.button :submit
-
-
-- content_for :head do
-  :javascript
-    function when_ready_for_view() {
-      // window.nebis_logout = new NebisLogout(10);
-      jQuery('#user_location').typeahead({source: [#{Location.names_list}]});
-    }

@@ -1,0 +1,9 @@
+%tr{:id => "shelf_#{shelf.id}"}
+  %td= shelf.id
+  %td= shelf.location.name
+  %td= shelf.items.count
+  %td
+    = link_to 'Show', shelf
+    - if can? :destroy, shelf
+      |
+      = link_to 'Destroy', [:adm, shelf], method: :delete, :remote => true

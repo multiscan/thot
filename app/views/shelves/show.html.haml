@@ -1,0 +1,9 @@
+-content_for(:title) do
+  Room #{@shelf.location.name} / Shelf #{@shelf.id}
+  %small
+    %br
+    Contains #{@items.count} items
+
+- unless @items.empty?
+  %h3 Items
+  = render :partial => "items/items"

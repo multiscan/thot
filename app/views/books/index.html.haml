@@ -9,6 +9,6 @@
 
 - unless @books.empty?
   = render :partial => "books"
-  = will_paginate @paginate
+  = might_paginate @paginate
 - else
   %p No books where found matching your query.

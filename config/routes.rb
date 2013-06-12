@@ -6,7 +6,7 @@ Thot::Application.routes.draw do
   resources :loans, :only => [:create, :destroy]
   resources :publishers, :only => [:show]
   resources :searches
-
+  resources :shelves, :only => [:show]
 
   # devise_for :users
   resources :users, :only => [:show]
@@ -21,11 +21,15 @@ Thot::Application.routes.draw do
       resources :items, :only=>[:new, :create]
     end
     resources :deg_isbns
+    resources :inventories
     resources :items, :only=>[:index, :show, :edit, :update, :destroy]
     resources :labs
-    resources :locations
+    resources :locations do
+      resources :shelves, :only=>[:new, :create]
+    end
     resources :publishers, :only => [:index, :new, :edit, :create, :update, :destroy]
     resources :publisher_mergers, :only=>[:new, :create, :update]
+    resources :shelves, :only => [:index, :show, :update, :destroy]
     resources :users do
       # get :autocomplete_location_name, :on => :collection
     end

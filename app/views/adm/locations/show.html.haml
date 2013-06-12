@@ -1,7 +1,15 @@
 -content_for(:title) do
   =@location.name
-  %small location
+  %small
+    %br
+    Room with #{@shelves.count} shelves and #{@items.count} items
 
+
+%h3 Shelves
+=render partial: "adm/shelves/shelves"
+
+%h3 Items
+= render :partial => "items/items"
 
 = link_to 'Edit', edit_adm_location_path(@location)
 \|
