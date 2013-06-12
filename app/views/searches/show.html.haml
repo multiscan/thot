@@ -9,7 +9,12 @@
 - if @search.total_entries > 0
   - if admin_signed_in?
     %p
-      = link_to "Print labels", search_path(@search)+".pdf"
+      Print labels:
+      = link_to "3x8 label sheet with margins", search_path(@search)+".pdf?lf=3x8m"
+      |
+      = link_to "3x8 label sheet", search_path(@search)+".pdf?lf=3x8"
+      |
+      = link_to "dymo label printer", search_path(@search)+".pdf?lf=dymo"
   %h3
     = @search.items_oriented? ? "Items" : "Books"
   %p

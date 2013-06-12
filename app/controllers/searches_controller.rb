@@ -16,9 +16,10 @@ class SearchesController < ApplicationController
   # GET /searches/1.json
   def show
     @search = Search.find(params[:id])
-    @search.search(paginate: {page: params[:page], :per_page => 48})
+    perpage = request.format == 'pdf' ? 999 : 48
+    @search.search(paginate: {page: params[:page], :per_page => perpage})
     respond_to do |format|
-      format.pdf  { @items = @search.items ; render }
+      format.pdf  { @items = @search.items ; render 'adm/items/index' }
       format.html # show.html.erb
       format.json { render json: @search }
     end
