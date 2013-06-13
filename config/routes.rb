@@ -21,11 +21,13 @@ Thot::Application.routes.draw do
       resources :items, :only=>[:new, :create]
     end
     resources :deg_isbns
-    resources :inventories
+    resources :goods
+    resources :inventory_sessions
+    match 'inventory_sessions/inventorize_search', :to => 'inventory_sessions#inventorize_search', :via => :post, :as => 'inventorize_search'
     resources :items, :only=>[:index, :show, :edit, :update, :destroy]
     resources :labs
     resources :locations do
-      resources :shelves, :only=>[:new, :create]
+      resources :shelves, :only=>[:new, :create, :index]
     end
     resources :publishers, :only => [:index, :new, :edit, :create, :update, :destroy]
     resources :publisher_mergers, :only=>[:new, :create, :update]

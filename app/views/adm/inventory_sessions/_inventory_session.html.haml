@@ -1,0 +1,13 @@
+%tr{:id => "is_#{inventory_session.id}"}
+  %td= inventory_session.id
+  %td= inventory_session.name
+  %td= inventory_session.admin.name
+  %td= inventory_session.goods.count
+  %td= inventory_session.unchecked_goods.count
+  %td= inventory_session.created_at.to_date
+  %td
+    = link_to 'Show', [:adm, inventory_session]
+    |
+    = link_to 'Edit', edit_adm_inventory_session_path(inventory_session)
+    |
+    = link_to 'Destroy', [:adm, inventory_session], method: :delete

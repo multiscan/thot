@@ -8,6 +8,14 @@
 %h3 Shelves
 =render partial: "adm/shelves/shelves"
 
+%h4 Labels for Shelves
+%p
+  = link_to "3x8 label sheet with margins", adm_location_shelves_path(@location)+".pdf?lf=3x8m"
+  |
+  = link_to "3x8 label sheet", adm_location_shelves_path(@location)+".pdf?lf=3x8"
+  |
+  = link_to "dymo label printer", adm_location_shelves_path(@location)+".pdf?lf=dymo"
+
 %h3 Items
 = render :partial => "items/items"
 

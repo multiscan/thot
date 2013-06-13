@@ -1,0 +1,28 @@
+-content_for(:title) do
+  =@inventory_session.name
+  %br
+  %small inventory session
+
+.row
+  .span6
+    %dl.dl-horizontal
+      %dt owner:
+      %dd=@inventory_session.admin.name
+      %dt created:
+      %dd=@inventory_session.created_at.to_date
+  .span6
+    %dl.dl-horizontal
+      %dt goods:
+      %dd
+        =@inventory_session.goods.count
+        items
+      %dt unchecked:
+      %dd
+        =@inventory_session.unchecked_goods.count
+        items
+%h3 Notes:
+.well= render_markdown(@inventory_session.notes)
+
+= link_to 'Edit', edit_adm_inventory_session_path(@inventory_session)
+\|
+= link_to 'Back', :back

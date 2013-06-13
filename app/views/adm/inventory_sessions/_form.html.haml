@@ -1,0 +1,13 @@
+= simple_form_for([:adm, @inventory_session]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    .row
+      .span6= f.input :name, :input_html=>{:class=>"span5"}
+      - if current_admin.admin?
+        .span4= f.association :admin, :collection => Admin.all, :label_method => lambda { |l| l.name }, :prompt => "Select the owner"
+
+    = f.input :notes, :input_html=>{:class=>"span12"}
+
+  .form-actions
+    = f.button :submit

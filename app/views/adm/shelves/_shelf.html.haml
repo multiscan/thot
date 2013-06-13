@@ -1,6 +1,7 @@
 %tr{:id => "shelf_#{shelf.id}"}
   %td= shelf.id
   %td= shelf.location.name
+  %td= shelf.seqno
   %td= shelf.items.count
   %td
     = link_to 'Show', shelf

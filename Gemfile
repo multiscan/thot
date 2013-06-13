@@ -30,6 +30,9 @@ gem "figaro", ">= 0.5.0"
 gem 'prawn'
 gem 'prawn_rails'
 
+# markdown rendering
+gem 'bluecloth'
+
 # view helpers
 gem "bootstrap-sass", ">= 2.1.1.0"
 gem "simple_form", ">= 2.0.4"

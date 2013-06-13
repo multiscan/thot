@@ -15,6 +15,7 @@ class Admin < ActiveRecord::Base
   # attr_accessible :title, :body
 
   has_and_belongs_to_many :labs, :class_name => "Lab", :join_table => "operatorships"
+  has_many :inventory_sessions, :class_name => "InventorySession", :foreign_key => "admin_id"
 
   def operates?(o)
     case o.class.name

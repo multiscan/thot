@@ -17,7 +17,7 @@ class SearchesController < ApplicationController
   def show
     @search = Search.find(params[:id])
     perpage = request.format == 'pdf' ? 999 : 48
-    @search.search(paginate: {page: params[:page], :per_page => perpage})
+    @search.search(page: params[:page], :per_page => perpage)
     respond_to do |format|
       format.pdf  { @items = @search.items ; render 'adm/items/index' }
       format.html # show.html.erb

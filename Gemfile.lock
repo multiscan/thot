@@ -41,6 +41,7 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.7.0)
     binding_of_caller (0.6.8)
+    bluecloth (2.2.0)
     bootstrap-sass (2.2.1.1)
       sass (~> 3.2)
     builder (3.0.4)
@@ -270,6 +271,7 @@ DEPENDENCIES
   activerecord-mysql-adapter
   better_errors (>= 0.2.0)
   binding_of_caller (>= 0.6.8)
+  bluecloth
   bootstrap-sass (>= 2.1.1.0)
   cancan (>= 1.6.8)
   capistrano
