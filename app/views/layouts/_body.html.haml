@@ -3,6 +3,9 @@
     %nav.navbar-inner
       .container
         = render 'layouts/navigation'
+    #alerts
+      .container
+        = render 'layouts/messages'
   #main{:role => "main"}
     .container
       -#= link_to 'back', :back
@@ -13,7 +16,6 @@
               .page-header
                 %h1
                   = yield(:title)
-            = render 'layouts/messages'
             = yield
         %footer
           =render 'layouts/footer'

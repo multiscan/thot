@@ -9,21 +9,20 @@
 - if @search.total_entries > 0
   - if admin_signed_in?
     .row
-      .span6
+      .span4
         %h4 Labels
-        %p
-          = link_to "3x8 label sheet with margins", search_path(@search)+".pdf?lf=3x8m"
-          |
-          = link_to "3x8 label sheet", search_path(@search)+".pdf?lf=3x8"
-          |
-          = link_to "dymo label printer", search_path(@search)+".pdf?lf=dymo"
+        %p=print_labels_links(search_path(@search))
       - if @search.items_oriented?
-        .span6
+        .span8
           %h4 Inventorize
           - if current_admin.inventory_sessions.count > 0
             %p
               To add all the items of this search (search no. #{@search.id}) to an inventory session, please select your inventory session below and submit.
               Items that are already present in the inventory session will be considered as not yet checked (reset).
+            %p
+              Searches containing a lot of items
+              %strong could take long time to load
+              and your browser might look unresponsive for a while.
             = simple_form_for(:inventorize, url: adm_inventorize_search_url, :method => :post) do |f|
               = f.hidden_field "search_id", :value => @search.id
               .row

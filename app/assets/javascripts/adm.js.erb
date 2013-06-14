@@ -26,7 +26,7 @@
 
 function on_ready() {
   // alert("This is adm.js");
-  thot.load_inactivity_monitor();
+  thot.load_inactivity_monitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
   thot.ready();
 }
 

@@ -4,7 +4,6 @@
 
 class window.NebisLogout
   constructor: (t) ->
-    console.debug("4")
     @dt = t * 1000
     @timeoutLabel = jQuery('#nebis_timeout')
     @timeoutDialog = jQuery('#nebis_timeout_dialog')

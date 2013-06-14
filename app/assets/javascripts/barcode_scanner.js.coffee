@@ -1,5 +1,8 @@
+# Probably should consider using http://code.google.com/p/jquery-barcodelistener/
 class window.BarcodeScanner
   constructor: (d) ->
+
+    console.log("loading barcode scanner: d="+d+" ms")
 
     @nebis = false
     @scannerKeypressMaxDelay = d;
@@ -26,17 +29,18 @@ class window.BarcodeScanner
       if kcode == 13
         if (@inputString.length==8 && @inputString.charAt(0)=="E")
           nebis=@inputString
-          console.log("this was a camipro card number: %s", nebis);
+          console.log("this was a camipro card number: %s   -   @nebis = %s", nebis, @nebis);
           if (nebis != @nebis)
             url=@baseUrl + "nebis/" + nebis
             # TODO: remove this line when done debugging !!!!
             # url=@baseUrl + "nebis/" + "E0593158"
-            console.log("Shoudl redirect to " + url)
+            console.log("Should redirect to " + url)
             location.href = url
         else if @inputString.match(/^[0-9][0-9][0-9][0-9][0-9]*$/)
           console.log("this should be a book id: %s", @inputString)
           if @nebis
             return_link = jQuery('a[data-inv='+@inputString+']')
+            console.log("return_link = " + return_link)
             if return_link.size()==0
               console.log("the book is not in the list. Checking out")
               jQuery('#loan_inv').val(@inputString)
@@ -46,7 +50,7 @@ class window.BarcodeScanner
               return_link[0].click()
           else
             @inputString = ""
-            thot_alert("notice", "Please scan your nebis code before scanning any book label")
+            thot.alert("info", "Please scan your nebis code before scanning any book label")
             console.log("not in user/nebis page -> discarding")
 
       else if (kcode>47 && kcode<58 || kcode>64 && kcode<91 || kcode>96 && kcode<123)
@@ -55,5 +59,5 @@ class window.BarcodeScanner
           # Event.stop(e)
         else
           @inputString = ""
-    console.log("keypress: k= %s   char= %s    inputString= %s", kcode, kchar, @inputString)
+    # console.log("keypress: k= %s   char= %s    inputString= %s", kcode, kchar, @inputString)
     @lastKeypressTime = now

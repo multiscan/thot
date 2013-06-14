@@ -1,8 +1,0 @@
-li=$("#loan_li_<%= @loan.id %>");
-
-li.fadeOut('slow', function() {
-  $(this).remove();
-  if ($(".bookli").size() == 0) {
-    $("#emptybooklist").show();
-  }
-});

@@ -37,11 +37,19 @@ module ApplicationHelper
   end
 
   def might_paginate(v)
-    will_paginate (v), :renderer => BootstrapPagination::Rails
+    will_paginate v, :renderer => BootstrapPagination::Rails
   end
 
   def render_markdown(t)
     BlueCloth.new(t).to_html.html_safe
+  end
+
+  def print_labels_links(url)
+    out = []
+    out << link_to("3x8 label sheet with margins", url+".pdf?lf=3x8m")
+    out << link_to("3x8 label sheet", url+".pdf?lf=3x8")
+    out << link_to("dymo label printer", url+".pdf?lf=dymo")
+    out.join(" | ").html_safe
   end
 
   class Prawn::Document

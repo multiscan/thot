@@ -27,8 +27,8 @@
 
 function on_ready() {
   // alert("This is application.js");
-  thot.load_inactivity_monitor();
-  thot.load_barcode_scanner();
+  thot.load_inactivity_monitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
+  thot.load_barcode_scanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>);
   thot.ready();
 }
 

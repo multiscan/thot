@@ -1,5 +1,6 @@
 class window.InactivityMonitor
   constructor: (it) ->
+    console.log("loading inactivity monitor it="+it+" s")
 
     @inactivityTimeout = it*1000;
 
@@ -20,15 +21,16 @@ class window.InactivityMonitor
   setDeadline: () ->
     clearInterval(@nextDeadline) if @nextDeadline?
     now = jQuery.now()
+    console.log("setDeadline: @nextActivityDeadline="+@nextActivityDeadline+"  now="+now+"   diff="+(@nextActivityDeadline - now))
     @nextDeadline = setTimeout ( =>
         @onInactivityDeadlineReached()
       ), @nextActivityDeadline - now
 
   onInactivityDeadlineReached: () ->
+    console.log("inactivity deatline reached")
     now = jQuery.now()
     if now < @nextActivityDeadline
       @setDeadline
     else
       console.log("should redirect")
-      # location.href = @inactivityRedirectUrl
-
+      location.href = @inactivityRedirectUrl

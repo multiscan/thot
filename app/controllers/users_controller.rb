@@ -1,17 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :nebis_session, :only => :show_by_nebis
-  before_filter :authenticate_admin!, :except => [:show]
-
-  def show_by_nebis
-    @user = User.find_by_nebis(params[:nebis])
-    nebis_user_login(@user)
-    @loans = @user.loans.where(:return_date => nil).order('id DESC')
-    unless nebis_user.nil?
-      @loan = @nebis_user.loans.new
-    end
-    render :action => :show
-  end
+  before_filter :authenticate_admin!, :only => [:show]
 
   # GET /users/1
   # GET /users/1.json
