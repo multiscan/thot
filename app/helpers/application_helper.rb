@@ -139,6 +139,7 @@ module ApplicationHelper
 
     end
 
+    # TODO: implement a version using stamps. Possibly creating stamps on demand.
     def barcode_128(str, ox, oy, w, h, also_text=false)
       digits = [104] # Start Code B
       str.gsub(/[^ a-zA-Z0-9!"#$\%&'()*+,\-.\/:;<=>?@]+/, "").each_byte {|b| digits << b-32}
@@ -149,9 +150,6 @@ module ApplicationHelper
       cc = cc % 103
       digits << cc
       digits << 106  # stop
-
-      puts "str=#{str} -> digits = #{digits.join(', ')}    ww = #{ww.join(', ')}"
-
       tw = 11*digits.size + 2 # tot width in dw units (stop have 2 extra narrowest lines)
       dw = w.to_f / tw        # narrowest line width in units of w (points)
 
