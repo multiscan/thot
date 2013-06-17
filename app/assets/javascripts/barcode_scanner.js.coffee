@@ -1,8 +1,52 @@
-# Probably should consider using http://code.google.com/p/jquery-barcodelistener/
 class window.BarcodeScanner
   constructor: (d) ->
 
     console.log("loading barcode scanner: d="+d+" ms")
+
+    @scannerKeypressMaxDelay = d;
+
+    @scannerActive = true
+    @lastKeypressTime = jQuery.now()
+    @inputString = ""
+
+    jQuery('body').keypress( (e) => @onKeypress(e) )
+
+  onKeypress: (e) ->
+    now = jQuery.now()
+    kcode = e.keyCode
+    kchar = String.fromCharCode(kcode)
+    #     ESC activate/deactivate barcode scanner
+    if kcode==27
+      @scannerActive=!@scannerActive;
+      console.log("scanner is now: %s", scannerActive ? "active" : "inactive");
+    else
+      return unless @scannerActive
+      if kcode == 13
+        if ( @inputString.charAt(0)=="E" && @inputString.length==8)
+          console.log("this was a camipro card number: %s", @inputString);
+          $.event.trigger( { type: "barcode_nebis", message: @inputString } )
+          @inputString = ""
+        else if ( @inputString.charAt(0)=="S" && @inputString.length > 3 )
+          console.log("this should be a shelf: %s", @inputString)
+          $.event.trigger( { type: "barcode_shelf", message: @inputString } )
+          @inputString = ""
+        else if @inputString.match(/^[0-9][0-9][0-9][0-9][0-9]*$/)
+          console.log("this should be a book id: %s", @inputString)
+          $.event.trigger( { type: "barcode_item", message: @inputString } )
+          @inputString = ""
+      else if (kcode>47 && kcode<58 || kcode>64 && kcode<91 || kcode>96 && kcode<123)
+        if now - @lastKeypressTime < @scannerKeypressMaxDelay
+          @inputString += kchar
+        else
+          @inputString = ""
+    @lastKeypressTime = now
+
+
+
+class window.BarcodeScanner2
+  constructor: (d) ->
+
+    console.log("loading barcode scanner2: d="+d+" ms")
 
     @nebis = false
     @scannerKeypressMaxDelay = d;

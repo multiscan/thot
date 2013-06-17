@@ -18,13 +18,18 @@ gem 'rvm-capistrano'
 
 # ------------------------------------------------------------ APP SPECIFIC GEMS
 
-# authentication
+# authentication and acl
 gem "devise", ">= 2.1.2"
 gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
 
 # app configuration: config/application.yml
 gem "figaro", ">= 0.5.0"
+
+# for easily passing variables to javascript
+# http://railscasts.com/episodes/324-passing-data-to-javascript
+# https://github.com/gazay/gon
+gem 'gon'
 
 # pdf rendering
 gem 'prawn'

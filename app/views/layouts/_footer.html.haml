@@ -1,1 +1,16 @@
 -#= link_to image_tag("http://www.worldcat.org/images/wc_badge_144x19.gif?ai=EPFL_giovanni.cangiani", :size=>"144x19", :alt=>"WorldCat lets people access the collections of libraries worldwide [WorldCat.org]", :title=>"WorldCat lets people access the collections of libraries worldwide [WorldCat.org]"), "http://www.worldcat.org/", :id=>"wcbadge", :target=>"_blank"
+
+%div{:id => "grace_timeout_dialog", :class => "modal hide fade"}
+  .modal-header
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
+    %h3 Nebis Session Timeout
+  .modal-body
+    %p
+      The session that you have activated by scanning your nebis code will
+      %b timeout
+      in
+      %span#grace_timeout
+        = 5
+      seconds
+  .modal-footer
+    =link_to_function "Reset Timer", "window.inactivity_monitor.reset();", :class=>"btn btn-primary", :id=>"reset_timer_link"

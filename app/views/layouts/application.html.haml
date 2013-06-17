@@ -5,6 +5,7 @@
     %title= content_for?(:title) ? "Thot: " + yield(:title).gsub(/<.*$/,"") : content_for?(:titlebar) ? "Thot: " + yield(:titlebar) : "Thot"
     %meta{:name=>"description", :content=>content_for?(:description) ? yield(:description) : "Thot"}
     = stylesheet_link_tag "application", :media => "all"
+    = include_gon(:init => true)
     = javascript_include_tag "application"
     = csrf_meta_tags
     = yield(:head)

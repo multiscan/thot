@@ -14,11 +14,17 @@ class Thot
     when_ready_for_layout() if (typeof when_ready_for_layout == 'function')
     when_ready_for_view() if (typeof when_ready_for_view == 'function')
 
-  load_inactivity_monitor: (d) ->
-    window.inactivity_monitor = new InactivityMonitor(d);
+    if gon.inventory
+      window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>);
+      window.inventory = new Inventory()
 
-  load_barcode_scanner: (d) ->
-    window.barcode_scanner = new BarcodeScanner(d);
+    unless gon.admin
+      # window.inactivity_monitor = new InactivityMonitor(<%=ENV['INACTIVITY_TIME_BEFORE_RESET'].to_i%>);
+      window.inactivity_monitor = new InactivityMonitor(10);
+      window.barcode_scanner = new BarcodeScanner(<%=ENV['BARCODE_KEYPRESS_MAXDELAY'].to_i%>);
+      window.librarian = new Librarian()
+
+  # ---------------------------------------------------------- Utility functions
 
   increase_counter: (id) ->
     c=jQuery(id);

@@ -10,10 +10,10 @@ Thot::Application.routes.draw do
 
   # devise_for :users
   resources :users, :only => [:show]
-  resources :nebis, :only => [:show]
   namespace :nebis do
     get 'extend'
   end
+  resources :nebis, :only => [:show]
 
   # -------------------------------------------- for Operators and Administrator
   devise_for :admins

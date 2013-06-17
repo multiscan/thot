@@ -36,6 +36,8 @@ class ApplicationController < ActionController::Base
     @nebis_user = user
     @nebis_uid  = user.id
     session[:nebis_uid] = @nebis_uid
+    gon.nebis = @user.nebis
+    gon.nebis_extend_url = nebis_extend_url(:json)
     nebis_extend
   end
 

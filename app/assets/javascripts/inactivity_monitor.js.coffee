@@ -1,36 +1,78 @@
 class window.InactivityMonitor
+  # needs:
   constructor: (it) ->
-    console.log("loading inactivity monitor it="+it+" s")
 
-    @inactivityTimeout = it*1000;
+    unless gon.root
+      @inactivityTimeout = it*1000;
 
-    # proto = window.location.protocol
-    # host  = window.location.host
-    # @baseUrl = proto + "//" + host + "/"
-    @baseUrl = "/"
-    @inactivityRedirectUrl = @baseUrl
+      console.debug("loading InactivityMonitor  timeout="+@inactivityTimeout)
 
-    jQuery('body').mousemove( => @touch() )
-    @touch()
-    @setDeadline()
+      @reset_url = gon.nebis_extend_url
+
+      @timeoutLabel = jQuery('#grace_timeout')
+      @timeoutDialog = jQuery('#grace_timeout_dialog')
+
+      jQuery('body').mousemove( => @touch() )
+      @touch()
+      @resetDeadline()
 
   touch: () ->
     @lastActivityTime = jQuery.now()
-    @nextActivityDeadline = @lastActivityTime + @inactivityTimeout
 
-  setDeadline: () ->
-    clearInterval(@nextDeadline) if @nextDeadline?
-    now = jQuery.now()
-    console.log("setDeadline: @nextActivityDeadline="+@nextActivityDeadline+"  now="+now+"   diff="+(@nextActivityDeadline - now))
-    @nextDeadline = setTimeout ( =>
+  nextActivityDeadline: () ->
+    @lastActivityTime + @inactivityTimeout
+
+  resetDeadline: () ->
+    clearInterval(@activityDeadline) if @activityDeadline?
+    @actovotuDeadline = setTimeout ( =>
         @onInactivityDeadlineReached()
-      ), @nextActivityDeadline - now
+      ), @nextActivityDeadline() - jQuery.now()
 
   onInactivityDeadlineReached: () ->
-    console.log("inactivity deatline reached")
     now = jQuery.now()
-    if now < @nextActivityDeadline
-      @setDeadline
+    if now < @nextActivityDeadline()
+      @resetDeadline
     else
-      console.log("should redirect")
-      location.href = @inactivityRedirectUrl
+      @showAlert()
+
+  showAlert: () ->
+    # if an alert dialog is present then show it and start a countdown otherwise redirect imediately
+    if (typeof @timeoutDialog == 'undefined' || @timeoutDialog.length == 0)
+      @redirect()
+    else
+      @graceSeconds=5
+      @timeoutLabel.text(@graceSeconds)
+      @timeoutDialog.modal('show');
+      @tickInterval = setInterval ( =>
+          @tick()
+        ), 1000
+
+  hideAlert: () ->
+    clearInterval(@tickInterval) if @tickInterval?
+    @timeoutDialog.modal('hide');
+
+  tick: () ->
+    @graceSeconds = @graceSeconds - 1
+    if @graceSeconds >=0
+      @timeoutLabel.text(@graceSeconds)
+    else
+      @redirect()
+
+  redirect: () ->
+    console.log("should redirect")
+    location.href = "/"
+
+  reset: () ->
+    @hideAlert()
+    @touch()
+    @resetDeadline()
+
+    # TODO: move this stuff into Librarian
+    if @reset_url
+      jQuery.ajax @reset_url,
+                  type: 'GET', dataType: 'json',
+                  error: (jqXHR, textStatus, errorThrown) ->
+                    thot.alert("error", "Could not renew your session. You will have to scan your Nebis code again")
+                  success: (data, textStatus, jqXHR) ->
+                    thot.alert("success", "Your nebis session have been renewed.")
+

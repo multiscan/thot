@@ -28,6 +28,7 @@ class SearchesController < ApplicationController
   # GET /searches/new
   # GET /searches/new.json
   def new
+    gon.root = true
     @search = Search.new
 
     respond_to do |format|

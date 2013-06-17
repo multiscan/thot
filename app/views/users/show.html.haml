@@ -29,27 +29,3 @@
   = render :partial => "loans/loan", :collection => @loans
 
 -# =============================================================================
-- if @nebis_user
-  - content_for :head do
-    :javascript
-      function when_ready_for_view() {
-        // window.nebis_logout = new NebisLogout(10);
-        window.nebis_logout = new NebisLogout(#{ENV["NEBIS_LOGOUT_AFTER"].to_i});
-        barcode_scanner.setNebis("#{@user.nebis}");
-      }
-  - content_for :foot do
-    %div{:id => "nebis_timeout_dialog", :class => "modal hide fade"}
-      .modal-header
-        %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
-        %h3 Nebis Session Timeout
-      .modal-body
-        %p
-          The session that you have activated by scanning your nebis code will
-          %b timeout
-          in
-          %span#nebis_timeout
-            = @nebis_timeout
-          seconds
-      .modal-footer
-        %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} Close
-        =link_to "Reset Timer", nebis_extend_url(:json), :remote=>true, :class=>"btn btn-primary", :id=>"reset_timer_link"
