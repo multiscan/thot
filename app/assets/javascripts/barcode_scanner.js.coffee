@@ -41,7 +41,9 @@ class window.BarcodeScanner
           @inputString = ""
     @lastKeypressTime = now
 
-
+  simulate_shelf: (sid) -> $.event.trigger( { type: "barcode_shelf", message: sid } )
+  simulate_item:  (inv) -> $.event.trigger( { type: "barcode_item",  message: inv } )
+  simulate_nebis: (nn)  -> $.event.trigger( { type: "barcode_nebis", message: nn  } )
 
 class window.BarcodeScanner2
   constructor: (d) ->

@@ -6,6 +6,8 @@
     - if can? :update, @user
       \-
       =link_to @user.nebis, nebis_url(@user.nebis)
+      \-
+      =link_to @user.id, @user
 
 - if @loan
   .row

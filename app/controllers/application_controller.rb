@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :set_gon_for_admin
+
   # check_authorization
 
   # override CanCan's default as it is only ment to for with current_user
@@ -77,4 +79,8 @@ class ApplicationController < ActionController::Base
     redirect_back_or_default(p)
   end
 
+  def set_gon_for_admin
+    gon.admin = admin_signed_in?
+    true
+  end
 end

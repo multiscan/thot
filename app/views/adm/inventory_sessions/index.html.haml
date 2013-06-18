@@ -1,17 +1,28 @@
 -content_for(:title) do
-  Listing Inventory Sessions
+  Listing #{@all ? "All" : "Your"} Inventory Sessions
 
-%table.table.sortable
-  %thead
-    %hr
-      %th Id
-      %th Name
-      %th Owner
-      %th No. Items
-      %th Unchecked
-      %th Birthday
-      %th
-  %tbody
-    = render :partial => "adm/inventory_sessions/inventory_session", :collection => @inventory_sessions
+- if @all
+  %p
+    Click
+    = link_to "here", adm_inventory_sessions_path(mine_only: true)
+    to see only your own sessions
 
-= link_to 'New Inventory session', new_adm_inventory_session_path
+- if @inventory_sessions.size > 0
+  %table.table.sortable
+    %thead
+      %hr
+        %th Id
+        %th Name
+        %th Owner
+        %th No. Items
+        %th Unchecked
+        %th Birthday
+        %th
+    %tbody
+      = render :partial => "adm/inventory_sessions/inventory_session", :collection => @inventory_sessions
+  = link_to 'New Inventory session', new_adm_inventory_session_path
+- else
+  %p
+    You have no inventory sessions but you can
+    = link_to 'create a new one', new_adm_inventory_session_path
+

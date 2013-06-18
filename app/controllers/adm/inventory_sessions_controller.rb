@@ -11,9 +11,11 @@ class Adm::InventorySessionsController < AdmController
   # GET /adm/inventory_sessions
   # GET /adm/inventory_sessions.json
   def index
-    if current_admin.admin?
+    if current_admin.admin? and not params[:mine_only]
+      @all = true
       @inventory_sessions = InventorySession.all
     else
+      @all = false
       @inventory_sessions = current_admin.inventory_sessions
     end
     respond_to do |format|

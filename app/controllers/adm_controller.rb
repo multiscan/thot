@@ -1,6 +1,5 @@
 class AdmController < ApplicationController
   before_filter :authenticate_admin!
-  before_filter :set_gon_for_admin
 
   def administrator_only!
     # raise User::NotAuthorized unless current_user.admin?
@@ -12,7 +11,4 @@ class AdmController < ApplicationController
     end
   end
 
-  def set_gon_for_admin
-    gon.admin = true
-  end
 end
