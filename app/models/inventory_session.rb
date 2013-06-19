@@ -6,17 +6,7 @@ class InventorySession < ActiveRecord::Base
   has_many :checked_goods, :class_name => "Good", :foreign_key => "inventory_session_id", :conditions=>"current_shelf_id IS NOT NULL"
   has_and_belongs_to_many :items, :join_table => "goods", :foreign_key => "inventory_session_id", :uniq => true
 
-  def imported_goods
-    self.checked_goods.where(:previous_shelf_id => nil)
-  end
-
-  def moved_goods
-    self.checked_goods.where("previous_shelf_id != current_shelf_id")
-  end
-
-  def confirmed_goods
-    self.checked_goods.where("previous_shelf_id = current_shelf_id")
-  end
+  # ----------------------------------------------------------------------------
 
   def total_count
     @total_count ||= goods.count
@@ -30,20 +20,87 @@ class InventorySession < ActiveRecord::Base
     total_count - checked_count
   end
 
-  def moved_count
-    @moved_count ||= checked_count == 0 ? 0 : (@confirmed_count.nil? || @imported_count.nil?) ? moved_goods.count : @checked_count - @confirmed_count - @imported_count
+  def imported_goods
+    self.checked_goods.where(:previous_shelf_id => nil)
   end
-
   def imported_count
     @imported_count ||= checked_count == 0 ? 0 : (@moved_count.nil? || @confirmed_count.nil?) ? imported_goods.count : @checked_count - @moved_count - @confirmed_count
   end
 
+  def moved_goods
+    self.checked_goods.where("previous_shelf_id != current_shelf_id AND previous_shelf_id IS NOT NULL")
+  end
+  def moved_count
+    @moved_count ||= checked_count == 0 ? 0 : (@confirmed_count.nil? || @imported_count.nil?) ? moved_goods.count : @checked_count - @confirmed_count - @imported_count
+  end
+
+  def imported_or_moved_goods
+    self.checked_goods.where("previous_shelf_id != current_shelf_id")
+  end
+  # def imported_or_moved_count
+  #   @import_or_moved_count ||= imported_count + moved_count
+  # end
+
+  def confirmed_goods
+    self.checked_goods.where("previous_shelf_id = current_shelf_id")
+  end
   def confirmed_count
     @confirmed_count ||= checked_count == 0 ? 0 : (@moved_count.nil? || @imported_count.nil?) ? confirmed_goods.count : @checked_count - @moved_count - @imported_count
   end
 
+  def missing_goods
+    self.goods.where(:current_shelf_id => nil)
+  end
+
   def progress
     @progress ||= total_count > 0 ? (100.0 * checked_count / total_count + 0.5).to_i : "--"
+  end
+
+  def move_committable
+    imported_or_moved_goods.where(commit: [0,2])
+  end
+  def move_committable_count
+    @move_committable_count ||= move_committable.count
+  end
+  def move_committed
+    imported_or_moved_goods.where(commit: [1, 3])
+  end
+  def move_committed_count
+    @move_committed_count ||= move_committed.count
+  end
+
+  def missing_committable
+    missing_goods.where(commit: [0,1])
+  end
+  def missing_committable_count
+    @missing_committable_count ||= missing_committable.count
+  end
+  def missing_committed
+    missing_goods.where(commit: [2,3])
+  end
+  def missing_committed_count
+    @missing_committed_count ||= missing_committed.count
+  end
+  # ----------------------------------------------------------------------------
+
+  def commit_moves
+    count=0
+    move_committable.each do |g|
+      g.item.update_attributes(shelf_id: g.current_shelf_id, status: "Library")
+      g.update_attribute(:commit, g.commit+1)
+      count = count + 1
+    end
+    count
+  end
+
+  def commit_missings
+    count=0
+    missing_committable.each do |g|
+      g.item.update_attributes(shelf_id: nil, status: "Missing")
+      g.update_attribute(:commit, g.commit+2)
+      count = count + 1
+    end
+    count
   end
 
   # add an item to this inventory session

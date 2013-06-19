@@ -23,6 +23,24 @@ class Adm::InventorySessionsController < AdmController
     end
   end
 
+  # GET /adm/inventory_sessions/:id/commit_moves
+  def commit_moves
+    @inventory_session = InventorySession.find(params[:inventory_session_id])
+    n = @inventory_session.commit_moves
+    respond_to do |format|
+      format.html { redirect_to [:adm, @inventory_session], :notice => "#{n} moves committed." }
+    end
+  end
+
+  # GET /adm/inventory_sessions/:id/commit_missings
+  def commit_missings
+    @inventory_session = InventorySession.find(params[:inventory_session_id])
+    n = @inventory_session.commit_missings
+    respond_to do |format|
+      format.html { redirect_to [:adm, @inventory_session], :notice => "#{n} missing committed." }
+    end
+  end
+
   # GET /adm/inventory_sessions
   # GET /adm/inventory_sessions.json
   def index

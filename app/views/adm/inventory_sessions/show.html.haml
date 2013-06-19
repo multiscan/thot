@@ -39,6 +39,20 @@
       %dt imported:
       %dd #{@inventory_session.imported_count} items
 
+- if @inventory_session.progress > 85
+  %h4 Commit
+  - if @inventory_session.move_committable_count > 0
+    %p
+      There are #{@inventory_session.move_committable_count} checked items that changed shelf.
+      = link_to "Commit", adm_inventory_session_commit_moves_path(@inventory_session), data: { confirm: 'Are you sure?' }
+      the changes to the item database.
+  - if @inventory_session.missing_committable_count > 0
+    %p
+      There are #{@inventory_session.missing_committable_count} items still missing. If you are
+      sure that there are no more items to scan, then you might want to
+      = link_to "commit", adm_inventory_session_commit_missings_path(@inventory_session), data: { confirm: 'Caution: missing items will be kept in the database but will not be listed in searches.'}
+      this inventory session.
+
 
 %h3 Notes:
 .well= render_markdown(@inventory_session.notes)

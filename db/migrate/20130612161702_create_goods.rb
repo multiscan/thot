@@ -6,6 +6,7 @@ class CreateGoods < ActiveRecord::Migration
       t.integer :inv
       t.integer :current_shelf_id
       t.integer :previous_shelf_id
+      t.integer :commit, :default => 0  # 0=none, 1=move, 2=missing, 3=move+missing
       t.timestamps
     end
   end

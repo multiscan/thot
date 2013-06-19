@@ -2,10 +2,11 @@
   %td= inventory_session.id
   %td= inventory_session.name
   %td= inventory_session.admin.name
-  %td.right= inventory_session.total_count
-  %td.right= inventory_session.checked_count
-  %td.right= inventory_session.progress
   %td= inventory_session.created_at.to_date
+  %td= inventory_session.total_count
+  %td #{inventory_session.progress} %
+  %td #{inventory_session.move_committable_count} + #{inventory_session.move_committed_count}
+  %td #{inventory_session.missing_committable_count} + #{inventory_session.missing_committed_count}
   %td
     = link_to 'Show', [:adm, inventory_session]
     |

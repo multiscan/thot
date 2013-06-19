@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  attr_accessible :currency, :inv, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status
+  attr_accessible :currency, :inv, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status, :shelf_id
 
   belongs_to :inventoriable, :polymorphic => true
   belongs_to :lab                          # , :counter_cache => true

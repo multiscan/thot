@@ -27,8 +27,9 @@ Thot::Application.routes.draw do
     resources :goods
     resources :inventory_sessions do
       resources :shelves, :only => [:show]
-      resources :goods, :only => [:edit]
       post :check
+      get  :commit_moves
+      get  :commit_missings
     end
     match 'inventory_sessions/inventorize_search', :to => 'inventory_sessions#inventorize_search', :via => :post, :as => 'inventorize_search'
     resources :items, :only=>[:index, :show, :edit, :update, :destroy]
