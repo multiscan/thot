@@ -2,8 +2,9 @@
   %td= inventory_session.id
   %td= inventory_session.name
   %td= inventory_session.admin.name
-  %td= inventory_session.goods.count
-  %td= inventory_session.unchecked_goods.count
+  %td.right= inventory_session.total_count
+  %td.right= inventory_session.checked_count
+  %td.right= inventory_session.progress
   %td= inventory_session.created_at.to_date
   %td
     = link_to 'Show', [:adm, inventory_session]

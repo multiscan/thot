@@ -1,0 +1,25 @@
+-content_for(:title) do
+  Shelf #{@shelf.id}: #{@shelf.location.name} / #{@shelf.seqno}
+  %br
+  %small=link_to @inventory_session.name, [:adm, @inventory_session]
+#instructions
+  %p
+    Scan the barcodes of the items on this shelf
+
+.row
+  .span3
+    %h4 Confirmed
+    %ul{class: "unstyled goods", id: "confirmed"}
+      =render :partial => 'adm/goods/good', :collection => @confirmed
+  .span3
+    %h4 Imported
+    %ul{class: "unstyled goods", id: "imported"}
+      =render :partial => 'adm/goods/good', :collection => @imported
+  .span3
+    %h4 Moved in
+    %ul{class: "unstyled goods", id: "moved_in"}
+      =render :partial => 'adm/goods/good', :collection => @moved_in
+  .span3
+    %h4 Missing
+    %ul{class: "unstyled goods", id: "missing"}
+      =render :partial => 'adm/goods/good', :collection => @missing

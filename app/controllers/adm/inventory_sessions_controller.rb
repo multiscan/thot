@@ -8,6 +8,21 @@ class Adm::InventorySessionsController < AdmController
     redirect_to [:adm, @inventory_session]
   end
 
+  # POST /adm/inventory_sessions/:id/check/:inv
+  def check
+    @inventory_session = InventorySession.find(params[:inventory_session_id])
+    @shelf = Shelf.find(params[:shelf])
+    @good = @inventory_session.goods.where(inv: params[:inv]).first
+    respond_to do |format|
+      if @good
+        @good.update_attribute(:current_shelf_id, @shelf.id)
+        format.json { render json: { good: @good, status: @good.status(@shelf.id), id: "inv_#{@good.inv}", li: render_to_string(:partial => 'adm/goods/good', :layout => false, :formats => [:html], :locals => { :good => @good }) } }
+      else
+        format.json { render json: { good: false, message: "The item you have scanned is not among the goods of this inventory session"}, status: :not_found }
+      end
+    end
+  end
+
   # GET /adm/inventory_sessions
   # GET /adm/inventory_sessions.json
   def index
@@ -28,7 +43,18 @@ class Adm::InventorySessionsController < AdmController
   # GET /adm/inventory_sessions/1.json
   def show
     @inventory_session = InventorySession.find(params[:id])
-
+    # @total_count     = @inventory_session.goods.count
+    # @checked_count   = @inventory_session.checked_goods.count
+    # @unchecked_count = @total_count - @checked_count
+    # if @checked_count > 0
+    #   @moved_count     = @inventory_session.moved_goods.count
+    #   @imported_count  = @inventory_session.imported_goods.count
+    #   @confirmed_count  = @checked_count - @moved_count - @imported_count
+    # else
+    #   @moved_count = @imported_count = @confirmed_count = 0
+    # end
+    # @progress        = (100.0 * @checked_count / @total_count + 0.5).to_i
+    gon.inventory = @inventory_session.id
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @inventory_session }

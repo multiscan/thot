@@ -5,6 +5,22 @@ class Adm::ShelvesController < AdmController
     @shelves = Shelf.all
   end
 
+  # GET /adm/inventory_sessions/:inventory_session_id/shelves/:id
+  def show
+    @inventory_session = InventorySession.find(params[:inventory_session_id])
+    @shelf = Shelf.find(params[:id])
+    @confirmed= @inventory_session.goods.where(previous_shelf_id: @shelf.id, current_shelf_id: @shelf.id)
+    @missing  = @inventory_session.goods.where(previous_shelf_id: @shelf.id, current_shelf_id: nil)
+    @imported = @inventory_session.goods.where(previous_shelf_id: nil, current_shelf_id: @shelf.id)
+    @moved_in = @inventory_session.goods.where("previous_shelf_id != ? AND current_shelf_id = ?", @shelf.id, @shelf.id)
+
+    gon.inventory = @inventory_session.id
+    gon.shelf = @shelf.id
+    respond_to do |format|
+      format.html
+    end
+  end
+
   # POST /adm/location/id/shelves
   # POST /adm/labs.json
   def create

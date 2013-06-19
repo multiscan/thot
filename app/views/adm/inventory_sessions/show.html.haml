@@ -3,26 +3,46 @@
   %br
   %small inventory session
 
+#instructions
+  %p
+    Scan the barcode of one of the shelfs to check the inventory.
+
 .row
-  .span6
+  .span4
+    %h4 Details
     %dl.dl-horizontal
       %dt owner:
       %dd=@inventory_session.admin.name
       %dt created:
       %dd=@inventory_session.created_at.to_date
-  .span6
+  .span4
+    %h4 Counts
     %dl.dl-horizontal
-      %dt goods:
-      %dd
-        =@inventory_session.goods.count
-        items
+      %dt total:
+      %dd #{@inventory_session.total_count} items
       %dt unchecked:
+      %dd #{@inventory_session.unchecked_count} items
+      %dt progress:
       %dd
-        =@inventory_session.unchecked_goods.count
-        items
+        #{@inventory_session.progress} %
+        %div{class: "progress progress-striped"}
+          %div{class: "bar", style: "width: #{@progress}%"}
+  .span4
+    %h4 Checked Counts
+    %dl.dl-horizontal
+      %dt total:
+      %dd #{@inventory_session.checked_count} items
+      %dt confirmed:
+      %dd #{@inventory_session.confirmed_count} items
+      %dt moved:
+      %dd #{@inventory_session.moved_count} items
+      %dt imported:
+      %dd #{@inventory_session.imported_count} items
+
+
 %h3 Notes:
 .well= render_markdown(@inventory_session.notes)
 
 = link_to 'Edit', edit_adm_inventory_session_path(@inventory_session)
 \|
-= link_to 'Back', :back
+= link_to 'Back to inventory sessions', adm_inventory_sessions_path

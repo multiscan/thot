@@ -25,7 +25,11 @@ Thot::Application.routes.draw do
     end
     resources :deg_isbns
     resources :goods
-    resources :inventory_sessions
+    resources :inventory_sessions do
+      resources :shelves, :only => [:show]
+      resources :goods, :only => [:edit]
+      post :check
+    end
     match 'inventory_sessions/inventorize_search', :to => 'inventory_sessions#inventorize_search', :via => :post, :as => 'inventorize_search'
     resources :items, :only=>[:index, :show, :edit, :update, :destroy]
     resources :labs
