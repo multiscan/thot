@@ -1,6 +1,8 @@
 -content_for(:title) do
   Listing Users
 
+= link_to 'New User', new_adm_user_path if can? :create, User
+
 =render :partial => "users"
 
 = link_to 'New User', new_adm_user_path if can? :create, User

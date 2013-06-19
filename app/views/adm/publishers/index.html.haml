@@ -1,6 +1,8 @@
 -content_for(:title) do
   Listing publishers
 
+= link_to 'New Publisher', new_adm_publisher_path
+
 %table.table.sortable
   %thead
     %hr
@@ -19,5 +21,7 @@
           = link_to 'Edit', edit_adm_publisher_path(publisher)
           |
           = link_to 'Destroy', [:adm, publisher], method: :delete, data: { confirm: 'Are you sure?' }
+
+= might_paginate(@publishers)
 
 = link_to 'New Publisher', new_adm_publisher_path

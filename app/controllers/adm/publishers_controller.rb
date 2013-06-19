@@ -4,7 +4,7 @@ class Adm::PublishersController < AdmController
   # GET /adm/publishers
   # GET /adm/publishers.json
   def index
-    @publishers = Publisher.all
+    @publishers = Publisher.paginate(per_page: 100, page: params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

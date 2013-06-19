@@ -38,9 +38,7 @@
   %h3
     = @search.items_oriented? ? "Items" : "Books"
   %p
-    Found
-    = @search.total_entries
-    entries.
+    Found #{@search.total_entries} entries.
     - if @search.total_pages > 1
       Showing #{@search.size} entries (page #{@search.current_page} of #{@search.total_pages})
   - if @search.items_oriented?

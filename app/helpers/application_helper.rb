@@ -20,6 +20,22 @@ module ApplicationHelper
     item.price ? "#{item.price} #{item.currency}" :  "NA"
   end
 
+  def item_location(item)
+    if item.location.blank?
+      if item.shelf_id
+        "Shelf id #{item.shelf_id}"
+      else
+        "NA"
+      end
+    else
+      if item.shelf_id
+        "#{item.location_name} / Shelf #{item.shelf.seqno}"
+      else
+        item.location_name
+      end
+    end
+  end
+
   def days_ago(n)
     if n==0
       "today"

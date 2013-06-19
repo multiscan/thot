@@ -13,11 +13,13 @@
           Admin Menu
           %b.caret
         %ul.dropdown-menu
-          %li=link_to "Books", adm_books_path
           %li=link_to "Inventories", adm_inventory_sessions_path
           %li=link_to "Items", adm_items_path
           %li=link_to "Rooms", adm_locations_path
           %li=link_to "Users", adm_users_path
+          %li.divider
+          %li=link_to 'New Book', new_adm_book_path if can? :create, Book
+          %li=link_to 'New User', new_adm_user_path if can? :create, User
           %li.divider
           %li=link_to "Cleanup Books", adm_deg_isbns_path
           %li=link_to "Cleanup Publishers", new_adm_publisher_merger_path
