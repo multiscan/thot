@@ -45,8 +45,8 @@ Thot::Application.routes.draw do
     end
   end
 
-  match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
-  match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
+  # match 'admin/cpanel', :to => 'home#admin', :via => :get, :as => 'cpanel'
+  # match 'stats', :to => 'home#stats', :via => :get, :as => 'stats'
 
   root :to => "searches#new"
 

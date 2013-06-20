@@ -1,0 +1,7 @@
+-content_for(:title) do
+  Books
+  - if @isbn
+    %br
+    %small with ISBN = #{@isbn}
+
+= render :partial => "books/books"

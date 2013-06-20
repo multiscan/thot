@@ -4,6 +4,10 @@ module ApplicationHelper
     t.gsub("\n", "<br/>").gsub("\t", "<span class='spacer'>&nbsp;</span>").html_safe;
   end
 
+  def link_to_nebis(n)
+    n=="empty" ? n : link_to(n, nebis_path(n))
+  end
+
   def item_status(item)
     if item.status=="Library"
       if c=item.current_checkout
@@ -12,7 +16,7 @@ module ApplicationHelper
         "<span class='label label-success'>available</span>".html_safe
       end
     else
-      "<span class='label label-inverse'>missing</span>".html_safe
+      "<span class='label label-inverse'>#{item.status}</span>".html_safe
     end
   end
 

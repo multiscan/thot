@@ -173,13 +173,14 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
   u = lb.userId ? ( User.find_by_legacy_id(lb.userId) || duplicate_users[lb.userId] ) : nil
 
   i = b.items.new(
-    :status => lb.status,
-    :inv    => lb.invNumber,
+    :status   => lb.status,
     :location => lb.location,  # this creates a new location if not found
     :price    => lb.price,
     :currency => lb.currency,
   )
   i.lab = lab
+  # force id to be equal to inv so that we can get rid of inv
+  i.id  = lb.invNumber
 
   i.save!
   i.checkout(u) unless u.nil?

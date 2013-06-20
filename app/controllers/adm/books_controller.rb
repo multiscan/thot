@@ -40,8 +40,10 @@ class Adm::BooksController < ApplicationController
         if @books.first.new_record?
           render "new_as_merge"
         else
-          flash[:notice] = "More than one book with ISBN #{params[:book][:isbn]} was found. Please select the one your want and then add items to it."
-          render "index"
+          @isbn = params[:book][:isbn]
+          flash[:notice] = "More than one book with ISBN #{@isbn} was found. Please select the one your want and then add items to it."
+          # render "books/index" #, :collection => @books
+          # # render "index"
         end
       end
     else
@@ -50,10 +52,8 @@ class Adm::BooksController < ApplicationController
       respond_to do |format|
         if @book.save
           format.html { redirect_to new_adm_book_item_path(@book), notice: 'Book was successfully created.' }
-          format.json { render json: @book, status: :created, location: @book }
         else
           format.html { render action: "new" }
-          format.json { render json: @book.errors, status: :unprocessable_entity }
         end
       end
     end

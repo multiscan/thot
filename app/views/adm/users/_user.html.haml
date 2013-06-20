@@ -1,9 +1,9 @@
 %tr
   %td= link_to user.id, [:adm, user]
-  %td= link_to user.nebis, nebis_path(user.nebis)
+  %td= link_to_nebis(user.nebis)
   %td= user.name
   %td= user.lab_nick
-  %td= user.loans.count
+  %td.right= user.loans.count
   %td
     = link_to 'Show', [:adm, user]
     - if can? :update, user

@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  attr_accessible :currency, :inv, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status, :shelf_id
+  attr_accessible :currency, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status, :shelf_id
 
   belongs_to :inventoriable, :polymorphic => true
   belongs_to :lab                          # , :counter_cache => true
@@ -10,7 +10,10 @@ class Item < ActiveRecord::Base
   has_one :current_checkout, :class_name => "Loan", :foreign_key => "item_id", :conditions=>{:return_date=>nil}
 
   validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
-  validates_uniqueness_of :inv, :message => "must be unique"
+  # validates_presence_of :inv
+  # validates_uniqueness_of :inv, :message => "must be unique"
+
+  after_create :autoset_inv
 
   # Thinking Sphinx Stuff
   define_index do
@@ -83,4 +86,10 @@ class Item < ActiveRecord::Base
     select("status").uniq.map{|s| s.status}.compact
   end
 
+ private
+
+  def autoset_inv
+    self.inv = id                    # Item.order('inv ASC').last.inv + 1 if inv.nil?
+    self.save
+  end
 end
