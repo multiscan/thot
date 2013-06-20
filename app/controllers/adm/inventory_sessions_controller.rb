@@ -72,6 +72,7 @@ class Adm::InventorySessionsController < AdmController
     #   @moved_count = @imported_count = @confirmed_count = 0
     # end
     # @progress        = (100.0 * @checked_count / @total_count + 0.5).to_i
+puts "-------------------------------- inventory_session_id = #{@inventory_session.id}"
     gon.inventory = @inventory_session.id
     respond_to do |format|
       format.html # show.html.erb

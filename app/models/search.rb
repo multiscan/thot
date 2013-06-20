@@ -68,13 +68,13 @@ class Search < ActiveRecord::Base
     if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
       inv=i # inv_range.strip.to_i
       logger.debug "Simple search for inv=#{inv}"
-      @entries = Item.where(:inv=>inv)
+      @entries = Item.where(:id=>inv).paginate(paginate_params)
       return
     end
 
     # bookle isbn
     unless isbn.blank?
-      @entries = Book.where(:isbn => isbn)
+      @entries = Book.where(:isbn => isbn).paginate(paginate_params)
       logger.debug "Simple search for isbn=#{isbn}"
       return
     end
@@ -138,7 +138,7 @@ class Search < ActiveRecord::Base
     unless @item_conds
       @item_conds = {}
       unless inv_range.blank?
-        @item_conds[:inv] = parse_range(inv_range)
+        @item_conds[:id] = parse_range(inv_range)
       end
       unless lab_id.blank?
         @item_conds[:lab_id] = lab_id

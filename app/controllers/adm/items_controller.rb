@@ -5,10 +5,16 @@ class Adm::ItemsController < AdmController
   # GET /items
   # GET /items.json
   def index
-    # @items = Item.all
-    @labs  = current_admin.labs
-    @items = Item.where(:lab_id => @labs).order("created_at DESC").paginate(:page=>params[:page], :per_page=>50)
-
+    @labs = current_admin.labs
+    if current_admin.admin? && ( @labs.empty? || params[:all] )
+      @items = Item.order("created_at DESC").paginate(:page=>params[:page], :per_page=>50)
+      @link_to_mine = ! @labs.empty?
+      @link_to_all = false
+    else
+      @link_to_all = current_admin.admin?
+      @link_to_mine = false
+      @items = Item.where(:lab_id => @labs).order("created_at DESC").paginate(:page=>params[:page], :per_page=>50)
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @items }

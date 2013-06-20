@@ -8,7 +8,7 @@ class CreateSearches < ActiveRecord::Migration
       t.string   :year_range            # book
 
       t.string   :inv_range             # item
-      t.date     :inv_date_from         # item
+      t.date     :inv_date_fr           # item
       t.date     :inv_date_to           # item
       t.integer  :lab_id                # item
       t.integer  :location_id           # item

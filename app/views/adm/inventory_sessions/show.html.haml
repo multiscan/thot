@@ -39,7 +39,7 @@
       %dt imported:
       %dd #{@inventory_session.imported_count} items
 
-- if @inventory_session.progress > 85
+- if @inventory_session.progress.to_i > 85
   %h4 Commit
   - if @inventory_session.move_committable_count > 0
     %p

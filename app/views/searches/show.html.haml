@@ -9,11 +9,11 @@
 - if @search.total_entries > 0
   - if admin_signed_in?
     .row
-      .span4
+      .span5
         %h4 Labels
         %p=print_labels_links(search_path(@search))
       - if @search.items_oriented?
-        .span8
+        .span7
           %h4 Inventorize
           - if current_admin.inventory_sessions.count > 0
             %p

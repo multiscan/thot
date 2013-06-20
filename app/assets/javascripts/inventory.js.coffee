@@ -1,5 +1,6 @@
 class window.Inventory
   constructor: () ->
+    console.log("loading Inventory")
     @shelf = gon.shelf
     @inventory = gon.inventory
     @base_shelf_url="/adm/inventory_sessions/"+@inventory+"/shelves/"

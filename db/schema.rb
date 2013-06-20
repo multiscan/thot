@@ -143,7 +143,7 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
     t.string   "publisher_name"
     t.string   "year_range"
     t.string   "inv_range"
-    t.date     "inv_date_from"
+    t.date     "inv_date_fr"
     t.date     "inv_date_to"
     t.integer  "lab_id"
     t.integer  "location_id"
