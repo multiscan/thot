@@ -71,16 +71,12 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
   create_table "goods", :force => true do |t|
     t.integer  "inventory_session_id"
     t.integer  "item_id"
-    t.integer  "shelf_id"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
-  end
-
-  create_table "inventories", :force => true do |t|
-    t.text     "notes"
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "inv"
+    t.integer  "current_shelf_id"
+    t.integer  "previous_shelf_id"
+    t.integer  "commit",               :default => 0
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   create_table "inventory_sessions", :force => true do |t|
@@ -94,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
   create_table "items", :force => true do |t|
     t.integer  "lab_id"
     t.integer  "location_id"
+    t.integer  "shelf_id"
     t.integer  "admin_id"
     t.integer  "inv"
     t.string   "status"
@@ -103,8 +100,6 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
     t.string   "inventoriable_type"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
-    t.integer  "shelf_id"
-    t.integer  "inventory_id"
   end
 
   create_table "labs", :force => true do |t|
@@ -148,31 +143,33 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
     t.string   "publisher_name"
     t.string   "year_range"
     t.string   "inv_range"
+    t.date     "inv_date_from"
+    t.date     "inv_date_to"
     t.integer  "lab_id"
     t.integer  "location_id"
     t.string   "status"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-    t.date     "inv_date_fr"
-    t.date     "inv_date_to"
   end
 
   create_table "shelves", :force => true do |t|
     t.integer  "location_id"
+    t.integer  "seqno"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",                                   :null => false
-    t.string   "nebis"
+    t.string   "name",                                     :null => false
+    t.string   "location"
+    t.string   "nebis",                  :default => "NA"
     t.integer  "legacy_id"
     t.integer  "admin_id"
     t.integer  "lab_id"
     t.datetime "expire_at"
     t.text     "notes"
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                  :default => "",   :null => false
+    t.string   "encrypted_password",     :default => "",   :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -185,8 +182,8 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

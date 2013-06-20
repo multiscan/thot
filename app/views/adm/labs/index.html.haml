@@ -1,11 +1,12 @@
 -content_for(:title) do
   Labs
 
-%table.table.sortable
+%table.table.sortable.table-bordered
   %thead
     %hr
       %th Nick
       %th Name
+      %th No. Ops
       %th No. Users
       %th No. Items
       %th
@@ -14,6 +15,7 @@
       %tr
         %td= lab.nick
         %td= lab.name
+        %td= lab.operators.count
         %td= lab.users.count
         %td= lab.items.count
 

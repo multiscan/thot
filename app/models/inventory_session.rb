@@ -106,7 +106,7 @@ class InventorySession < ActiveRecord::Base
   # add an item to this inventory session
   def inventorize(item)
     # g = Good.first_or_create({:inventory_session_id => id, :item_id=>item.id})
-    g = goods.where(:item_id=> item.id).first_or_create()
+    g = self.goods.where(:item_id=> item.id).first_or_create()
     g.update_attributes(current_shelf_id: nil, previous_shelf_id: item.shelf_id)
   end
 

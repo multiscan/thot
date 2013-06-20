@@ -4,22 +4,26 @@
     \-
     =@admin.role
 
-%h3 Managed Labs
-%table.table
-  %thead
-    %hr
-      %th Nick
-      %th Name
-      %th No. Users
-      %th No. Items
-  %tbody
-    - @admin.labs.each do |lab|
-      %tr
-        %td= lab.nick
-        %td= lab.name
-        %td
-          = lab.users.count
-          \(
-          = link_to(adm_lab)
-          \)
-        %td= lab.items.count
+%p
+  =link_to @admin.email,  "mailto:#{@admin.email}"
+
+- if @admin.labs.count == 0
+  %p #{@admin.name} is managing no labs.
+- else
+  %h3 Managed Labs
+  %table.table
+    %thead
+      %hr
+        %th Id
+        %th Nick
+        %th Name
+        %th.right No. Users
+        %th.right No. Items
+    %tbody
+      - @admin.labs.each do |lab|
+        %tr
+          %td= lab.id
+          %td= lab.nick
+          %td= lab.name
+          %td.right= lab.users.count
+          %td.right= lab.items.count

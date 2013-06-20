@@ -47,6 +47,56 @@
   text-align: center;
 }
 
+.table {
+  th.right, td.right {
+    text-align: right;
+  }
+}
+.table.sortable.table-bordered thead tr {
+  .header {
+    background-image: url(image_path("table_unsorted.gif"));
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+    min-width: 30px;
+    padding-right: 30px;
+  }
+  .headerSortUp {
+    background-image: url(image_path("table_asc.gif"));
+  }
+  .headerSortDown {
+    background-image: url(image_path("table_desc.gif"));
+  }
+}
+
+
+.twocol {
+  -webkit-column-count: 2; /* Saf3, Chrome*/
+  -webkit-column-gap: 4%; /* Saf3, Chrome*/
+  -moz-column-count: 2; /* FF3.5+ */
+  -moz-column-gap: 4%; /* FF3.5+ */
+  column-count: 2; /* Opera 11+*/
+  column-gap: 4%; /* Opera 11+*/
+}
+
+.threecol {
+  -webkit-column-count: 3; /* Saf3, Chrome*/
+  -webkit-column-gap: 3%; /* Saf3, Chrome*/
+  -moz-column-count: 3; /* FF3.5+ */
+  -moz-column-gap: 3%; /* FF3.5+ */
+  column-count: 3; /* Opera 11+*/
+  column-gap: 3%; /* Opera 11+*/
+}
+
+.fourcol {
+  -webkit-column-count: 4; /* Saf3, Chrome*/
+  -webkit-column-gap: 2%; /* Saf3, Chrome*/
+  -moz-column-count: 4; /* FF3.5+ */
+  -moz-column-gap: 2%; /* FF3.5+ */
+  column-count: 4; /* Opera 11+*/
+  column-gap: 2%; /* Opera 11+*/
+}
+
 .booklist {
   li {
     margin-bottom: 1em;
@@ -106,6 +156,8 @@ span.spacer {
     font-weight: bold;
   }
 }
+
+
 
 /*
    Make rails3-jquery-autocomplete pick list appear correctly in Bootstrap.

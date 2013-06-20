@@ -42,11 +42,11 @@ class Adm::AdminsController < AdmController
   # POST /adm/admins
   # POST /adm/admins.json
   def create
-    @admin = Admin.new(params[:adm_admin])
+    @admin = Admin.new(params[:admin])
 
     respond_to do |format|
       if @admin.save
-        format.html { redirect_to @admin, notice: 'Admin was successfully created.' }
+        format.html { redirect_to [:adm, @admin], notice: 'Admin was successfully created.' }
         format.json { render json: @admin, status: :created, location: @admin }
       else
         format.html { render action: "new" }
@@ -61,8 +61,8 @@ class Adm::AdminsController < AdmController
     @admin = Admin.find(params[:id])
 
     respond_to do |format|
-      if @admin.update_attributes(params[:adm_admin])
-        format.html { redirect_to @admin, notice: 'Admin was successfully updated.' }
+      if @admin.update_attributes(params[:admin])
+        format.html { redirect_to [:adm, @admin], notice: 'Admin was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

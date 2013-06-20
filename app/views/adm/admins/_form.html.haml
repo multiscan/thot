@@ -1,7 +1,17 @@
 = simple_form_for([:adm, @admin]) do |f|
   = f.error_notification
-
   .form-inputs
+    .row
+      .span4= f.input :name, :input_html=>{:class => "span3"}
+      .span4= f.input :email, :input_html=>{:class => "span3"}
+      .span4= f.input :role, :collection => Admin::ROLES
+    .row
+      .span4= f.input :password, :input_html=>{:class => "span3"}
+      .span4= f.input :password_confirmation, :input_html=>{:class => "span3"}
+
+    %h5 Managed labs
+    .fourcol
+      =f.association :labs, :label => false, :as=>:check_boxes, :label_method => :nick
 
   .form-actions
     = f.button :submit

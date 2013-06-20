@@ -11,7 +11,7 @@ class Admin < ActiveRecord::Base
   devise :database_authenticatable, :recoverable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :lab_ids
   # attr_accessible :title, :body
 
   has_and_belongs_to_many :labs, :class_name => "Lab", :join_table => "operatorships"
