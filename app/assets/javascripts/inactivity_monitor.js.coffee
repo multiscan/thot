@@ -40,7 +40,7 @@ class window.InactivityMonitor
     if (typeof @timeoutDialog == 'undefined' || @timeoutDialog.length == 0)
       @redirect()
     else
-      @graceSeconds=5
+      @graceSeconds=10
       @timeoutLabel.text(@graceSeconds)
       @timeoutDialog.modal('show');
       @tickInterval = setInterval ( =>
