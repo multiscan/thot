@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  attr_accessible :currency, :inventoriable, :inventoriable_type, :lab, :lab_id, :location, :location_id, :price, :status, :shelf_id
+  attr_accessible :currency, :inventoriable, :inventoriable_type, :lab, :lab_id, :location_name, :location_id, :price, :status, :shelf_id
 
   belongs_to :inventoriable, :polymorphic => true
   belongs_to :lab                          # , :counter_cache => true
@@ -29,11 +29,16 @@ class Item < ActiveRecord::Base
     has "books.pubyear", :as=>:pubyear, :type=>:integer
   end
 
-  def location=(name_or_location)
-    return if name_or_location.nil? || name_or_location.empty?
-    l = name_or_location.class==String ? Location.find_or_create_by_name(name_or_location) : name_or_location
-    self.location_id = l.id
+  def location_name
+    self.location.nil? ? "" : self.location.name
   end
+
+  def location_name=(s)
+    return if s.nil? || s.empty?
+    l = Location.find_or_create_by_name(s)
+    self.location = l
+  end
+
 
   def price
     attributes[:price] || book.price
@@ -51,10 +56,6 @@ class Item < ActiveRecord::Base
 
   def checkin
     current_checkout.checkin
-  end
-
-  def location_name
-    self.location.nil? ? "" : self.location.name
   end
 
   def on_loan?

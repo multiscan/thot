@@ -16,6 +16,7 @@ class Admin < ActiveRecord::Base
 
   has_and_belongs_to_many :labs, :class_name => "Lab", :join_table => "operatorships"
   has_many :inventory_sessions, :class_name => "InventorySession", :foreign_key => "admin_id"
+  has_many :users, :through => :labs
 
   def operates?(o)
     case o.class.name
@@ -39,7 +40,7 @@ class Admin < ActiveRecord::Base
     self.role == "admin"
   end
 
-  def used_locations
+  def locations
     self.labs.map{|l| l.locations}.flatten!.uniq
   end
 

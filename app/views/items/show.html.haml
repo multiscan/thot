@@ -39,7 +39,7 @@
         %dt Collation:
         %dd=@book.collation || "-"
 
-%h3 This Copy
+%h4 This Copy
 %table.table
   %thead
     %th Inv. Number
@@ -62,7 +62,7 @@
       - if can? :manage, @item
         %td= item_price(@item)
 
-%h3 More Infos
+%h4 More Infos
 .well
   .tabbable
     %ul.nav.nav-tabs

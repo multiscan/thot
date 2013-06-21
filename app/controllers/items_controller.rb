@@ -13,6 +13,7 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    @item = Item.find(params[:id])
     @book = @item.book
     respond_to do |format|
       format.html # show.html.erb

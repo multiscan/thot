@@ -5,6 +5,4 @@
   %small
     Can we merge something?
     =link_to "yes", edit_adm_deg_isbn_path(@degisbn)
-%ul.booklist.unstyled
-  -@books.each do |b|
-    = render b
+= render :partial => "books/books"

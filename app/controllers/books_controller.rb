@@ -5,7 +5,7 @@ class BooksController < ApplicationController
   # GET /books.json
   def index
     if @search=params["search"]
-      @books = Book.search(@search, :match_mode => :extended).paginate(:page=>params[:page], :per_page=>50)
+      @books = Book.search(@search, :match_mode => :extended, :page=>params[:page], :per_page=>50)
       @paginate = @books
     else
       @items = Item.order("created_at DESC", :include=>[:book]).paginate(:page=>params[:page], :per_page=>50)
