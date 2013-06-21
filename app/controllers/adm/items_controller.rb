@@ -8,11 +8,11 @@ class Adm::ItemsController < AdmController
     @labs = current_admin.labs
     if current_admin.admin? && ( @labs.empty? || params[:all] )
       @items = Item.order("created_at DESC").paginate(:page=>params[:page], :per_page=>50)
-      @link_to_mine = ! @labs.empty?
+      @link_to_my = ! @labs.empty?
       @link_to_all = false
     else
       @link_to_all = current_admin.admin?
-      @link_to_mine = false
+      @link_to_my = false
       @items = Item.where(:lab_id => @labs).order("created_at DESC").paginate(:page=>params[:page], :per_page=>50)
     end
     respond_to do |format|
@@ -46,6 +46,9 @@ class Adm::ItemsController < AdmController
 
   # GET /items/1/edit
   def edit
+    @labs = current_admin.labs.order('nick ASC').all
+    @locations = Location.order('name ASC').all
+    @currencies = ENV['CURRENCIES'].split
     @item = Item.find(params[:id])
   end
 

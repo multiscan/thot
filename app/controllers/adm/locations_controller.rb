@@ -2,8 +2,13 @@ class Adm::LocationsController < ApplicationController
   # GET /adm/locations
   # GET /adm/locations.json
   def index
-    @locations = Location.all
-
+    if current_admin.admin? && params[:my].nil?
+      @locations = Location.all
+      @link_to_my = true
+    else
+      @locations = current_admin.locations
+      @link_to_all = current_admin.admin?
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @locations }

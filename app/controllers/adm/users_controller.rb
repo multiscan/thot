@@ -1,5 +1,5 @@
 class Adm::UsersController < AdmController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:index]
 
   # GET /admin/users
   # GET /admin/users.json
@@ -10,6 +10,14 @@ class Adm::UsersController < AdmController
     #   else
     #     User.where({:lab_id => current_admin.labs.map{|l| l.id}}, :include=>[:lab, :loans], :order => :name)
     #   end
+    if current_admin.admin? && params[:my].nil?
+      @users = Users.all
+      @link_to_my = true
+    else
+      @users = current_admin.users
+      @link_to_all = current_admin.admin?
+    end
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

@@ -1,5 +1,16 @@
 -content_for(:title) do
-  Listing Locations
+  Listing Rooms / Libraries
+
+-if @link_to_all
+  %p
+    Listing rooms where items belonging to your labs can be found. As administrator, you can also
+    = link_to "list all locations", adm_locations_path
+    \.
+- if @link_to_my
+  %p
+    Listing all rooms. You can also
+    = link_to "list only your rooms", adm_locations_path(:my => true)
+    (rooms containing items that belong to your labs)
 
 %table.table.sortable.table-bordered
   %thead
@@ -25,5 +36,5 @@
           |
           = link_to "Add a Shelf", [:adm, location, Shelf.new], method: :post, remote: true
 
-
-= link_to 'New Location', new_adm_location_path
+- if current_admin.admin? && !@link_to_all
+  = link_to 'New Location', new_adm_location_path

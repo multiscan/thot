@@ -3,6 +3,17 @@
 
 = link_to 'New User', new_adm_user_path if can? :create, User
 
+-if @link_to_all
+  %p
+    Listing users belonging to your labs. As administrator, you can also
+    = link_to "list all users", adm_users_path
+    \.
+- if @link_to_my
+  %p
+    Listing all users. You can also
+    = link_to "list only your users", adm_users_path(:my => true)
+    (users belonging to to one of your labs)
+
 =render :partial => "users"
 
 = link_to 'New User', new_adm_user_path if can? :create, User
