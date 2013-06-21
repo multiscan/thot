@@ -27,32 +27,30 @@
         = f.button :submit, "Merge"
 
 -content_for :head do
-  :css
-    #selectable .ui-selecting { background: #FECA40; }
-    #selectable .ui-selected { background: #F39814; color: white; }
   :javascript
-    jQuery(document).ready(function($) {
-      $("#selectedselector").hide();
-      $("#selectedselector").change(function(){
-        console.debug("cambiato selettore");
-        $("#publisher_name").val($(this).val());
-      });
-      $("#selectable").selectable({
-        stop: function() {
-          var choices=[];
-          $(".ui-widget-content input").prop('checked', false);
-          $(".ui-selected input").prop('checked', true);
-          var options=$("#selectedselector");
-          $("#publisher_name").val("");
-          options.empty();
-          $(".ui-selected label").each(function(index) {
-            var v=$(this).text().trim();
-            options.append($("<option></option>").attr("value", v).text(v));
-          });
-          options.show();
-        }
-      });
-      // $(.publisher_name).doubleclick(function() {
-      //   alert('Double cliccked');
+    function when_ready_for_view() {
+      thot.selectable_merger();
+      // $("#selectedselector").hide();
+      // $("#selectedselector").change(function(){
+      //   console.debug("cambiato selettore");
+      //   $("#publisher_name").val($(this).val());
       // });
-    });
+      // $("#selectable").selectable({
+      //   stop: function() {
+      //     var choices=[];
+      //     $(".ui-widget-content input").prop('checked', false);
+      //     $(".ui-selected input").prop('checked', true);
+      //     var options=$("#selectedselector");
+      //     $("#publisher_name").val("");
+      //     options.empty();
+      //     $(".ui-selected label").each(function(index) {
+      //       var v=$(this).text().trim();
+      //       options.append($("<option></option>").attr("value", v).text(v));
+      //     });
+      //     options.show();
+      //   }
+      // });
+      // // $(.publisher_name).doubleclick(function() {
+      // //   alert('Double cliccked');
+      // // });
+    }

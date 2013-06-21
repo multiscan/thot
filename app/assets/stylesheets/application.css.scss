@@ -157,7 +157,10 @@ span.spacer {
   }
 }
 
-
+#selectable {
+  .ui-selecting { background: #FECA40; }
+  .ui-selected { background: #F39814; color: white; }
+}
 
 /*
    Make rails3-jquery-autocomplete pick list appear correctly in Bootstrap.
