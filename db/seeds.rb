@@ -174,7 +174,7 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
 
   i = b.items.new(
     :status   => lb.status,
-    :location => lb.location,  # this creates a new location if not found
+    :location_name => lb.location,  # this creates a new location if not found
     :price    => lb.price,
     :currency => lb.currency,
   )

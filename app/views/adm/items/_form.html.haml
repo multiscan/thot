@@ -7,7 +7,7 @@
         = f.association :lab, :collection => @labs, :label_method => lambda { |l| l.nick }, :prompt => "Select the owner"
       .span4
         -#= f.association :location, :collection => @locations, :prompt => "Select a room for this copy"
-        = f.input :location, :placeholder => "Room/Library name", :input_html => {:class => "typeahead", :data => {:collection => Location.names_list}}
+        = f.input :location_name, :placeholder => "Room/Library name", :label => "Room", :input_html => {:class => "typeahead", :data => {:collection => Location.names_list}}
     .row
       .span4
         = f.input :currency, :collection=>@currencies, :selected => @currencies.first
