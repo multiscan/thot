@@ -12,7 +12,7 @@ class Adm::InventorySessionsController < AdmController
   def check
     @inventory_session = InventorySession.find(params[:inventory_session_id])
     @shelf = Shelf.find(params[:shelf])
-    @good = @inventory_session.goods.where(inv: params[:inv]).first
+    @good = @inventory_session.goods.where(item_id: params[:inv]).first
     respond_to do |format|
       if @good
         @good.update_attribute(:current_shelf_id, @shelf.id)
@@ -61,18 +61,7 @@ class Adm::InventorySessionsController < AdmController
   # GET /adm/inventory_sessions/1.json
   def show
     @inventory_session = InventorySession.find(params[:id])
-    # @total_count     = @inventory_session.goods.count
-    # @checked_count   = @inventory_session.checked_goods.count
-    # @unchecked_count = @total_count - @checked_count
-    # if @checked_count > 0
-    #   @moved_count     = @inventory_session.moved_goods.count
-    #   @imported_count  = @inventory_session.imported_goods.count
-    #   @confirmed_count  = @checked_count - @moved_count - @imported_count
-    # else
-    #   @moved_count = @imported_count = @confirmed_count = 0
-    # end
-    # @progress        = (100.0 * @checked_count / @total_count + 0.5).to_i
-puts "-------------------------------- inventory_session_id = #{@inventory_session.id}"
+    @shelves = @inventory_session.shelves
     gon.inventory = @inventory_session.id
     respond_to do |format|
       format.html # show.html.erb

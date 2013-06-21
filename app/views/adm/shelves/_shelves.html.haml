@@ -6,4 +6,4 @@
       %th Label
       %th No. Items
   %tbody
-    = render :partial => "adm/shelves/shelf", :collection => @shelves
+    = render :partial => "adm/shelves/shelf", :collection => @shelves, :locals => { :inventory_session => @inventory_session }

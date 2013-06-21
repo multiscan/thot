@@ -57,6 +57,12 @@
 %h3 Notes:
 .well= render_markdown(@inventory_session.notes)
 
+%h3 Shelves:
+- if @shelves.count == 0
+  %p Presently no shelves are related to this inventory session
+- else
+  = render :partial => 'adm/shelves/shelves'
+
 = link_to 'Edit', edit_adm_inventory_session_path(@inventory_session)
 \|
 = link_to 'Back to inventory sessions', adm_inventory_sessions_path

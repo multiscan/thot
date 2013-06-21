@@ -71,7 +71,6 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
   create_table "goods", :force => true do |t|
     t.integer  "inventory_session_id"
     t.integer  "item_id"
-    t.integer  "inv"
     t.integer  "current_shelf_id"
     t.integer  "previous_shelf_id"
     t.integer  "commit",               :default => 0

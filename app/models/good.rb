@@ -5,10 +5,12 @@ class Good < ActiveRecord::Base
   belongs_to :current_shelf, :class_name => "Shelf", :foreign_key => "current_shelf_id"
   belongs_to :previous_shelf, :class_name => "Shelf", :foreign_key => "previious_shelf_id"
 
-  # before_create :check_inv
-
   def inv
-    item_id
+    self.item_id
+  end
+
+  def inv=(i)
+    self.item_id=i
   end
 
   def status(shelf_id)
@@ -30,11 +32,5 @@ class Good < ActiveRecord::Base
   def checked?
     !current_shelf_id.nil?
   end
-
- # private
-
- #  def check_inv
- #    self.inv ||= self.item.inv
- #  end
 
 end

@@ -35,7 +35,8 @@ class InventorySession < ActiveRecord::Base
   end
 
   def imported_or_moved_goods
-    self.checked_goods.where("previous_shelf_id != current_shelf_id")
+    # comparison with NULL is not permitted in sql
+    self.checked_goods.where("current_shelf_id IS NOT NULL").where("previous_shelf_id IS NULL OR previous_shelf_id != current_shelf_id")
   end
   # def imported_or_moved_count
   #   @import_or_moved_count ||= imported_count + moved_count
@@ -80,6 +81,16 @@ class InventorySession < ActiveRecord::Base
   end
   def missing_committed_count
     @missing_committed_count ||= missing_committed.count
+  end
+
+  def shelves
+    unless @shelves
+      c=self.goods.where('current_shelf_id IS NOT NULL').select(:current_shelf_id).uniq.map{|g| g.current_shelf_id}
+      p=self.goods.where('previous_shelf_id IS NOT NULL').select(:previous_shelf_id).uniq.map{|g| g.previous_shelf_id}
+      ids=(c + p).uniq
+      @shelves = Shelf.find(ids)
+    end
+    @shelves
   end
   # ----------------------------------------------------------------------------
 
