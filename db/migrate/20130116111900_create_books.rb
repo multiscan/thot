@@ -11,6 +11,8 @@ class CreateBooks < ActiveRecord::Migration
       t.string :call4, :limit=>8
       t.string :collation
       t.string :isbn, :limit=>24
+      t.string :isbn13, :limit=>13
+      t.string :locn
       t.integer :volume
       t.string :edition
       t.references :publisher

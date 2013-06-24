@@ -38,10 +38,12 @@ class Adm::BooksController < ApplicationController
         end
       else
         if @books.first.new_record?
+          @book = Book.new(params[:book])
           render "new_as_merge"
         else
           @isbn = params[:book][:isbn]
-          flash[:notice] = "More than one book with ISBN #{@isbn} was found. Please select the one your want and then add items to it."
+          @deg_isbn = DegIsbn.where(:isbn => @isbn).first
+          flash[:notice] = "Degenerate ISBN"
           # render "books/index" #, :collection => @books
           # # render "index"
         end

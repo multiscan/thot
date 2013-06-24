@@ -69,6 +69,8 @@ http://www.loc.gov/standards/sru/resources/schemas.html
 exemple:
 http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve&query=bath.isbn%3D<ISBN>&maximumRecords=1&recordSchema=mods
 
+http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve&query=bath.isbn%3D9780521852296&maximumRecords=1&recordSchema=mods
+
 
 
 

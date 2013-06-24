@@ -77,9 +77,10 @@ group :test do
 end
 
 # For searching book infos on the web https://github.com/jayfajardo/openlibrary
-gem 'openlibrary'
-gem 'lcclasses'   # library of congress classes (to parse output from loc query)
-gem "nokogiri"
+# gem 'openlibrary'
+# gem 'lcclasses'   # library of congress classes (to parse output from loc query)
+# gem "nokogiri"
+gem "ox", "~> 2.0.3"
 
 # # Search logic: planty of helpers for searching only for rails 2   :(
 # gem 'searchlogic'

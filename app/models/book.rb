@@ -116,15 +116,17 @@ class Book < ActiveRecord::Base
 
   def self.new_given_isbn(n)
     bb=Book.find_all_by_isbn(n)
-    bb=self.ask_the_web(n).map{|h| Book.new(h)} if bb.empty?
+    bb=self.ask_the_web(n).map{|bh| Book.new(bh)} if bb.empty?
     bb=[Book.new(:isbn=>n)] if bb.empty?
     return bb
   end
 
-  # TODO: actually fetch data from on-line databases (LOC, amazon etc.)
   def self.ask_the_web(n)
-    bl=GoogleBookList.new(n)
-    bl.to_ah
+    lcb=LocBook.new(n)
+    gbl = GoogleBookList.new(n)
+    res = gbl.count > 0 ? gbl.to_ah : []
+    res << lcb.to_h
+    res
   end
 
   def self.duplicated_isbn_count
@@ -132,7 +134,7 @@ class Book < ActiveRecord::Base
   end
 
  private
-   def set_counts
+  def set_counts
     @all_count = items.count
     library_count = items.where(:status=>"Library").count
     @on_loan_count = checkouts.count

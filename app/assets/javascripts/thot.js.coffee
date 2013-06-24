@@ -4,22 +4,24 @@ class Thot
     @INACTIVITY_TIME_BEFORE_RESET = 300     # seconds
 
   ready: () ->
-    jQuery("table.sortable").tablesorter();
+    jQuery("table.sortable").tablesorter()
     jQuery("input.typeahead").each () ->
       collection = jQuery(this).data("collection")
       jQuery(this).typeahead({source: collection})
-    jQuery("input.date_picker").datepicker();
+    jQuery("input.date_picker").datepicker()
+
+    merger = new BookMerger()
 
     when_ready_for_layout() if (typeof when_ready_for_layout == 'function')
     when_ready_for_view()   if (typeof when_ready_for_view   == 'function')
 
     if gon.inventory
-      window.barcode_scanner = new BarcodeScanner(@BARCODE_KEYPRESS_MAXDELAY);
+      window.barcode_scanner = new BarcodeScanner(@BARCODE_KEYPRESS_MAXDELAY)
       window.inventory = new Inventory()
 
     unless gon.admin
-      window.inactivity_monitor = new InactivityMonitor(@INACTIVITY_TIME_BEFORE_RESET);
-      window.barcode_scanner = new BarcodeScanner(@BARCODE_KEYPRESS_MAXDELAY);
+      window.inactivity_monitor = new InactivityMonitor(@INACTIVITY_TIME_BEFORE_RESET)
+      window.barcode_scanner = new BarcodeScanner(@BARCODE_KEYPRESS_MAXDELAY)
       window.librarian = new Librarian()
 
   # ---------------------------------------------------------- Utility functions

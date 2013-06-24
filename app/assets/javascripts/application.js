@@ -21,6 +21,7 @@
 //= require turbolinks
 //= require thot
 //= require barcode_scanner
+//= require book_merger
 //= require librarian
 //= require inventory
 //= require inactivity_monitor
