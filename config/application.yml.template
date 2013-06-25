@@ -1,0 +1,13 @@
+# Add application configuration variables here, as shown below.
+#
+# replace XXXXXX with your own data and rename this file application.yml
+#
+ADMIN_NAME: XXXXXX
+ADMIN_EMAIL: XXXXXX
+ADMIN_PASSWORD: XXXXXX
+DEFAULT_USER_PASSWORD: XXXXXX
+
+CURRENCIES: CHF EUR USD GBP
+DEFAULT_CURRENCY: "CHF"
+OVERDUE_AFTER: 6                      # months
+NEBIS_LOGOUT_AFTER: 310               # seconds

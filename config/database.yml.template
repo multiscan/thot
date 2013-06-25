@@ -1,0 +1,38 @@
+# Replace XXXXXX with your own data and rename this file as database.yml
+development:
+  adapter: mysql2
+  database: thot_devel
+  username: XXXXXXX
+  password: XXXXXXX
+  host: 127.0.0.1
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test: &test
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
+production:
+  adapter: mysql2
+  database: XXXXXX
+  username: XXXXXX
+  password: XXXXXX
+  host: XXXXXX
+
+legacy_dev:
+  adapter: sqlite3
+  database: db/library.sqlite3
+
+# This is only needed for migrating from older version of thot library system
+legacy_prod:
+  adapter: mysql
+  database: library
+  username: XXXXXX
+  password: XXXXXX
+  host: XXXXXX
+
+cucumber:
+  <<: *test
