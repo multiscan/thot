@@ -77,8 +77,6 @@ class GoogleBook
   end
 
   def to_h
-    puts "----------------------------------------- google_book::to_h"
-    puts "--- book data: #{@data.inspect}"
     b={
         :title => title,
         :isbn => isbn,
@@ -88,7 +86,6 @@ class GoogleBook
         :abstract => description,
         :collation => collation
       }
-      puts "--- hash: #{b.inspect}"
       return b
   end
 

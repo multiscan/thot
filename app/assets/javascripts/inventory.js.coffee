@@ -1,6 +1,6 @@
 class window.Inventory
   constructor: () ->
-    console.log("loading Inventory")
+    console.debug("loading Inventory")
     @shelf = gon.shelf
     @inventory = gon.inventory
     @base_shelf_url="/adm/inventory_sessions/"+@inventory+"/shelves/"
@@ -11,11 +11,11 @@ class window.Inventory
 
   on_shelf: (id) ->
     unless id == @shelf
-      console.log("should redirect to shelf ",  id)
+      console.debug("should redirect to shelf ",  id)
       location.href = @base_shelf_url + id
 
   on_item: (id) ->
-    console.log "catched book item scan id=" + id
+    console.debug "catched book item scan id=" + id
     if @shelf
       @check(id)
     else
@@ -35,17 +35,17 @@ class window.Inventory
         @new_parent = jQuery("#"+parent_id)
         @old_li = jQuery("#"+id)
         if @old_li.size() == 0
-          # console.log("li with id "+id+" is NOT present and should be inserted into container " + parent_id)
+          # console.debug("li with id "+id+" is NOT present and should be inserted into container " + parent_id)
           li = jQuery(data.li)
           li.prependTo(@new_parent).fadeOut(0).fadeIn(500)
         else
           old_parent_id = @old_li.parent().attr("id")
-          # console.log("li with id "+id+" is already present in " + old_parent_id + " container")
+          # console.debug("li with id "+id+" is already present in " + old_parent_id + " container")
           if old_parent_id == parent_id
-            # console.log("li was already in the good container")
+            # console.debug("li was already in the good container")
             @old_li.effect("highlight", {}, 500)
           else
-            # console.log("li should move from " + old_parent_id + " to " + parent_id + " container")
+            # console.debug("li should move from " + old_parent_id + " to " + parent_id + " container")
             @old_li.fadeOut 500, =>
               li=@old_li.detach()
               li.prependTo(@new_parent).fadeOut(0).fadeIn(500)

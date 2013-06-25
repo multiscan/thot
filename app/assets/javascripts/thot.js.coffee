@@ -1,9 +1,12 @@
 class Thot
   constructor: () ->
+    console.debug("Loadin Thot")
     @BARCODE_KEYPRESS_MAXDELAY = 300        # milliseconds
     @INACTIVITY_TIME_BEFORE_RESET = 300     # seconds
 
   ready: () ->
+    console.debug("thot.ready")
+
     jQuery("table.sortable").tablesorter()
     jQuery("input.typeahead").each () ->
       collection = jQuery(this).data("collection")
@@ -16,10 +19,12 @@ class Thot
     when_ready_for_view()   if (typeof when_ready_for_view   == 'function')
 
     if gon.inventory
+      console.debug("thot setup for inventory")
       window.barcode_scanner = new BarcodeScanner(@BARCODE_KEYPRESS_MAXDELAY)
       window.inventory = new Inventory()
 
     unless gon.admin
+      console.debug("thot setup for library user")
       window.inactivity_monitor = new InactivityMonitor(@INACTIVITY_TIME_BEFORE_RESET)
       window.barcode_scanner = new BarcodeScanner(@BARCODE_KEYPRESS_MAXDELAY)
       window.librarian = new Librarian()

@@ -15,28 +15,18 @@ class Loan < ActiveRecord::Base
   # if the item was already registered as in the hand of another user, we first pretend the former user returned it (checkin)
   def self.checkout(u, i)
     user = u.is_a?(User) ? u : User.find(u)
-    item = i.is_a?(Item) ? u : ( i.is_a?(String) ? Item.find_by_inv(i) : Item.find(i) )
+    item = i.is_a?(Item) ? i : Item.find(i)
     return nil if user.nil? or item.nil?
     existing = where(item_id: item.id, return_date: nil).first
     if existing
       if existing.user_id == user.id
         return existing
       else
+        # An item pass automatically from user A to B if B checks out when A already have the book
         existing.checkin
       end
     end
     return Loan.new(:user => user, :item=> item)
-  end
-
-  def inv
-    self.item ? self.item.inv : nil
-  end
-
-  def inv=(i)
-    item = Item.find_by_inv(i)
-    if item
-      self.item = item
-    end
   end
 
   def checkin
@@ -44,12 +34,31 @@ class Loan < ActiveRecord::Base
     save
   end
 
+  def self.out
+    self.where("return_date IS NULL")
+  end
+
+  def self.out_before(d)
+    self.where("return_date IS NULL AND created_at < ?", d)
+  end
+
+  # def inv
+  #   self.item ? self.item.inv : nil
+  # end
+
+  # def inv=(i)
+  #   item = Item.find(i)
+  #   if item
+  #     self.item = item
+  #   end
+  # end
+
   def overdue?
     return_date != nil && created_at < ENV["OVERDUE_AFTER"].to_i.months.ago
   end
 
   def self.find_all_overdue
-    self.where(["return_date != ? AND created_at < ?", nil, ENV["OVERDUE_AFTER"].to_i.months.ago])
+    self.where(["return_date IS NULL AND created_at < ?", ENV["OVERDUE_AFTER"].to_i.months.ago])
   end
 
   def age_in_days

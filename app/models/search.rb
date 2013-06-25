@@ -12,7 +12,7 @@ class Search < ActiveRecord::Base
   end
 
   def books
-    puts "books: @books=#{@books}    item_oriented? #{items_oriented?}"
+    # puts "books: @books=#{@books}    item_oriented? #{items_oriented?}"
     @books ||= items_oriented? ? books_from_items : @entries
   end
 
@@ -168,7 +168,7 @@ class Search < ActiveRecord::Base
   end
 
   def books_from_items
-    puts "books_from_items"
+    # puts "books_from_items"
     return [] if @entries.nil? || @entries.empty?
     # @items.map{|i| i.book}.uniq
     ids = items.map{|i| i.inventoriable_id}
@@ -176,7 +176,7 @@ class Search < ActiveRecord::Base
   end
 
   def items_from_books
-    puts "items_from_books"
+    # puts "items_from_books"
     return [] if @entries.nil? || @entries.empty?
     i=[]
     books.each {|b| i += b.items}

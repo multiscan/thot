@@ -4,10 +4,10 @@ class LoansController < ApplicationController
   def create
     respond_to do |format|
       if @user = nebis_user
-        @loan = Loan.checkout(@user, params[:loan]["inv"]||params[:loan]["item_id"].to_i)
+        @loan = Loan.checkout(@user, params[:loan]["item_id"])
         if @loan && !@loan.new_record?
           format.html { redirect_to @user, notice: 'The item you tried to check out is already in your list.' }
-          format.js { render :js => "thot.alert('notice', 'Item #{@loan.inv} is already in your list.');"}
+          format.js { render :js => "thot.alert('notice', 'Item #{@loan.item_id} is already in your list.');"}
         elsif @loan && @loan.save
           format.html { redirect_to @user, notice: 'Item was successfully checked out' }
           format.js
@@ -16,7 +16,7 @@ class LoansController < ApplicationController
           format.js
         end
       else
-        format.html { redirect_back_or_root(error: "In ordero to be able to check in/out books, please identify yourself by scanning your Nebis code first.")}
+        format.html { redirect_back_or_root(error: "In order to be able to check in/out books, please identify yourself by scanning your Nebis code first.")}
         format.js { render :js => "thot.alert('notice', 'In ordero to be able to check in/out books, please identify yourself by scanning your Nebis code first.');"}
       end
     end

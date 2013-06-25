@@ -1,14 +1,12 @@
 class window.InactivityMonitor
   # needs:
   constructor: (it) ->
+    @inactivityTimeout = it*1000;
+    @reset_url = gon.nebis_extend_url
+    console.debug("Loading InactivityMonitor  timeout="+@inactivityTimeout)
 
     unless gon.root
-      @inactivityTimeout = it*1000;
-
-      console.debug("loading InactivityMonitor  timeout="+@inactivityTimeout)
-
-      @reset_url = gon.nebis_extend_url
-
+      console.debug("Activating InactivityMonitor")
       @timeoutLabel = jQuery('#grace_timeout')
       @timeoutDialog = jQuery('#grace_timeout_dialog')
 
@@ -59,7 +57,7 @@ class window.InactivityMonitor
       @redirect()
 
   redirect: () ->
-    console.log("should redirect")
+    console.debug("should redirect")
     location.href = "/"
 
   reset: () ->

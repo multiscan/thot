@@ -3,7 +3,7 @@ class window.BookMerger
     @mergendo = jQuery("#merger")
     return if @mergendo.length == 0
 
-    console.log("loading BookMerger")
+    console.debug("loading BookMerger")
 
     jQuery("#checkall").click (e) ->
       all_checks=jQuery("input[type='checkbox'][name='merge_book_ids[]']")

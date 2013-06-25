@@ -128,8 +128,6 @@ class LocBook
   end
 
   def to_h
-    # puts "----------------------------------------- loc_book::to_h"
-    # puts "--- book data: #{@data.inspect}"
     b = {
         :title => title,
         :isbn => isbn,
@@ -146,7 +144,6 @@ class LocBook
         :call4 => call4,
         :collection => series
     }
-    # puts "--- hash: #{b.inspect}"
     return b
   end
 
