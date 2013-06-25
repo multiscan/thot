@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20130612161702) do
     t.string   "call4",        :limit => 8
     t.string   "collation"
     t.string   "isbn",         :limit => 24
+    t.string   "isbn13",       :limit => 13
+    t.string   "locn"
     t.integer  "volume"
     t.string   "edition"
     t.integer  "publisher_id"
