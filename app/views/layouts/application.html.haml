@@ -43,8 +43,8 @@
         %p.muted.credit
           Copyright (C) 2013 Emre Telatar - Rüdiger Urbanke - Giovanni Cangiani
         %p
-          =link_to "Administrator", "mailto:giovanni.cangiani@epfl.ch"
+          =link_to "Administrator", "mailto:#{ENV['ADMIN_EMAIL']}"
           |
-          =link_to "Source Code", "http://github.com/multiscan"
+          =link_to "Source Code", "https://github.com/multiscan/thot"
 
     =render 'layouts/dialogs'

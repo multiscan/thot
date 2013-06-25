@@ -2,10 +2,16 @@ class Adm::InventorySessionsController < AdmController
 
   # POST /adm/inventory_sessions/inventorize_search
   def inventorize_search
-    @inventory_session = InventorySession.find(params["inventorize"]["session_id"])
+    isid = params["inventorize"]["session_id"]
+    puts "--------- isid=#{isid}   blank? #{isid.blank?}   nil? #{isid.nil?}"
     search = Search.find(params["inventorize"]["search_id"])
-    @inventory_session.inventorize_search(search)
-    redirect_to [:adm, @inventory_session]
+    if isid.nil? || isid.blank?
+      redirect_to search, :notice => "Please select and inventory session"
+    else
+      @inventory_session = InventorySession.find(params["inventorize"]["session_id"])
+      @inventory_session.inventorize_search(search)
+      redirect_to [:adm, @inventory_session]
+    end
   end
 
   # POST /adm/inventory_sessions/:id/check/:inv

@@ -84,7 +84,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.statuses
-    select("status").uniq.map{|s| s.status}.compact
+    select("status").uniq.map{|s| s.status}.compact.delete_if{|s| s.nil? || s.blank?}
   end
 
  private

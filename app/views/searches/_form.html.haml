@@ -4,18 +4,18 @@
   .form-inputs
     .row
       .span6= f.input :query, :label=>"Title, author or editor", :input_html => {:class => "span6"}
-      .span3= f.input :publisher_name
-      .span3= f.input :year_range, :label=>"An year, list of years or range", :placeholder=>"'2001' or '2001-2005' or '2001, 2004, 2007'"
+      .span3= f.association :lab, :label_method => lambda { |l| l.nick }, :label => "Owner Lab", :prompt => "Select a Lab", :input_html => {:class => "span3"}
+      .span3= f.association :location, :collection => Location.order('Name ASC'), :label => "Room", :prompt => "Select a Room", :input_html => {:class => "span3"}
     .row
-      .span3= f.input :isbn
-      .span3= f.input :status, :collection => Item.statuses
-      .span3= f.association :location, :collection => Location.order('Name ASC')
-      .span3= f.association :lab, :label_method => lambda { |l| l.nick }
+      .span3= f.input :isbn, :input_html => {:class => "span3"}
+      .span3= f.input :publisher_name, :input_html => {:class => "span3"}
+      .span3= f.input :year_range, :label=>"An year, list of years or range", :placeholder=>"'2001' or '2001-2005' or '2001, 2004, 2007'", :input_html => {:class => "span3"}
     .row
       - if admin_signed_in?
         .span3= f.input :inv_range, :label => "Inventory number, range or list", :placeholder => "123 or 123-166 or 123,125,189"
         .span3= f.input :inv_date_fr, :label => "Inventory created from", :as => :date_picker
         .span3= f.input :inv_date_to, :label => "Inventory created to", :as => :date_picker
+        .span3= f.input :status, :collection => Item.statuses, :prompt => "Select a Status"
   .form-actions
     = f.button :submit, "Go!"
 

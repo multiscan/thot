@@ -27,7 +27,8 @@
               = f.hidden_field "search_id", :value => @search.id
               .row
                 .span3
-                  = f.input "session_id", :collection => current_admin.inventory_sessions, :label_method => lambda { |s| s.name}, :prompt => "Select an inventory session", :label=>false
+                  = f.input "session_id", :collection => current_admin.inventory_sessions, :label_method => lambda { |s| s.name}, :label=>false, :include_blank => false #, :selected =>  current_admin.inventory_sessions[0]
+                  -#= f.error  :session_id
                 .span2
                   = f.button :submit, "Inventorize"
           - else
