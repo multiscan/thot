@@ -4,6 +4,10 @@
       %th Id
       %th Location
       %th Label
-      %th No. Items
+      - if @inventory_session.nil?
+        %th No. Items
+      - else
+        %th No. Items (before)
+        %th No. Items (after)
   %tbody
     = render :partial => "adm/shelves/shelf", :collection => @shelves, :locals => { :inventory_session => @inventory_session }

@@ -142,7 +142,7 @@ class Search < ActiveRecord::Base
     unless @book_conds
       @book_conds={}
       unless publisher_ids.empty?
-        @book_conds[:publisher_id] = publisher_id
+        @book_conds[:publisher_id] = publisher_ids
       end
       unless year_range.blank?
         @book_conds[:pubyear] = parse_range(year_range)
@@ -178,10 +178,10 @@ class Search < ActiveRecord::Base
 
   def publisher_ids_from_name(n)
     return [] if n.blank?
-    r=Publisher.where(:name => publisher_name)
-    if r.empty?
-      r=Publisher.where("name LIKE ?", n)
-    end
+    # r=Publisher.where(:name => publisher_name)
+    # if r.empty?
+      r=Publisher.where("LOWER(name) LIKE ?", "%#{n.downcase}%")
+    # end
     r.empty? ? [] : r.map{|p| p.id}
   end
 

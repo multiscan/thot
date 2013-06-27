@@ -6,8 +6,6 @@
       %br
       =item.lab.nick
       %br
-      = item.location.nil? ? "?" : item.location.name
-      %br
       =item_status(item)
     .span7
       %span.author=book.author
@@ -34,9 +32,10 @@
       %span.label= book.call2 || "-"
       %span.label= book.call3 || "-"
       %span.label= book.call4 || "-"
+      %br
+      = item_location(item)
       -if can? :update, item
         %br
         =link_to "Edit", edit_adm_item_path(item)
       -else
-        %br
         %br

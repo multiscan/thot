@@ -56,7 +56,7 @@
         =@item.lab.nick
         \-
         =@item.lab.name
-      %td=@item.location_name
+      %td=item_location(@item)
       %td=item_status(@item)
       %td=@item.borrower_name
       - if can? :manage, @item

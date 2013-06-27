@@ -9,7 +9,10 @@ class window.Inventory
     $(document).on "barcode_shelf", (e) => @on_shelf(e.message)
     $(document).on "barcode_item", (e) => @on_item(e.message)
 
-  on_shelf: (id) ->
+  on_shelf: (s) ->
+    console.debug("on_shelf s="+s)
+    id = parseInt(s.replace(/^[^0-9]*/,''))
+    console.debug("on_shelf id="+id)
     unless id == @shelf
       console.debug("should redirect to shelf ",  id)
       location.href = @base_shelf_url + id

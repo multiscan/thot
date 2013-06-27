@@ -8,6 +8,10 @@ class InventorySession < ActiveRecord::Base
 
   # ----------------------------------------------------------------------------
 
+  def in_shelf_count(s)
+    goods.where(current_shelf_id: s.id).count
+  end
+
   def total_count
     @total_count ||= goods.count
   end

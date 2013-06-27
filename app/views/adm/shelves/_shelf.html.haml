@@ -3,6 +3,8 @@
   %td= shelf.location.name
   %td= shelf.seqno
   %td= shelf.items.count
+  - unless @inventory_session.nil?
+    %td= shelf.items_count_for_inventory(@inventory_session)
   %td
     - if inventory_session
       = link_to "Inventory", [:adm, inventory_session, shelf]

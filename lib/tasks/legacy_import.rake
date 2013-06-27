@@ -186,11 +186,11 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
     :currency => lb.currency,
   )
   i.lab = lab
-  # force id to be equal to inv so that we can get rid of inv
+  # force id and creation date to be equal to inv so that we can get rid of inv
   i.id  = lb.invNumber
-
+  i.created_at=lb.createDate
   i.save!
-  i.checkout(u) unless u.nil?
+  i.checkout(u, lb.checkOutDate) unless u.nil?
 
   nb = nb+1
   if Item.count != nb || Book.count != nb

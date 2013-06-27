@@ -48,9 +48,10 @@ class Item < ActiveRecord::Base
     attributes[:currency] || book.currency
   end
 
-  def checkout(u)
+  def checkout(u, d=nil)
     return false if current_checkout && current_checkout.user_id != u.id
     b=self.loans.new(:user=>u)
+    b.created_at = d if d
     b.save
   end
 
