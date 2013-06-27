@@ -11,7 +11,7 @@ class Adm::UsersController < AdmController
     #     User.where({:lab_id => current_admin.labs.map{|l| l.id}}, :include=>[:lab, :loans], :order => :name)
     #   end
     if current_admin.admin? && params[:my].nil?
-      @users = Users.all
+      @users = User.all
       @link_to_my = true
     else
       @users = current_admin.users

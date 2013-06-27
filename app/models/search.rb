@@ -8,11 +8,12 @@ class Search < ActiveRecord::Base
     message: "Format for range: N or N1..N2 or N1-N2 or N1,N2,N3 (where N is a number)", allow_nil: true, allow_blank: true
 
   def items
+    raise "Please call search before fetching result" unless @search_called
     @items ||= items_oriented? ? @entries : items_from_books
   end
 
   def books
-    # puts "books: @books=#{@books}    item_oriented? #{items_oriented?}"
+    raise "Please call search before fetching result" unless @search_called
     @books ||= items_oriented? ? books_from_items : @entries
   end
 
@@ -63,19 +64,23 @@ class Search < ActiveRecord::Base
     @entries=nil
     @items=nil
     @book=nil
+    @items_oriented = nil
+    @search_called = true
 
     # single inventory number
     if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
       inv=i # inv_range.strip.to_i
-      # logger.debug "Simple search for inv=#{inv}"
+      logger.debug "Simple search for inv=#{inv}"
       @entries = Item.where(:id=>inv).paginate(paginate_params)
+      @items_oriented = true
       return
     end
 
     # bookle isbn
     unless isbn.blank?
       @entries = Book.where(:isbn => isbn).paginate(paginate_params)
-      # logger.debug "Simple search for isbn=#{isbn}"
+      @items_oriented = false
+      logger.debug "Simple search for isbn=#{isbn}"
       return
     end
 
@@ -89,26 +94,30 @@ class Search < ActiveRecord::Base
         return
       end
       if book_conds.empty?
-        # logger.debug("SQL    search only on items: item_conds=#{item_conds.inspect}")
+        logger.debug("SQL    search only on items: item_conds=#{item_conds.inspect}")
         if params[:items_only]
           @entries = Item.where(item_conds).paginate(paginate_params)
         else
           @entries = Item.includes(:inventoriable).where(item_conds).paginate(paginate_params)
         end
+        @items_oriented = true
       else
-        # logger.debug("SQL    search: book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
+        logger.debug("SQL    search: book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
         conditions=book_conds
         conditions[:items] = item_conds
         @entries = Book.includes(:items).where(conditions).paginate(paginate_params)
+        @items_oriented = false
       end
     else
       conditions=book_conds.merge(item_conds)
-      if items_oriented?
-        # logger.debug("Sphinx search on item: query=#{query}\n               conds=#{conditions.inspect}")
+      if !inv_range.blank? || !inv_date_fr.blank? || !inv_date_to.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
+        logger.debug("Sphinx search on item: query=#{query}\n               conds=#{conditions.inspect}")
         @entries = Item.search(query, {:with=>conditions}.merge(paginate_params))
+        @items_oriented = true
       else
-        # logger.debug("Sphinx search on book: query=#{query}\n               conds=#{conditions.inspect}")
+        logger.debug("Sphinx search on book: query=#{query}\n               conds=#{conditions.inspect}")
         @entries = Book.search(query, {:with=>conditions}.merge(paginate_params))
+        @items_oriented = false
       end
     end
   end
@@ -118,7 +127,7 @@ class Search < ActiveRecord::Base
   end
 
   def items_oriented?
-    !inv_range.blank? || !inv_date_fr.blank? || !inv_date_to.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
+    @items_oriented
   end
 
   def simple_query?

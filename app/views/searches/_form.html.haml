@@ -17,5 +17,8 @@
         .span3= f.input :inv_date_to, :label => "Inventory created to", :as => :date_picker
         .span3= f.input :status, :collection => Item.statuses, :prompt => "Select a Status"
   .form-actions
-    = f.button :submit, "Go!"
-
+    .row
+      .span10
+        = f.button :submit, "Go Search!"
+      .span2
+      = link_to "reset form", new_search_path
