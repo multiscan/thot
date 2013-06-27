@@ -1,46 +1,46 @@
 ### UTILITY METHODS ###
 
-def build_visitor(role=:user)
+def build_visitor(role=:admin)
   @visitor ||= FactoryGirl.attributes_for(role)
 end
 
-def find_user
-  @user ||= User.where(:email => @visitor[:email]).first
+def find_admin
+  @admin ||= Admin.where(:email => @visitor[:email]).first
 end
 
-def create_unconfirmed_user
+def create_unconfirmed_admin
   build_visitor
-  destroy_user
+  destroy_admin
   sign_up
-  visit '/users/sign_out'
+  visit '/admins/sign_out'
 end
 
-def create_user(role=:user)
+def create_admin(role=:operator)
   build_visitor(role)
-  destroy_user
-  @user = FactoryGirl.build(role)
-  @user.confirmed_at = DateTime.now
-  @user.save
+  destroy_admin
+  @admin = FactoryGirl.build(role)
+  @admin.confirmed_at = DateTime.now
+  @admin.save
 end
 
-def destroy_user
-  find_user
-  @user.destroy unless @user.nil?
+def destroy_admin
+  find_admin
+  @admin.destroy unless @admin.nil?
 end
 
 def sign_up
-  destroy_user
-  visit '/users/sign_up'
+  destroy_admin
+  visit '/admins/sign_up'
   fill_in "Name", :with => @visitor[:name]
   fill_in "Email", :with => @visitor[:email]
-  fill_in "user_password", :with => @visitor[:password]
-  fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
+  fill_in "admin_password", :with => @visitor[:password]
+  fill_in "admin_password_confirmation", :with => @visitor[:password_confirmation]
   click_button "Sign up"
-  find_user
+  find_admin
 end
 
 def sign_in
-  visit '/users/sign_in'
+  visit '/admins/sign_in'
   fill_in "Email", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
   click_button "Sign in"
@@ -48,35 +48,35 @@ end
 
 ### GIVEN ###
 Given /^I am not logged in$/ do
-  visit '/users/sign_out'
+  visit '/admins/sign_out'
 end
 
 Given /^I am logged in$/ do
-  create_user
+  create_admin
   sign_in
 end
 
 Given /^I am logged in as admin$/ do
-  create_user(:admin)
+  create_admin(:admin)
   sign_in
 end
 
-Given /^I exist as a user$/ do
-  create_user
+Given /^I exist as a admin$/ do
+  create_admin
 end
 
 Given /^I exist as administrator$/ do
-  create_user(:admin)
+  create_admin(:admin)
 end
 
 
-Given /^I do not exist as a user$/ do
+Given /^I do not exist as a admin$/ do
   build_visitor
-  destroy_user
+  destroy_admin
 end
 
-Given /^I exist as an unconfirmed user$/ do
-  create_unconfirmed_user
+Given /^I exist as an unconfirmed admin$/ do
+  create_unconfirmed_admin
 end
 
 ### WHEN ###
@@ -86,10 +86,10 @@ When /^I sign in with valid credentials$/ do
 end
 
 When /^I sign out$/ do
-  visit '/users/sign_out'
+  visit '/admins/sign_out'
 end
 
-When /^I sign up with valid user data$/ do
+When /^I sign up with valid admin data$/ do
   build_visitor
   sign_up
 end
@@ -134,8 +134,8 @@ end
 
 When /^I correctly edit my account details$/ do
   click_link "Edit account"
-  fill_in "user_password", :with => "ciccio"
-  fill_in "user_password_confirmation", :with => "ciccio"
+  fill_in "admin_password", :with => "ciccio"
+  fill_in "admin_password_confirmation", :with => "ciccio"
   fill_in "Current password", :with => @visitor[:password]
   click_button "Update"
 end
@@ -143,15 +143,15 @@ end
 When /^I erroneously edit my account details with ([^,]*), ([^,]*), and (.*)$/ do |pass, passconfirm, currpass|
   currpass = @visitor[:password] if currpass == :correct
   click_link "Edit account"
-  fill_in "user_password", :with => pass
-  fill_in "user_password_confirmation", :with => passconfirm
+  fill_in "admin_password", :with => pass
+  fill_in "admin_password_confirmation", :with => passconfirm
   fill_in "Current password", :with => currpass
   click_button "Update"
 end
 
 
 
-When /^I look at the list of users$/ do
+When /^I look at the list of admins$/ do
   visit '/'
 end
 
@@ -249,8 +249,8 @@ Then /^I should see an account edited message$/ do
 end
 
 Then /^I should see my name$/ do
-  create_user
-  page.should have_content @user[:name]
+  create_admin
+  page.should have_content @admin[:name]
 end
 
 Then /^I should be denied access$/ do

@@ -1,4 +1,4 @@
-class Adm::LocationsController < ApplicationController
+class Adm::LocationsController < AdmController
   # GET /adm/locations
   # GET /adm/locations.json
   def index

@@ -1,7 +1,7 @@
-Feature: Edit User
-  As a registered user of the website
-  I want to edit my user profile
-  so I can change my username
+Feature: Edit Admin
+  As a registered admin of the website
+  I want to edit my admin profile
+  so I can change my admin name
 
     Scenario: I sign in and edit my account
       Given I am logged in

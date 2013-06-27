@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 # -------------------------------------------------------------- BASE RAILS GEMS
 gem 'rails', '3.2.9'
+gem 'rack', '1.4.1'  # https://makandracards.com/makandra/13580-fix-warning-no-secret-option-provided-to-rack-session-cookie
 gem 'jquery-rails'
 gem 'sqlite3'
 gem 'mysql2'
@@ -63,17 +64,20 @@ group :development do
   gem "binding_of_caller", ">= 0.6.8"
 end
 
-group :development, :test do
-  gem "rspec-rails", ">= 2.11.4", :group => [:development, :test]
-  gem "factory_girl_rails", ">= 4.1.0", :require => false
-end
+# group :development, :test do
+#   gem "rspec-rails", ">= 2.11.4", :group => [:development, :test]
+#   gem "factory_girl_rails", ">= 4.1.0", :require => false
+#   gem "cucumber-rails", ">= 1.3.0", :require => false
+#   gem "database_cleaner", ">= 0.9.1"
+#   gem "email_spec", ">= 1.4.0"
+#   gem "launchy", ">= 2.1.2"
+#   gem "capybara", ">= 2.0.1"
+# end
 
 group :test do
-  gem "cucumber-rails", ">= 1.3.0", :require => false
-  gem "database_cleaner", ">= 0.9.1"
-  gem "email_spec", ">= 1.4.0"
-  gem "launchy", ">= 2.1.2"
-  gem "capybara", ">= 2.0.1"
+  gem 'minitest'
+  gem 'capybara'
+  # gem 'turn'
 end
 
 # For searching book infos on the web https://github.com/jayfajardo/openlibrary
