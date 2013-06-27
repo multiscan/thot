@@ -46,14 +46,17 @@ class SearchesController < ApplicationController
   # POST /searches.json
   def create
     @search = Search.new(params[:search])
-
-    respond_to do |format|
-      if @search.save
-        format.html { redirect_to @search, notice: 'Search was successfully created.' }
-        format.json { render json: @search, status: :created, location: @search }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @search.errors, status: :unprocessable_entity }
+    if @search.simple_query?
+      redirect_to books_path(:search=>@search.query)
+    else
+      respond_to do |format|
+        if @search.save
+          format.html { redirect_to @search, notice: 'Search was successfully created.' }
+          format.json { render json: @search, status: :created, location: @search }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @search.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

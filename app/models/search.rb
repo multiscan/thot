@@ -67,7 +67,7 @@ class Search < ActiveRecord::Base
     # single inventory number
     if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
       inv=i # inv_range.strip.to_i
-      logger.debug "Simple search for inv=#{inv}"
+      # logger.debug "Simple search for inv=#{inv}"
       @entries = Item.where(:id=>inv).paginate(paginate_params)
       return
     end
@@ -75,7 +75,7 @@ class Search < ActiveRecord::Base
     # bookle isbn
     unless isbn.blank?
       @entries = Book.where(:isbn => isbn).paginate(paginate_params)
-      logger.debug "Simple search for isbn=#{isbn}"
+      # logger.debug "Simple search for isbn=#{isbn}"
       return
     end
 
@@ -89,23 +89,27 @@ class Search < ActiveRecord::Base
         return
       end
       if book_conds.empty?
-        logger.debug("SQL    search only on items: item_conds=#{item_conds.inspect}")
+        # logger.debug("SQL    search only on items: item_conds=#{item_conds.inspect}")
         if params[:items_only]
           @entries = Item.where(item_conds).paginate(paginate_params)
         else
           @entries = Item.includes(:inventoriable).where(item_conds).paginate(paginate_params)
         end
       else
-        logger.debug("SQL    search: book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
+        # logger.debug("SQL    search: book_conds=#{book_conds.inspect}\n               item_conds=#{item_conds.inspect}")
         conditions=book_conds
         conditions[:items] = item_conds
         @entries = Book.includes(:items).where(conditions).paginate(paginate_params)
       end
     else
-      # TODO: include remaining conditions on Book (year, publisher_id)
       conditions=book_conds.merge(item_conds)
-      logger.debug("Sphinx search: query=#{query}\n               conds=#{conditions.inspect}")
-      @entries = Book.search(query, {:with=>conditions}.merge(paginate_params))
+      if items_oriented?
+        # logger.debug("Sphinx search on item: query=#{query}\n               conds=#{conditions.inspect}")
+        @entries = Item.search(query, {:with=>conditions}.merge(paginate_params))
+      else
+        # logger.debug("Sphinx search on book: query=#{query}\n               conds=#{conditions.inspect}")
+        @entries = Book.search(query, {:with=>conditions}.merge(paginate_params))
+      end
     end
   end
 
@@ -117,7 +121,12 @@ class Search < ActiveRecord::Base
     !inv_range.blank? || !inv_date_fr.blank? || !inv_date_to.blank? || !lab_id.blank? || !location_id.blank? || !status.blank?
   end
 
- private
+  def simple_query?
+    nba=attributes.select{|k,v| !v.blank?}
+    !query.blank? && nba.size==1
+  end
+
+ # private
 
   # conditions for books
   def book_conds
