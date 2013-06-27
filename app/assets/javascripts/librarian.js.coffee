@@ -16,9 +16,10 @@ class window.Librarian
       location.href = "/nebis/"+nebis
 
   on_item: (inv) ->
-    console.debug("catched barcode_book: %s", inv)
+    id = parseInt(inv)
+    console.debug("catched barcode_book: %s   id=%s", inv, id)
     if @nebis
-      return_link = jQuery('a[data-item-id='+inv+']')
+      return_link = jQuery('a[data-item-id='+id+']')
       if return_link.size()==0
         console.debug("the book is not in the list. Checking out")
         jQuery('#loan_item_id').val(inv)
