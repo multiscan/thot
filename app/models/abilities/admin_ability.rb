@@ -29,7 +29,8 @@ class Abilities::AdminAbility
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
-    admin ||= Admin.new # guest user (not logged in)
+    # admin ||= Admin.new # guest user (not logged in)
+    return if admin.nil?
     if admin.role? :admin
       can :manage, :all
       return
