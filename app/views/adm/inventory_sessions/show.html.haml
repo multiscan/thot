@@ -66,3 +66,9 @@
 = link_to 'Edit', edit_adm_inventory_session_path(@inventory_session)
 \|
 = link_to 'Back to inventory sessions', adm_inventory_sessions_path
+\|
+= link_to 'List of Books in PDF format', adm_inventory_session_path(@inventory_session, :pdf)
+\|
+= link_to 'List of Books in CSV format', adm_inventory_session_path(@inventory_session, :csv)
+\|
+= link_to 'List of Books in XLS format', adm_inventory_session_path(@inventory_session, :xls)

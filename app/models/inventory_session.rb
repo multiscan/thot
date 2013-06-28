@@ -5,8 +5,25 @@ class InventorySession < ActiveRecord::Base
   # has_many :unchecked_goods, :class_name => "Good", :foreign_key => "inventory_session_id", :conditions=>{:current_shelf_id=>nil}
   has_many :checked_goods, :class_name => "Good", :foreign_key => "inventory_session_id", :conditions=>"current_shelf_id IS NOT NULL"
   has_and_belongs_to_many :items, :join_table => "goods", :foreign_key => "inventory_session_id", :uniq => true
+  has_and_belongs_to_many :book_items, :join_table => "goods", :foreign_key => "inventory_session_id", :class_name => "Item", :uniq => true, :conditions => {:inventoriable_type => "Book"}
 
   # ----------------------------------------------------------------------------
+
+  # def books_by_call
+  #   self.items.joins("JOIN books ON books.id = items.inventoriable_id AND items.inventoriable_type = 'Book'").order("books.call1 ASC, books.call2 ASC, books.call3 ASC, books.call4 ASC")
+  # end
+
+  def books_by_call_for_listing
+    items.joins(
+        "JOIN books ON books.id = items.inventoriable_id AND items.inventoriable_type = 'Book'"
+      ).joins(
+        "JOIN labs ON labs.id = items.lab_id"
+      ).order(
+        "books.call1 ASC, books.call2 ASC, books.call3 ASC, books.call4 ASC, items.id ASC"
+      ).select(
+        "items.id, labs.nick as lab_nick, books.title, books.call1, books.call2, books.call3"
+      )
+  end
 
   def in_shelf_count(s)
     goods.where(current_shelf_id: s.id).count

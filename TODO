@@ -1,0 +1,16 @@
+Inventory:
+ ☐ when checking inventory return books that are checked out
+ ☐ show previous shelf and status in goods listing
+ ✔ goods listing in printable format for manual inventory checking @done (13-06-28 16:00)
+ ☐ can owner in inventory session form be removed ?
+
+Sorting:
+ ☐ when showing a search, include sorting options if more than one page of results
+ ☐ add sorting options on possibly all pages listing items
+
+ Testing:
+
+Legacy:
+ ✔ move legacy import away from db:seed @done (13-06-28 11:00)
+ ✔ seed borrow date and item creation date @done (13-06-28 10:55)
+

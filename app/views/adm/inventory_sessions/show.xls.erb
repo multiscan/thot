@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Inv</Data></Cell>
+        <Cell><Data ss:Type="String">Lab</Data></Cell>
+        <Cell><Data ss:Type="String">Call1</Data></Cell>
+        <Cell><Data ss:Type="String">Call2</Data></Cell>
+        <Cell><Data ss:Type="String">Call3</Data></Cell>
+        <Cell><Data ss:Type="String">Title</Data></Cell>
+      </Row>
+    <% @inventory_session.books_by_call_for_listing.each do |r| %>
+      <Row>
+        <Cell><Data ss:Type="Number"><%= r.id %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= r.lab_nick.blank? ? "N.A." : r.lab_nick %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= r.call1.blank?    ? "N.A." : r.call1 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= r.call2.blank?    ? "N.A." : r.call2 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= r.call3.blank?    ? "N.A." : r.call3 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= r.title.blank?    ? "N.A." : r.title %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

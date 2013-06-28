@@ -61,6 +61,13 @@ class Search < ActiveRecord::Base
 
   def search(params={})
     paginate_params = {:per_page => params[:per_page] || per_page, :page => params[:page] || next_page}
+
+    # order_book="title ASC"
+    # order_item="id DESC"
+    # if params[:item_order_by]
+
+    # end
+
     @entries=nil
     @items=nil
     @book=nil
@@ -71,7 +78,7 @@ class Search < ActiveRecord::Base
     if !inv_range.blank? && (i=parse_range(inv_range)).is_a?(Integer)
       inv=i # inv_range.strip.to_i
       logger.debug "Simple search for inv=#{inv}"
-      @entries = Item.where(:id=>inv).paginate(paginate_params)
+      @entries = Item.where(:id=>inv).order(order_item).paginate(paginate_params)
       @items_oriented = true
       return
     end

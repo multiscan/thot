@@ -1,19 +1,30 @@
 class Item < ActiveRecord::Base
   attr_accessible :currency, :inventoriable, :inventoriable_type, :lab, :lab_id, :location_name, :location_id, :price, :status, :shelf_id
 
-  belongs_to :inventoriable, :polymorphic => true
+  scope :book, -> { where(inventoriable_type: 'Book') }
+  belongs_to :inventoriable, :polymorphic => true, :foreign_key => "inventoriable_id"
   belongs_to :lab                          # , :counter_cache => true
   belongs_to :location
-  belongs_to :inventory, :class_name => "Inventory", :foreign_key => "inventory_id"
   belongs_to :shelf, :class_name => "Shelf", :foreign_key => "shelf_id"
   has_many :loans, :class_name => "Loan", :foreign_key => "item_id", :include => :user
   has_one :current_checkout, :class_name => "Loan", :foreign_key => "item_id", :conditions=>{:return_date=>nil}
+
+
+  has_many :goods, :class_name => "good", :foreign_key => "item_id"
 
   validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
   # validates_presence_of :inv
   # validates_uniqueness_of :inv, :message => "must be unique"
 
   after_create :autoset_inv
+
+  ORDERING_CRITERIA=[
+    {desc: "inventory number, ascending", order: "items.id ASC"},
+    {desc: "inventory number, descending", order: "items.id DESC"},
+    {desc: "lab", order: "labs.nick ASC", includes: [:lab]},
+    {desc: "location", order: "location_id ASC, shelf_id ASC"},
+    {desc: "call", order: "items.call1 ASC, items.call2 ASC, items.call3 ASC, items.call4 ASC"},
+  ]
 
   # Thinking Sphinx Stuff
   define_index do
@@ -24,10 +35,14 @@ class Item < ActiveRecord::Base
     where "inventoriable_type = 'Book'"
 
     # attributes
-    has inv, lab_id, location_id, status
+    has lab_id, location_id, status, call1, call2, call3, call4
     has "books.publisher_id", :as=>:publisher_id, :type=>:integer
     has "books.pubyear", :as=>:pubyear, :type=>:integer
   end
+
+  # def book_id
+  #   inventoriable_type == "Book" ? inventoriable_id : nil
+  # end
 
   def location_name
     self.location.nil? ? "" : self.location.name

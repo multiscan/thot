@@ -70,8 +70,20 @@ class Adm::InventorySessionsController < AdmController
     @shelves = @inventory_session.shelves
     gon.inventory = @inventory_session.id
     respond_to do |format|
+      format.pdf
       format.html # show.html.erb
       format.json { render json: @inventory_session }
+      format.csv {
+        @records = [["Inv", "Lab", "Call1", "Call2", "Call3", "Title"]]
+        @records += @inventory_session.books_by_call_for_listing.map{|r| [r.id, r.lab_nick, r.call1, r.call2, r.call3, r.title]}
+        send_data CSV.generate {|csv| @records.each {|r| csv << r} }
+      }
+      format.xls # renders show.xls.erb
+      # format.xls {
+      #   @records = [["Inv", "Lab", "Call1", "Call2", "Call3", "Title"]]
+      #   @records += @inventory_session.books_by_call_for_listing.map{|r| [r.id, r.lab_nick, r.call1, r.call2, r.call3, r.title]}
+      #   send_data CSV.generate(col_sep: "\t") {|csv| @records.each {|r| csv << r} }
+      # }
     end
   end
 
