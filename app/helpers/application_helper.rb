@@ -19,6 +19,17 @@ module ApplicationHelper
       "<span class='label label-inverse'>#{item.status}</span>".html_safe
     end
   end
+  def full_item_status(item)
+    if item.status=="Library"
+      if c=item.current_checkout
+        "<span class='label label-warning'>Library / on loan</span>".html_safe
+      else
+        "<span class='label label-success'>Library / available</span>".html_safe
+      end
+    else
+      "<span class='label label-inverse'>#{item.status}</span>".html_safe
+    end
+  end
 
   def item_price(item)
     item.price ? "#{item.price} #{item.currency}" :  "NA"

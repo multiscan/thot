@@ -64,25 +64,32 @@ class LocBook
     end
     @collation
   end
+
+  # lcc text should be of the form:
+  # 'QA166.17 .R34 1992' -> [QA, 166.17, .R34, 1992] = [call1, call2, call3, call4]
+  #
   def lcc
     begin
-      @lcc = @data.locate("classification").select{|ca| ca.attributes[:authority]=="lcc"}[0].text.split(" ")
+      @lcc = @data.locate("classification").select{|ca| ca.attributes[:authority]=="lcc"}[0].text
     rescue
       @lcc = []
     end
     @lcc
   end
+  def lcc_array
+    lcc.split(" ")
+  end
   def call1
-    lcc[0] || ""
+    lcc_array[0].gsub(/^([A-Z]+).*$/, '\1')
   end
   def call2
-    lcc[1] || ""
+    lcc_array[0].gsub(/^[A-Z]*/, '')
   end
   def call3
-    lcc[2] || ""
+    lcc_array[1] || ""
   end
   def call4
-    lcc[4] || ""
+    lcc_array[2] || ""
   end
   def isbns
     begin

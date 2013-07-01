@@ -113,11 +113,13 @@ class InventorySession < ActiveRecord::Base
     end
     @shelves
   end
+
   # ----------------------------------------------------------------------------
 
   def commit_moves
     count=0
     move_committable.each do |g|
+      g.item.checkin
       g.item.update_attributes(shelf_id: g.current_shelf_id, status: "Library")
       g.update_attribute(:commit, g.commit+1)
       count = count + 1

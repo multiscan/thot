@@ -18,10 +18,14 @@
 
       .row
         .span3= f.input :collation
-        .span2= f.input :call1, :input_html=>{:class=>"span2"}
-        .span2= f.input :call2, :input_html=>{:class=>"span2"}
-        .span2= f.input :call3, :input_html=>{:class=>"span2"}
-        .span2= f.input :call4, :input_html=>{:class=>"span2"}
+        .span3= f.input :isbn
+        .span3= f.input :isbn13
+
+      .row
+        .span2= f.input :call1, :placeholder => "QA", :input_html=>{:class=>"span2"}
+        .span2= f.input :call2, :placeholder => "268", :input_html=>{:class=>"span2"}
+        .span2= f.input :call3, :placeholder => ".R53", :input_html=>{:class=>"span2"}
+        .span2= f.input :call4, :placeholder => "2008", :input_html=>{:class=>"span2"}
 
       .row
         .span5= f.input :collection, :input_html=>{:class=>"span5"}

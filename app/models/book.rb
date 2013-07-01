@@ -20,12 +20,18 @@ class Book < ActiveRecord::Base
   validates_numericality_of :pubyear, :greater_than_or_equal_to => 1500,
                             :less_than_or_equal_to => Time.new.year+2, :only_integer => true, :allow_nil => true
 
+  before_save :check_isbn13
+
   define_index do
     indexes title, :sortable => true
     indexes author
     indexes editor
     indexes publisher.name, :as => :publisher, :sortable => true
     indexes author.name, :as => :author, :sortable => true
+    # indexes call1
+    # indexes call2
+    # indexes call3
+    # indexes call4
 
     # attributes
     has publisher_id, created_at, updated_at, isbn
@@ -133,7 +139,32 @@ class Book < ActiveRecord::Base
     self.select("COUNT(isbn) as total, isbn").group(:isbn).having("COUNT(isbn) > 1 AND isbn!=''").order('total').map{|b| [b.isbn,b.total]}
   end
 
+  def isbn_checksum(isbn_string)
+    digits = isbn_string.split(//).map(&:to_i)
+    transformed_digits = digits.each_with_index.map do |digit, digit_index|
+      digit_index.modulo(2).zero? ? digit : digit*3
+    end
+    transformed_digits.reduce(:+)
+  end
+
+  def is_valid_isbn13?(isbn13)
+    checksum = isbn_checksum(isbn13)
+    checksum.modulo(10).zero?
+  end
+
+  def isbn13_checksum_digit(isbn12)
+    checksum = isbn_checksum(isbn12)
+    10 - checksum.modulo(10)
+  end
+
  private
+
+  def check_isbn13
+    if self.isbn13.blank? && ! self.isbn.blank? && self.isbn.length == 13
+      self.isbn13 = self.isbn
+    end
+  end
+
   def set_counts
     @all_count = items.count
     library_count = items.where(:status=>"Library").count

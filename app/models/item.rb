@@ -35,7 +35,7 @@ class Item < ActiveRecord::Base
     where "inventoriable_type = 'Book'"
 
     # attributes
-    has lab_id, location_id, status, call1, call2, call3, call4
+    has lab_id, location_id, status #, call1, call2, call3, call4
     has "books.publisher_id", :as=>:publisher_id, :type=>:integer
     has "books.pubyear", :as=>:pubyear, :type=>:integer
   end
@@ -71,7 +71,12 @@ class Item < ActiveRecord::Base
   end
 
   def checkin
-    current_checkout.checkin
+    if current_checkout.nil?
+      false
+    else
+      current_checkout.checkin
+      true
+    end
   end
 
   def on_loan?

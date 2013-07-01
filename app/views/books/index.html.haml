@@ -1,6 +1,6 @@
 -content_for(:title) do
   Books
-  %small= @search ? "search result" : "No search, most recently added first."
+  %small= @subtitle || (@search ? "search result" : "No search, most recently added first.")
 
 -if @search
   %p
@@ -8,7 +8,7 @@
     = @search
 
 - unless @books.empty?
-  = render :partial => "books"
+  = render :partial => "books/books"
   = might_paginate @paginate
 - else
   %p No books where found matching your query.

@@ -19,7 +19,7 @@ Thot::Application.routes.draw do
   devise_for :admins
   namespace :adm do
     resources :admins
-    resources :books, :only => [:new, :edit, :create, :update, :destroy] do
+    resources :books do
       get :autocomplete_publisher_name, :on => :collection
       resources :items, :only=>[:new, :create]
     end

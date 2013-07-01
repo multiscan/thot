@@ -8,8 +8,8 @@
   %td
     - if inventory_session
       = link_to "Inventory", [:adm, inventory_session, shelf]
-      |
-    = link_to 'Show', shelf
-    - if can? :destroy, shelf
-      |
-      = link_to 'Destroy', [:adm, shelf], method: :delete, :remote => true
+    -else
+      = link_to 'Show', shelf
+      - if can?(:destroy, shelf)
+        |
+        = link_to 'Destroy', [:adm, shelf], method: :delete, :remote => true

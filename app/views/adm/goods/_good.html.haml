@@ -1,1 +1,7 @@
-%li{:id => "inv_#{good.inv}"} inv #{good.inv}
+%li{:id => "inv_#{good.inv}"}
+  #{good.item_id} - #{good.item.lab.nick}
+  %br
+  =item_location(good.item)
+  %br
+  =full_item_status(good.item)
+

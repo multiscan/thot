@@ -39,7 +39,7 @@
       %dt imported:
       %dd #{@inventory_session.imported_count} items
 
-- if @inventory_session.progress.to_i > 85
+- if @inventory_session.progress.to_i > 85 && ( @inventory_session.move_committable_count > 0 || @inventory_session.missing_committable_count > 0 )
   %h4 Commit
   - if @inventory_session.move_committable_count > 0
     %p
@@ -53,9 +53,9 @@
       = link_to "commit", adm_inventory_session_commit_missings_path(@inventory_session), data: { confirm: 'Caution: missing items will be kept in the database but will not be listed in searches.'}
       this inventory session.
 
-
-%h3 Notes:
-.well= render_markdown(@inventory_session.notes)
+- unless @inventory_session.notes.blank?
+  %h3 Notes:
+  .well= render_markdown(@inventory_session.notes)
 
 %h3 Shelves:
 - if @shelves.count == 0

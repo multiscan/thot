@@ -304,3 +304,10 @@ ul.ui-autocomplete {
     }
   }
 }
+
+ul.goods {
+  li { padding: 0.5em; }
+  li:nth-child(even) {
+    background-color: #ddd;
+  }
+}

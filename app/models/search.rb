@@ -62,8 +62,8 @@ class Search < ActiveRecord::Base
   def search(params={})
     paginate_params = {:per_page => params[:per_page] || per_page, :page => params[:page] || next_page}
 
-    # order_book="title ASC"
-    # order_item="id DESC"
+    order_book="title ASC"
+    order_item="id DESC"
     # if params[:item_order_by]
 
     # end

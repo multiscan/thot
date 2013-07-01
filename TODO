@@ -1,8 +1,9 @@
 Inventory:
- ☐ when checking inventory return books that are checked out
- ☐ show previous shelf and status in goods listing
+ ✔ when checking inventory return books that are checked out @done (13-07-01 12:55)
+ ✔ show previous shelf and status in goods listing @done (13-07-01 12:55)
  ✔ goods listing in printable format for manual inventory checking @done (13-06-28 16:00)
  ☐ can owner in inventory session form be removed ?
+ ☐ sort missing items by call numbers
 
 Sorting:
  ☐ when showing a search, include sorting options if more than one page of results
