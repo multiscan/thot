@@ -37,6 +37,23 @@ Verify that your server have all the above requirements then
 5. <tt>rake thinking_sphinx:start</tt>
 6. <tt>rails server</tt> or whatever is needed if you use passenger.
 
+=== Spinx:
+Sphinx needs mysql or pgsql.
+See here:
+http://pat.github.com/ts/en/
+http://railscasts.com/episodes/120-thinking-sphinx
+https://github.com/pat/thinking-sphinx
+
+On mac here is the procedure for having mysql + sphinx correctly installed
+1. <tt>brew install mysql</tt>
+2. <tt>mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp</tt>
+3. <tt>mysql.server start</tt>
+4. <tt>/usr/local/opt/mysql/bin/mysql_secure_installation</tt>
+5. <tt>brew install sphinx --mysql</tt>
+6. <tt>rake thinking_sphinx:index</tt>
+7. <tt>rake thinking_sphinx:rebuild</tt>
+8. <tt>rake thinking_sphinx:start</tt>
+
 == Usage as Administrator / Operator
 
 The seeds rake task shoudl have created your administrator account. This can
