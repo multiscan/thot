@@ -1,5 +1,5 @@
 class Adm::LabsController < AdmController
-  before_filter :administrator_only!
+  before_action :administrator_only!
 
   # GET /adm/labs
   # GET /adm/labs.json
@@ -44,7 +44,7 @@ class Adm::LabsController < AdmController
   # POST /adm/labs
   # POST /adm/labs.json
   def create
-    @lab = Lab.new(params[:adm_lab])
+    @lab = Lab.new(lab_params)
 
     respond_to do |format|
       if @lab.save
@@ -63,7 +63,7 @@ class Adm::LabsController < AdmController
     @lab = Lab.find(params[:id])
 
     respond_to do |format|
-      if @lab.update_attributes(params[:adm_lab])
+      if @lab.update_attributes(lab_params)
         format.html { redirect_to @lab, notice: 'Lab was successfully updated.' }
         format.json { head :no_content }
       else
@@ -84,4 +84,11 @@ class Adm::LabsController < AdmController
       format.json { head :no_content }
     end
   end
+
+ private
+
+  def lab_params
+    params.require(:adm_lab).permit :name, :nick
+  end
+
 end

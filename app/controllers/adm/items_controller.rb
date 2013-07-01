@@ -1,5 +1,5 @@
 class Adm::ItemsController < AdmController
-  before_filter :set_book, :only => [:new, :create]
+  before_action :set_book, :only => [:new, :create]
   load_and_authorize_resource :except => [:index]
 
   # GET /items

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :set_gon_for_admin
+  before_action :set_gon_for_admin
 
   # check_authorization
 

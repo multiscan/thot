@@ -36,7 +36,7 @@ class Adm::BooksController < ApplicationController
   # POST /adm/books
   def create
     if params[:isbn_step]
-      @books=Book.new_given_isbn(params[:book][:isbn])
+      @books=Book.new_given_isbn(book_params[:isbn])
       if @books.count == 1
         @book=@books.first
         if @book.new_record?
@@ -52,7 +52,7 @@ class Adm::BooksController < ApplicationController
         end
       else
         if @books.first.new_record?
-          @book = Book.new(params[:book])
+          @book = Book.new(book_params)
           render "new_as_merge"
         else
           @isbn = params[:book][:isbn]
@@ -63,7 +63,7 @@ class Adm::BooksController < ApplicationController
         end
       end
     else
-      @book = Book.new(params[:book])
+      @book = Book.new(book_params)
 
       respond_to do |format|
         if @book.save
@@ -80,7 +80,7 @@ class Adm::BooksController < ApplicationController
     @book = Book.find(params[:id])
 
     respond_to do |format|
-      if @book.update_attributes(params[:book])
+      if @book.update_attributes(book_params)
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
       else
         format.html { render action: "edit" }
@@ -97,4 +97,11 @@ class Adm::BooksController < ApplicationController
       format.html { redirect_to books_url }
     end
   end
+
+ private
+
+  def book_params
+    params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
+  end
+
 end

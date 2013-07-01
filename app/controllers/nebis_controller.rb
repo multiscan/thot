@@ -1,6 +1,6 @@
 class NebisController < ApplicationController
 
-  before_filter :nebis_session, :only => :show
+  before_action :nebis_session, :only => :show
 
   def show
     @user = User.find_by_nebis(params[:id])

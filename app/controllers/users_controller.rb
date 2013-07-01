@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => [:show]
+  before_action :authenticate_admin!, :only => [:show]
 
   # GET /users/1
   # GET /users/1.json

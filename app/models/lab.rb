@@ -1,5 +1,4 @@
 class Lab < ActiveRecord::Base
-  attr_accessible :name, :nick
   has_many :users
   has_many :items
   has_many :book_items, :class_name => "Item", :conditions=>{:inventoriable_type=>"Book"}, :include => :inventoriable

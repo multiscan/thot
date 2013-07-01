@@ -20,7 +20,7 @@ class Adm::DegIsbnsController < AdmController
   def update
     @degisbn=DegIsbn.find(params["id"])
     isbn=@degisbn.isbn
-    @book=Book.new(params["book"].merge({:isbn=>isbn}))
+    @book=Book.new(book_params.merge({:isbn=>isbn}))
     if @book.save
       @degisbn.count = @degisbn.count + 1
       @degisbn.books.find(params["merge_book_ids"]).each do |b|
@@ -45,4 +45,11 @@ class Adm::DegIsbnsController < AdmController
       render :action => "edit"
     end
   end
+
+ private
+
+  def book_params
+    params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
+  end
+
 end

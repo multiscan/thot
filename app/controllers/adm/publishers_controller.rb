@@ -1,5 +1,5 @@
 class Adm::PublishersController < AdmController
-  before_filter :administrator_only!
+  before_action :administrator_only!
 
   # GET /adm/publishers
   # GET /adm/publishers.json
@@ -42,7 +42,7 @@ class Adm::PublishersController < AdmController
   # POST /adm/publishers
   # POST /adm/publishers.json
   def create
-    @publisher = Publisher.new(params[:publisher])
+    @publisher = Publisher.new(publisher_params)
 
     respond_to do |format|
       if @publisher.save
@@ -61,7 +61,7 @@ class Adm::PublishersController < AdmController
     @publisher = Publisher.find(params[:id])
 
     respond_to do |format|
-      if @publisher.update_attributes(params[:publisher])
+      if @publisher.update_attributes(publisher_params)
         format.html { redirect_to @publisher, notice: 'Publisher was successfully updated.' }
         format.json { head :no_content }
       else
@@ -82,4 +82,11 @@ class Adm::PublishersController < AdmController
       format.json { head :no_content }
     end
   end
+
+ private
+
+  def publisher_params
+    params.require(:publisher).permit(:name)
+  end
+
 end

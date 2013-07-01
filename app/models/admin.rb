@@ -10,9 +10,9 @@ class Admin < ActiveRecord::Base
   #        :recoverable, :rememberable, :trackable, :validatable
   devise :database_authenticatable, :recoverable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :lab_ids
-  # attr_accessible :title, :body
+  # # Setup accessible (or protected) attributes for your model
+  # attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :lab_ids
+  # # attr_accessible :title, :body
 
   has_and_belongs_to_many :labs, :class_name => "Lab", :join_table => "operatorships"
   has_many :inventory_sessions, :class_name => "InventorySession", :foreign_key => "admin_id", :order => 'updated_at DESC'

@@ -1,5 +1,4 @@
 class Location < ActiveRecord::Base
-  attr_accessible :name
   validates_uniqueness_of :name, :on => :create, :message => "a room with this name already exists"
 
   def self.names_list

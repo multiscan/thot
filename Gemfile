@@ -7,7 +7,7 @@ gem 'mysql2'
 gem 'activerecord-mysql-adapter'
 
 # --- backward compatibility (TO BE REMOVED!)
-gem 'protected_attributes'
+# gem 'protected_attributes'
 
 # ---------------------------------------------------- CAPISTRANO FOR DEPLOYMENT
 gem 'capistrano'
@@ -30,6 +30,9 @@ gem "rolify", ">= 3.2.0"
 
 # --- app configuration: config/application.yml
 gem "figaro", ">= 0.5.0"
+
+
+gem 'rails3-jquery-autocomplete'       #, '1.0.9'
 
 # --------------------------------------------------------------------------- js
 gem 'jquery-rails'

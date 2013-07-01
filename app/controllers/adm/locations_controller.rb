@@ -47,7 +47,7 @@ class Adm::LocationsController < AdmController
   # POST /adm/locations
   # POST /adm/locations.json
   def create
-    @location = Location.new(params[:location])
+    @location = Location.new(location_params)
 
     respond_to do |format|
       if @location.save
@@ -66,7 +66,7 @@ class Adm::LocationsController < AdmController
     @location = Location.find(params[:id])
 
     respond_to do |format|
-      if @location.update_attributes(params[:location])
+      if @location.update_attributes(location_params)
         format.html { redirect_to adm_locations_url, notice: "Location #{@location.name} was successfully updated." }
         format.json { head :no_content }
       else
@@ -87,4 +87,11 @@ class Adm::LocationsController < AdmController
       format.json { head :no_content }
     end
   end
+
+ private
+
+  def location_params
+    params.require(:location).permit(:name)
+  end
+
 end

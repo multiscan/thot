@@ -1,5 +1,5 @@
 class Adm::AdminsController < AdmController
-  before_filter :administrator_only!
+  before_action :administrator_only!
 
   # GET /adm/admins
   # GET /adm/admins.json
@@ -42,7 +42,7 @@ class Adm::AdminsController < AdmController
   # POST /adm/admins
   # POST /adm/admins.json
   def create
-    @admin = Admin.new(params[:admin])
+    @admin = Admin.new(admin_params)
 
     respond_to do |format|
       if @admin.save
@@ -61,7 +61,7 @@ class Adm::AdminsController < AdmController
     @admin = Admin.find(params[:id])
 
     respond_to do |format|
-      if @admin.update_attributes(params[:admin])
+      if @admin.update_attributes(admin_params)
         format.html { redirect_to [:adm, @admin], notice: 'Admin was successfully updated.' }
         format.json { head :no_content }
       else
@@ -82,4 +82,11 @@ class Adm::AdminsController < AdmController
       format.json { head :no_content }
     end
   end
+
+ private
+
+  def admin_params
+    params.require(:admin).permit :name, :email, :role, :password, :password_confirmation, :remember_me, :lab_ids
+  end
+
 end

@@ -3,8 +3,6 @@ require 'google_book'
 class Book < ActiveRecord::Base
   extend Memoist
 
-  attr_accessible :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
-
   has_many :items, :as => :inventoriable
   # has_many :loans, :class_name => "Loan", :foreign_key => "book_id"
   # has_many :checkouts, :class_name => "Loan", :foreign_key => "book_id", :conditions=>{:return_date=>nil}

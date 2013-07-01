@@ -13,7 +13,7 @@ class Adm::PublisherMergersController < AdmController
   # POST /publisher_mergers
   def create
     @publishers=Publisher.find(params["mergenda_ids"])
-    @publisher=Publisher.new(params["publisher"])
+    @publisher=Publisher.new(publisher_params)
     if params["commit"] == "Merge"
       render action: "edit"
     else
@@ -33,6 +33,12 @@ class Adm::PublisherMergersController < AdmController
         redirect_to new_adm_publisher_merger_path, :notice => 'Something went wrong. Failed to merge publishers.'
       end
     end
+  end
+
+ private
+
+  def publisher_params
+    params.require(:publisher).permit(:name)
   end
 
 end

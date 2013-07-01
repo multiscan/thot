@@ -1,5 +1,5 @@
 class AdmController < ApplicationController
-  before_filter :authenticate_admin!
+  before_action :authenticate_admin!
 
   def administrator_only!
     # raise User::NotAuthorized unless current_user.admin?
