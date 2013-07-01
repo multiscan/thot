@@ -117,6 +117,6 @@ gem 'thinking-sphinx', '2.0.10'
 # Use unicorn as the app server
 # gem 'unicorn'
 # To use debugger
-gem 'debugger', :group => [:development]
-gem 'cheat', :group => [:development]
+# gem 'debugger', :group => [:development]
+# gem 'cheat', :group => [:development]
 
