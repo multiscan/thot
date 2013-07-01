@@ -5,7 +5,7 @@
     %title= content_for?(:title) ? "Thot: " + yield(:title).gsub(/<.*$/,"") : content_for?(:titlebar) ? "Thot: " + yield(:titlebar) : "Thot"
     %meta{:name=>"description", :content=>content_for?(:description) ? yield(:description) : "Thot"}
 
-    -# fav and touch icons
+    -# TODO: fav and touch icons
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
@@ -41,7 +41,7 @@
     #footer
       .container
         %p.muted.credit
-          Copyright (C) 2013 Emre Telatar - Rüdiger Urbanke - Giovanni Cangiani
+          Copyright (C) 2000-2013 Emre Telatar - Rüdiger Urbanke - Giovanni Cangiani
         %p
           =link_to "Administrator", "mailto:#{ENV['ADMIN_EMAIL']}"
           |

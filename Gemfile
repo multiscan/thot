@@ -75,7 +75,7 @@ end
 # end
 
 group :test do
-  gem 'minitest'
+  # gem 'minitest'
   gem 'capybara'
   # gem 'turn'
 end

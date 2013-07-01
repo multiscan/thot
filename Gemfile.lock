@@ -118,7 +118,6 @@ GEM
       treetop (~> 1.4.8)
     memoist (0.2.0)
     mime-types (1.23)
-    minitest (5.0.5)
     multi_json (1.7.7)
     mysql (2.9.0)
     mysql2 (0.3.11)
@@ -250,7 +249,6 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   memoist
-  minitest
   mysql2
   ox (~> 2.0.3)
   prawn
