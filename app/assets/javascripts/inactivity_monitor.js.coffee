@@ -2,6 +2,7 @@ class window.InactivityMonitor
   # needs:
   constructor: (it) ->
     @inactivityTimeout = it*1000;
+    # @inactivityTimeout = 10000;
     @reset_url = gon.nebis_extend_url
     console.debug("Loading InactivityMonitor  timeout="+@inactivityTimeout)
 
@@ -10,6 +11,7 @@ class window.InactivityMonitor
       @timeoutLabel = jQuery('#grace_timeout')
       @timeoutDialog = jQuery('#grace_timeout_dialog')
 
+      jQuery('#grace_timeout_dialog a.reset_timer_link').click(=> @reset())
       jQuery('body').mousemove( => @touch() )
       @touch()
       @resetDeadline()
@@ -22,7 +24,7 @@ class window.InactivityMonitor
 
   resetDeadline: () ->
     clearInterval(@activityDeadline) if @activityDeadline?
-    @actovotuDeadline = setTimeout ( =>
+    @activityDeadline = setTimeout ( =>
         @onInactivityDeadlineReached()
       ), @nextActivityDeadline() - jQuery.now()
 

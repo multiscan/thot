@@ -1,3 +1,6 @@
+Bugs:
+ ☐ does admin_signed_in? work ?
+ ☐ inactivity monitor: seems like the time is not restarted after reset
 Inventory:
  ✔ when checking inventory return books that are checked out @done (13-07-01 12:55)
  ✔ show previous shelf and status in goods listing @done (13-07-01 12:55)
@@ -20,3 +23,6 @@ Rails 4:
 
 Optimization:
  ☐ reduce SELECT COUNT on listings (e.g. adm/locations, adm/users)
+
+Security:
+ ☐ add authorize! anywhere it is needed

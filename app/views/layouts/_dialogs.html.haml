@@ -1,16 +1,18 @@
-- unless admin_signed_in?
-  %div{:id => "grace_timeout_dialog", :class => "modal hide fade"}
-    .modal-header
-      %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
-      %h3 Nebis Session Timeout
-    .modal-body
+-# TODO: check why this does not work
+-# unless admin_signed_in?
+%div{:id => "grace_timeout_dialog", :class => "modal hide fade"}
+  .modal-header
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
+    %h3 Nebis Session Timeout
+  .modal-body
+    %p
+      This browser will be redirected to the home page in
+      %span#grace_timeout
+        = 5
+      seconds
+    -if @nebis_user
       %p
-        This browser will be redirected to the home page in
-        %span#grace_timeout
-          = 5
-        seconds
-      -if @nebis_user
-        %p
-          You will have to reactivate your Nebis session by scanning your nebis code.
-    .modal-footer
-      =link_to_function "Reset Timer", "window.inactivity_monitor.reset();", :class=>"btn btn-primary", :id=>"reset_timer_link"
+        You will have to reactivate your Nebis session by scanning your nebis code.
+  .modal-footer
+    -# =link_to_function "Reset Timer", "window.inactivity_monitor.reset();", :class=>"btn btn-primary", :id=>"reset_timer_link"
+    =link_to "Reset Timer", "#", :class=>"reset_timer_link"
