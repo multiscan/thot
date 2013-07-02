@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
-  autocomplete :publisher, :name, :full => true
+  # TODO: re-enable autocomplete when a rails4 compatible version is out
+  # autocomplete :publisher, :name, :full => true
 
   # GET /books
   # GET /books.json

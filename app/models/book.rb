@@ -1,13 +1,18 @@
+# TODO: why this ? is it still needed ?
 require 'google_book'
 
 class Book < ActiveRecord::Base
   extend Memoist
 
+  # include ThinkingSphinx::Scopes
+  # sphinx_scope(:date_order) { {:order => :created_at} }
+  # default_sphinx_scope :date_order
+
   has_many :items, :as => :inventoriable
   # has_many :loans, :class_name => "Loan", :foreign_key => "book_id"
   # has_many :checkouts, :class_name => "Loan", :foreign_key => "book_id", :conditions=>{:return_date=>nil}
   has_many :loans, :through => :items
-  has_many :checkouts, :class_name => "Loan", :through => :items, :source => :loans, :conditions=>{:return_date=>nil}
+  has_many :checkouts, -> {where return_date: nil}, :class_name => "Loan", :through => :items, :source => :loans
   # has_many :available_items, :as => :inventoriable, :condition => ""
   belongs_to :publisher
 
@@ -20,20 +25,21 @@ class Book < ActiveRecord::Base
 
   before_save :check_isbn13
 
-  define_index do
-    indexes title, :sortable => true
-    indexes author
-    indexes editor
-    indexes publisher.name, :as => :publisher, :sortable => true
-    indexes author.name, :as => :author, :sortable => true
-    # indexes call1
-    # indexes call2
-    # indexes call3
-    # indexes call4
 
-    # attributes
-    has publisher_id, created_at, updated_at, isbn
-  end
+  # define_index do
+  #   indexes title, :sortable => true
+  #   indexes author
+  #   indexes editor
+  #   indexes publisher.name, :as => :publisher, :sortable => true
+  #   indexes author.name, :as => :author, :sortable => true
+  #   # indexes call1
+  #   # indexes call2
+  #   # indexes call3
+  #   # indexes call4
+
+  #   # attributes
+  #   has publisher_id, created_at, updated_at, isbn
+  # end
 
   def currency
     self.attributes[:currency] || ( self.price ? ENV["DEFAULT_CURRENCY"] : nil )

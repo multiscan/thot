@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # -------------------------------------------------------------- BASE RAILS GEMS
 gem 'rails', '4.0.0'
 gem 'sqlite3'
-gem 'mysql2'
+gem 'mysql2', '~>0.3.12b4'
 gem 'activerecord-mysql-adapter'
 
 # --- backward compatibility (TO BE REMOVED!)
@@ -20,7 +20,7 @@ gem 'rvm-capistrano'
 gem "ox", "~> 2.0.3"
 
 # --- sphinx full text search
-gem 'thinking-sphinx', '2.0.10'
+gem 'thinking-sphinx', '~>3.0.3'
 
 # --- authentication and acl
 #gem "devise_invitable", '~> 1.1.0'
@@ -29,13 +29,16 @@ gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
 
 # --- app configuration: config/application.yml
-gem "figaro", ">= 0.5.0"
+gem "figaro", ">= 0.6.0"
 
 
-gem 'rails3-jquery-autocomplete'       #, '1.0.9'
+# TODO: re-enable autocomplete when a rails4 compatible version is out
+# gem 'rails3-jquery-autocomplete', github: 'francisd/rails3-jquery-autocomplete'
 
 # --------------------------------------------------------------------------- js
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # --- for easily passing variables to javascript
 # http://railscasts.com/episodes/324-passing-data-to-javascript
 # https://github.com/gazay/gon

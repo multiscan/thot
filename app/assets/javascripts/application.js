@@ -13,12 +13,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
-//= require autocomplete-rails
+//= require jquery.ui.selectable
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require jquery.tablesorter
-//= require turbolinks
 //= require thot
 //= require barcode_scanner
 //= require book_merger
@@ -32,3 +30,6 @@ function on_ready() {
 
 $(document).ready(on_ready);
 $(document).on('page:load', on_ready);
+
+// TODO: re-enable autocomplete when a rails4 compatible version is out
+//--------------------------- = require autocomplete-rails

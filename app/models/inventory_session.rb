@@ -1,11 +1,11 @@
 class InventorySession < ActiveRecord::Base
-  attr_accessible :name, :notes, :references, :admin_id
+  # attr_accessible :name, :notes, :references, :admin_id
   belongs_to :admin, :class_name => "Admin", :foreign_key => "admin_id"
   has_many :goods, :class_name => "Good", :foreign_key => "inventory_session_id"
   # has_many :unchecked_goods, :class_name => "Good", :foreign_key => "inventory_session_id", :conditions=>{:current_shelf_id=>nil}
-  has_many :checked_goods, :class_name => "Good", :foreign_key => "inventory_session_id", :conditions=>"current_shelf_id IS NOT NULL"
-  has_and_belongs_to_many :items, :join_table => "goods", :foreign_key => "inventory_session_id", :uniq => true
-  has_and_belongs_to_many :book_items, :join_table => "goods", :foreign_key => "inventory_session_id", :class_name => "Item", :uniq => true, :conditions => {:inventoriable_type => "Book"}
+  has_many :checked_goods, -> {where "current_shelf_id IS NOT NULL"}, :class_name => "Good", :foreign_key => "inventory_session_id"
+  has_and_belongs_to_many :items, -> {uniq}, :join_table => "goods", :foreign_key => "inventory_session_id"
+  has_and_belongs_to_many :book_items, -> {where(inventoriable_type: "Book").uniq}, :join_table => "goods", :foreign_key => "inventory_session_id", :class_name => "Item"
 
   # ----------------------------------------------------------------------------
 

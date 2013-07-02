@@ -15,3 +15,8 @@ Legacy:
  ✔ move legacy import away from db:seed @done (13-06-28 11:00)
  ✔ seed borrow date and item creation date @done (13-06-28 10:55)
 
+Rails 4:
+ ☐ better strong params (see http://railscasts.com/episodes/371-strong-parameters)
+
+Optimization:
+ ☐ reduce SELECT COUNT on listings (e.g. adm/locations, adm/users)

@@ -1,6 +1,7 @@
 class Adm::ItemsController < AdmController
   before_action :set_book, :only => [:new, :create]
-  load_and_authorize_resource :except => [:index]
+  # cancan::load_and_authorize_resource incompatible with strong params
+  # load_and_authorize_resource :except => [:index]
 
   # GET /items
   # GET /items.json
@@ -24,6 +25,7 @@ class Adm::ItemsController < AdmController
   # GET /items/1
   # GET /items/1.json
   def show
+    @item = Item.find(params[:id])
     @book = @item.book
     respond_to do |format|
       format.html # show.html.erb
@@ -36,6 +38,9 @@ class Adm::ItemsController < AdmController
   def new
     @item = @book.items.new
     @labs = current_admin.labs.order('nick ASC').all
+    if @labs.empty? && current_admin.admin?
+      @labs = Lab.all
+    end
     @locations = Location.order('name ASC').all
     @currencies = ENV['CURRENCIES'].split
     respond_to do |format|
@@ -57,8 +62,8 @@ class Adm::ItemsController < AdmController
   def create
     @book = Book.find(params[:book_id])
     if @book
-      @item = @book.items.new(params[:item])
-
+      @item = @book.items.new(item_params)
+      authorize! :create, @item
       respond_to do |format|
         if @item.save
           format.html { redirect_to @book, notice: 'Item was successfully created.' }
@@ -77,9 +82,10 @@ class Adm::ItemsController < AdmController
   # PUT /items/1.json
   def update
     @item = Item.find(params[:id])
+    authorize! :update, @item
 
     respond_to do |format|
-      if @item.update_attributes(params[:item])
+      if @item.update_attributes(item_params)
         format.html { redirect_to @item, notice: 'Item was successfully updated.' }
         format.json { head :no_content }
       else
@@ -93,6 +99,7 @@ class Adm::ItemsController < AdmController
   # DELETE /items/1.json
   def destroy
     @item = Item.find(params[:id])
+    authorize! :destroy, @item
     @item.destroy
 
     respond_to do |format|
@@ -109,4 +116,9 @@ class Adm::ItemsController < AdmController
       false
     end
   end
+
+  def item_params
+    @item_params ||= params.require(:item).permit(:currency, :lab_id, :location_name, :price, :status)
+  end
+
 end

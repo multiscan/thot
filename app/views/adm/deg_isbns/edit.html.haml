@@ -44,7 +44,8 @@
 
         .row
           .span4= f.input :collection, :input_html=>{:class=>"span4"}
-          .span8= f.input :publisher_name, :url => autocomplete_publisher_name_adm_books_path, :as => :autocomplete, :input_html=>{:class=>"span4"}
+          -# .span8= f.input :publisher_name, :url => autocomplete_publisher_name_adm_books_path, :as => :autocomplete, :input_html=>{:class=>"span4"}
+          .span8= f.input :publisher_name
 
         .tabbable
           %ul.nav.nav-tabs

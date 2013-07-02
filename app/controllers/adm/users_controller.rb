@@ -1,5 +1,6 @@
 class Adm::UsersController < AdmController
-  load_and_authorize_resource :except => [:index]
+  # cancan::load_and_authorize_resource incompatible with strong params
+  # load_and_authorize_resource :except => [:index]
 
   # GET /admin/users
   # GET /admin/users.json
@@ -11,7 +12,7 @@ class Adm::UsersController < AdmController
     #     User.where({:lab_id => current_admin.labs.map{|l| l.id}}, :include=>[:lab, :loans], :order => :name)
     #   end
     if current_admin.admin? && params[:my].nil?
-      @users = User.all
+      @users = User.all.includes([:lab])
       @link_to_my = true
     else
       @users = current_admin.users
@@ -27,7 +28,7 @@ class Adm::UsersController < AdmController
   # GET /admin/users/1
   # GET /admin/users/1.json
   def show
-    # @user = User.find(params[:id])
+    @user = User.find(params[:id])
     @loans = @user.loans
     respond_to do |format|
       format.html # show.html.erb
@@ -56,6 +57,7 @@ class Adm::UsersController < AdmController
   # POST /admin/users.json
   def create
     @user = User.new(user_params)
+    authorize! :create, @user
 
     respond_to do |format|
       if @user.save
@@ -72,6 +74,7 @@ class Adm::UsersController < AdmController
   # PUT /admin/users/1.json
   def update
     @user = User.find(params[:id])
+    authorize! :update, @user
 
     respond_to do |format|
       if @user.update_attributes(user_params)
@@ -88,6 +91,7 @@ class Adm::UsersController < AdmController
   # DELETE /admin/users/1.json
   def destroy
     @user = User.find(params[:id])
+    authorize! :destroy, @user
 
     respond_to do |format|
       if can? :destroy, @user

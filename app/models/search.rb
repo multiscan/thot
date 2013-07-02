@@ -1,6 +1,4 @@
 class Search < ActiveRecord::Base
-  attr_accessible :query, :isbn, :publisher_name, :year_range, :inv_range,
-                  :lab_id, :location_id, :status, :inv_date_fr, :inv_date_to
   belongs_to :lab
   belongs_to :location
 

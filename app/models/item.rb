@@ -1,13 +1,13 @@
 class Item < ActiveRecord::Base
-  attr_accessible :currency, :inventoriable, :inventoriable_type, :lab, :lab_id, :location_name, :location_id, :price, :status, :shelf_id
+  # attr_accessible :currency, :inventoriable, :inventoriable_type, :lab, :lab_id, :location_name, :location_id, :price, :status, :shelf_id
 
   scope :book, -> { where(inventoriable_type: 'Book') }
   belongs_to :inventoriable, :polymorphic => true, :foreign_key => "inventoriable_id"
   belongs_to :lab                          # , :counter_cache => true
   belongs_to :location
   belongs_to :shelf, :class_name => "Shelf", :foreign_key => "shelf_id"
-  has_many :loans, :class_name => "Loan", :foreign_key => "item_id", :include => :user
-  has_one :current_checkout, :class_name => "Loan", :foreign_key => "item_id", :conditions=>{:return_date=>nil}
+  has_many :loans, -> {includes :user}, :class_name => "Loan", :foreign_key => "item_id"
+  has_one :current_checkout, -> {where return_date: nil}, :class_name => "Loan", :foreign_key => "item_id"
 
 
   has_many :goods, :class_name => "good", :foreign_key => "item_id"
@@ -26,19 +26,19 @@ class Item < ActiveRecord::Base
     {desc: "call", order: "items.call1 ASC, items.call2 ASC, items.call3 ASC, items.call4 ASC"},
   ]
 
-  # Thinking Sphinx Stuff
-  define_index do
-    indexes inventoriable(:title),  :as => :book_title
-    indexes inventoriable(:author), :as => :book_author
-    indexes inventoriable(:editor), :as => :book_editor
+  # # Thinking Sphinx Stuff
+  # define_index do
+  #   indexes inventoriable(:title),  :as => :book_title
+  #   indexes inventoriable(:author), :as => :book_author
+  #   indexes inventoriable(:editor), :as => :book_editor
 
-    where "inventoriable_type = 'Book'"
+  #   where "inventoriable_type = 'Book'"
 
-    # attributes
-    has lab_id, location_id, status #, call1, call2, call3, call4
-    has "books.publisher_id", :as=>:publisher_id, :type=>:integer
-    has "books.pubyear", :as=>:pubyear, :type=>:integer
-  end
+  #   # attributes
+  #   has lab_id, location_id, status #, call1, call2, call3, call4
+  #   has "books.publisher_id", :as=>:publisher_id, :type=>:integer
+  #   has "books.pubyear", :as=>:pubyear, :type=>:integer
+  # end
 
   # def book_id
   #   inventoriable_type == "Book" ? inventoriable_id : nil

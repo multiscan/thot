@@ -106,7 +106,7 @@ class Adm::InventorySessionsController < AdmController
   # POST /adm/inventory_sessions
   # POST /adm/inventory_sessions.json
   def create
-    @inventory_session = InventorySession.new(params[:inventory_session])
+    @inventory_session = InventorySession.new(inventory_session_params)
     @inventory_session.admin ||= current_admin
     respond_to do |format|
       if @inventory_session.save
@@ -125,7 +125,7 @@ class Adm::InventorySessionsController < AdmController
     @inventory_session = InventorySession.find(params[:id])
 
     respond_to do |format|
-      if @inventory_session.update_attributes(params[:inventory_session])
+      if @inventory_session.update_attributes(inventory_session_params)
         format.html { redirect_to [:adm, @inventory_session], notice: 'Inventory session was successfully updated.' }
         format.json { head :no_content }
       else
@@ -145,5 +145,11 @@ class Adm::InventorySessionsController < AdmController
       format.html { redirect_to adm_inventory_sessions_url }
       format.json { head :no_content }
     end
+  end
+
+ private
+
+  def inventory_session_params
+    params.require(:inventory_session).permit(:name, :notes)
   end
 end

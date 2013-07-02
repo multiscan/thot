@@ -52,5 +52,4 @@ class Adm::ShelvesController < AdmController
       end
     end
   end
-
 end

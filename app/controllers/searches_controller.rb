@@ -1,5 +1,6 @@
 class SearchesController < ApplicationController
-  autocomplete :publisher, :name, :full => true
+  # TODO: re-enable autocomplete when a rails4 compatible version is out
+  # autocomplete :publisher, :name, :full => true
 
   # GET /searches
   # GET /searches.json
@@ -45,7 +46,7 @@ class SearchesController < ApplicationController
   # POST /searches
   # POST /searches.json
   def create
-    @search = Search.new(params[:search])
+    @search = Search.new(search_params)
     if @search.simple_query?
       redirect_to books_path(:search=>@search.query)
     else
@@ -67,7 +68,7 @@ class SearchesController < ApplicationController
     @search = Search.find(params[:id])
 
     respond_to do |format|
-      if @search.update_attributes(params[:search])
+      if @search.update_attributes(search_params)
         format.html { redirect_to @search, notice: 'Search was successfully updated.' }
         format.json { head :no_content }
       else
@@ -88,4 +89,11 @@ class SearchesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+ private
+
+  def search_params
+    params.require(:search).permit(:query, :isbn, :publisher_name, :year_range, :inv_range, :lab_id, :location_id, :status, :inv_date_fr, :inv_date_to)
+  end
+
 end
