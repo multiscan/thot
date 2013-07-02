@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Thot Maintenance</title>
+  <style>
+    body {
+      padding: 20px;
+      background-color: #ddd;
+      color: rgb(118, 144, 179);
+      text-align: center;
+      line-height: 3em;
+      font-family: Helvetica, Arial, sans-serif;
+      text-rendering: optimizelegibility;
+      text-shadow: rgba(255, 255, 255, 0.898438) 0px 1px 0px;
+    }
+    #content {
+      margin-top: 200px;
+    }
+    h1, h2 {
+      color: #38527c;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1>Thot</h1>
+    <h2>is currently down for <%= reason ? reason : "maintenance"%></h2>
+    <p>We espect to be back <%= deadline ? deadline : "shortly"%>.</p>
+  </div>
+</body>
+</html>

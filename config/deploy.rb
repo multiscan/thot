@@ -31,7 +31,7 @@ set :scm_passphrase, Proc.new { Capistrano::CLI.password_prompt "SCM Password: "
 # ------------------------------------------------------------------------- DEPS
 # after 'deploy:finalize_update', 'deploy:make_symlinks'
 after 'deploy:update_code', 'deploy:symlink_config_files'
-
+# after 'deploy:symlink_config_files', 'deploy:assets:precompile'
 # -------------------------------------------------------------------------- RVM
 # set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"")
 set :rvm_ruby_string, 'ruby-1.9.3'
