@@ -23,12 +23,13 @@ set :keep_releases, 3
 
 set :scm, :git
 set :repository,  " ssh://cangiani@lth.epfl.ch/repos/git/thot.git"
-set :branch, "master"
+set :branch, "rails4"
 set :scm_username, "cangiani"
 set :scm_passphrase, Proc.new { Capistrano::CLI.password_prompt "SCM Password: " }
 
 # ------------------------------------------------------------------------- DEPS
 # after 'deploy:finalize_update', 'deploy:make_symlinks'
+after 'deploy:update_code', 'deploy:symlink_config_files'
 
 # -------------------------------------------------------------------------- RVM
 # set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"")
@@ -48,6 +49,12 @@ namespace :deploy do
   desc "Restart Passenger"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+  end
+
+  desc "Create symlinks to private config files"
+  task :symlink_config_files, :roles => :app do
+    run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
+    run "ln -nfs #{deploy_to}/shared/config/application.yml #{release_path}/config/application.yml"
   end
 end
 

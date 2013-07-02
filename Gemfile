@@ -6,12 +6,14 @@ gem 'sqlite3'
 gem 'mysql2', '~>0.3.12b4'
 gem 'activerecord-mysql-adapter'
 
-# --- backward compatibility (TO BE REMOVED!)
-# gem 'protected_attributes'
+group :production do
+  gem "therubyracer", :require => 'v8'
+end
 
 # ---------------------------------------------------- CAPISTRANO FOR DEPLOYMENT
-gem 'capistrano'
+gem 'capistrano', '>=2.15.4'
 gem 'rvm-capistrano'
+
 
 # ------------------------------------------------------------ APP SPECIFIC GEMS
 
@@ -88,6 +90,3 @@ end
 # For searching book infos on the web
 # gem 'openlibrary' # https://github.com/jayfajardo/openlibrary
 # gem 'lcclasses'   # library of congress classes (to parse output from loc query)
-
-
-
