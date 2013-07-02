@@ -1,31 +1,5 @@
 desc "Import legacy thot library database (should be done only at EPFL/IPG"
 task :legacy_import => [:environment] do
-# ------------------------------------------------------------------- Base Users
-admin = Admin.find_or_create_by_email(
-              :name => ENV['ADMIN_NAME'].dup,
-              :email => ENV['ADMIN_EMAIL'].dup,
-              :password => ENV['ADMIN_PASSWORD'].dup,
-              :password_confirmation => ENV['ADMIN_PASSWORD'].dup
-            )
-admin.role='admin'
-# admin.confirmed_at = DateTime.now
-admin.save
-
-# if Rails.env == "development"
-#   user = User.find_or_create_by_email(
-#               :name => "Test User", :email => "ciccio.pasticcio@gmail.com",
-#               :password => ENV['ADMIN_PASSWORD'].dup,
-#               :password_confirmation => ENV['ADMIN_PASSWORD'].dup
-#             )
-#   user.confirmed_at = DateTime.now
-#   user.save
-# end
-
-puts "Seed done. Remember to run the following maintenance rake tasks:"
-puts "rake legacy_import"
-puts "rake cleanup_books "
-puts "rake isbnmerge"
-
 
 # ------------------------------------------------------- Old database migration
 
@@ -78,12 +52,12 @@ end
 # end
 
 # ----------------------------------------- Import library users
-default_lab = Lab.find_by_nick("UNKNOWN")
+default_lab = Lab.where(nick: "UNKNOWN").first
 duplicate_users={}
 special_users={}
 # empty_nebis_count=0
 empty_email_count=0
-Legacy::Person.find(:all).each do |lp|
+Legacy::Person.all.each do |lp|
   # # skip users without nebis
   # nebis=lp.nebis
   # if nebis.nil?
@@ -102,7 +76,7 @@ Legacy::Person.find(:all).each do |lp|
     next
   end
   p=nil
-  if p = User.find_by_email(lp.email)
+  if p = User.where(email: lp.email).first
     if ( p.nebis == "invalid" || p.nebis == "empty" ) && lp.nebis != "invalid" && lp.nebis != "empty"
        "Duplicate email: #{lp.userEmail} but usefull NEBIS"
       p.nebis=lp.nebis
@@ -123,7 +97,7 @@ Legacy::Person.find(:all).each do |lp|
     # :password_confirmation => ENV['DEFAULT_USER_PASSWORD'].dup
   )
   # p.confirmed_at = DateTime.now
-  lab=Lab.find_by_nick(lp.userLab)
+  lab=Lab.where(nick: lp.userLab).first
   if lab
     p.lab=lab
   else
@@ -142,7 +116,7 @@ end
 pn=nil
 p=nil
 nb=0
-Legacy::Book.find(:all, :order => "publisher").each do |lb|
+Legacy::Book.order("publisher").each do |lb|
   if lb.publisher && lb.publisher != pn
     pn=lb.publisher
     p=Publisher.create(:name => pn)
@@ -176,8 +150,8 @@ Legacy::Book.find(:all, :order => "publisher").each do |lb|
     puts "        errs: #{b.errors}"
   end
 
-  lab = Lab.find_by_nick(lb.lab)
-  u = lb.userId ? ( User.find_by_legacy_id(lb.userId) || duplicate_users[lb.userId] ) : nil
+  lab = Lab.where(nick: lb.lab).first
+  u = lb.userId ? ( User.where(legacy_id: lb.userId).first || duplicate_users[lb.userId] ) : nil
 
   i = b.items.new(
     :status   => lb.status,

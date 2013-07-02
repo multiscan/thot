@@ -8,14 +8,14 @@ default_run_options[:pty] = true
 # }
 
 # ------------------------------------------------------------ DEPLOYMENT PARAMS
-set :application, "slideshot"
+set :application, "thot"
 
 role :web, "thot.epfl.ch"
 role :app, "thot.epfl.ch"
 role :db,  "thot.epfl.ch", :primary => true  # where migration are executed
 # role :db,  "your slave db-server here"
 
-set :deploy_to, "/var/www/thot/prod"
+set :deploy_to, "/var/www/thot2/prod"
 set :user, "root"
 set :use_sudo, false
 set :keep_releases, 3
@@ -52,15 +52,15 @@ namespace :deploy do
 end
 
 # ----------------------------------------------------------------- DEPLOY TASKS
-namespace :deploy do
+# namespace :deploy do
 
-  desc "Create symlinks to upload/download folders in public"
-  task :make_symlinks do
-    run "ln -nfs #{shared_path}/uploads  #{release_path}/public/uploads"
-    run "ln -nfs #{shared_path}/downloads  #{release_path}/public/downloads"
-  end
+#   desc "Create symlinks to upload/download folders in public"
+#   task :make_symlinks do
+#     run "ln -nfs #{shared_path}/uploads  #{release_path}/public/uploads"
+#     run "ln -nfs #{shared_path}/downloads  #{release_path}/public/downloads"
+#   end
 
-end
+# end
 
 # -------------------------------------------------------------------- APP TASKS
 namespace :app do

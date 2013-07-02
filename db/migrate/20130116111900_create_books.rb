@@ -5,10 +5,10 @@ class CreateBooks < ActiveRecord::Migration
       t.string :subtitle
       t.string :author
       t.string :editor
-      t.string :call1, :limit=>8
+      t.string :call1, :limit=>16
       t.string :call2, :limit=>16
-      t.string :call3, :limit=>8
-      t.string :call4, :limit=>8
+      t.string :call3, :limit=>16
+      t.string :call4, :limit=>16
       t.string :collation
       t.string :isbn, :limit=>24
       t.string :isbn13, :limit=>13
