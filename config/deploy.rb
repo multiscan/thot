@@ -1,5 +1,6 @@
 require 'rvm/capistrano'
 require "bundler/capistrano"
+require 'thinking_sphinx/capistrano'
 
 # --------------------------------------------------------------------- DEFAULTS
 default_run_options[:pty] = true
@@ -55,6 +56,11 @@ namespace :deploy do
   task :symlink_config_files, :roles => :app do
     run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{deploy_to}/shared/config/application.yml #{release_path}/config/application.yml"
+  end
+
+  desc "reload the database with seed data"
+  task :seed do
+    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
   end
 end
 

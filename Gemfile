@@ -14,7 +14,6 @@ end
 gem 'capistrano', '>=2.15.4'
 gem 'rvm-capistrano'
 
-
 # ------------------------------------------------------------ APP SPECIFIC GEMS
 
 # --- xml parsing
