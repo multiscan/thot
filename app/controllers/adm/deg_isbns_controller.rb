@@ -36,7 +36,7 @@ class Adm::DegIsbnsController < AdmController
         @degisbn.destroy
         @degisbns=DegIsbn.order("count DESC").paginate(:page=>params[:page], :per_page=>200)
         flash[:notice] = "Isbn #{isbn} is no longer degenerate. Thank you!"
-        render :action => "index"
+        redirect_to :action => "index"
       else
         @books = @degisbn.books
         flash[:notice] = "Still some degenerate books with ISBN #{isbn}"
