@@ -244,7 +244,9 @@ module ApplicationHelper
       bw = w - 44.mm
       th = 15.mm
       tw = 40.mm
+      font "Helvetica", :style => :bold
       text_box "#{shelf.seqno}", :at => [2.mm, h-2.mm], :width => tw, :height => th, :size => 190, :align => :center, :valign => :top, :overflow => :shrink_to_fit
+      font "Helvetica", :style => :normal
       barcode_128(sprintf("S %04d", shelf.id), 42.mm, h-2.mm, bw, bh, true)
     end
 
