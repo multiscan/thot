@@ -12,32 +12,7 @@
       %strong Edited by
       =@book.editor
 
-.well
-  .row
-    .span6
-      %dl.dl-horizontal
-        %dt volume:
-        %dd=@book.volume || "-"
-        %dt edition:
-        %dd=@book.edition || "-"
-        %dt publication year:
-        %dd=@book.pubyear || "-"
-        %dt publisher:
-        %dd=@book.publisher.nil? ? "-" : link_to(@book.publisher.name, @book.publisher)
-        %dt Collection:
-        %dd=@book.collection
-    .span4
-      %dl.dl-horizontal
-        %dt ISBN:
-        %dd=@book.isbn || "-"
-        %dt Call Nr.
-        %dd
-          %span.label= @book.call1 || "-"
-          %span.label= @book.call2 || "-"
-          %span.label= @book.call3 || "-"
-          %span.label= @book.call4 || "-"
-        %dt Collation:
-        %dd=@book.collation || "-"
+=render partial: "books/book_details"
 
 %h3 Book copies
 %table.table

@@ -1,0 +1,31 @@
+.well
+  .row
+    .span6
+      %dl.dl-horizontal
+        %dt volume:
+        %dd=val_or_dash @book.volume.blank?
+        %dt edition:
+        %dd=val_or_dash @book.edition
+        %dt publication year:
+        %dd=val_or_dash @book.pubyear
+        %dt publisher:
+        %dd=@book.publisher.nil? ? "-" : link_to(@book.publisher.name, @book.publisher)
+        %dt Collection:
+        %dd=val_or_dash @book.collection
+    .span4
+      %dl.dl-horizontal
+        %dt ISBN:
+        %dd=val_or_dash @book.isbn
+        %dt Call Nr.
+        %dd
+          %span.label= val_or_dash @book.call1
+          %span.label= val_or_dash @book.call2
+          %span.label= val_or_dash @book.call3
+          %span.label= val_or_dash @book.call4
+        %dt Collation:
+        %dd=val_or_dash @book.collation
+        %dt
+        %dd=link_to "more", @book
+        - if can? :update, @book
+          %dt
+          %dd=link_to "Edit Book", edit_adm_book_path(@book)

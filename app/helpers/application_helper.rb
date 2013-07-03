@@ -8,6 +8,10 @@ module ApplicationHelper
     n=="empty" ? n : link_to(n, nebis_path(n))
   end
 
+  def val_or_dash(s)
+    s.blank? ? "-" : s
+  end
+
   def item_status(item)
     if item.status=="Library"
       if c=item.current_checkout
