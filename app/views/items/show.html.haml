@@ -38,8 +38,13 @@
           %span.label= @book.call4 || "-"
         %dt Collation:
         %dd=@book.collation || "-"
+        - if can? :manage, @book
+          %dt
+          %dd=link_to "Edit Book", edit_adm_book_path(@book)
 
 %h4 This Copy
+- if can? :manage, @item
+  %p=link_to "Edit", edit_adm_item_path(@item)
 %table.table
   %thead
     %th Inv. Number
