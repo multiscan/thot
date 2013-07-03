@@ -86,7 +86,7 @@ class Adm::AdminsController < AdmController
  private
 
   def admin_params
-    params.require(:admin).permit :name, :email, :role, :password, :password_confirmation, :remember_me, :lab_ids
+    params.require(:admin).permit :name, :email, :role, :password, :password_confirmation, :remember_me, :lab_ids => []
   end
 
 end
