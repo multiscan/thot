@@ -13,6 +13,8 @@ class Thot
       jQuery(this).typeahead({source: collection})
     jQuery("input.date_picker").datepicker()
 
+    jQuery("a.on_loan_popover").popover().click (e) -> e.preventDefault()
+
     merger = new BookMerger()
 
     when_ready_for_layout() if (typeof when_ready_for_layout == 'function')

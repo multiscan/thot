@@ -11,7 +11,15 @@ module ApplicationHelper
   def item_status(item)
     if item.status=="Library"
       if c=item.current_checkout
-        "<span class='label label-warning'>on loan</span>".html_safe
+        if can? :manage, item
+          # link_to('<span class="label label-warning">on loan</span>'.html_safe, '#', class: "on_loan_popover", data: {item: item.id, loan: c.id})
+          link_to('<span class="label label-warning">on loan</span>'.html_safe, '#',
+            class: "on_loan_popover", id: "on_loan_#{c.id}",
+            data: {content: on_loan_popup(item), html: true, title: "Loan Details"}
+          )
+        else
+          "<span class='label label-warning'>on loan</span>".html_safe
+        end
       else
         "<span class='label label-success'>available</span>".html_safe
       end
@@ -19,6 +27,14 @@ module ApplicationHelper
       "<span class='label label-inverse'>#{item.status}</span>".html_safe
     end
   end
+
+  def on_loan_popup(item)
+    if c=item.current_checkout
+      "taken by #{c.user.name}<br/>"+link_to("Return", c, :method => :delete, :remote => true, :data => {:item_id => item.id})
+    end
+  end
+
+
   def full_item_status(item)
     if item.status=="Library"
       if c=item.current_checkout
@@ -77,6 +93,7 @@ module ApplicationHelper
 
   def print_labels_links(url)
     out = []
+    out << "<i class='icon-barcode'></i>"
     out << link_to("3x8 label sheet with margins", url+".pdf?lf=3x8m")
     out << link_to("3x8 label sheet", url+".pdf?lf=3x8")
     out << link_to("dymo label printer", url+".pdf?lf=dymo")
