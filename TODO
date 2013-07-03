@@ -1,6 +1,11 @@
 Bugs:
  ☐ does admin_signed_in? work ?
  ☐ inactivity monitor: seems like the time is not restarted after reset
+ ☐ operatorships not created when creating a new admin
+ Features:
+ ✔ edit links for book and item in item view @done (13-07-03 10:29)
+ ☐ item view and/or indexes add "add to inventory session" link
+ ☐ grouped edits (e.g. search and then change room to all items of the search)
 Inventory:
  ✔ when checking inventory return books that are checked out @done (13-07-01 12:55)
  ✔ show previous shelf and status in goods listing @done (13-07-01 12:55)

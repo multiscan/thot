@@ -236,7 +236,19 @@ module ApplicationHelper
       end
     end
 
+    # use only top ~1.5 cm of the label for it to be sticket to the shelf
     def shelf_label(shelf)
+      w=bounds.right - bounds.left
+      h=bounds.top - bounds.bottom
+      bh = 15.mm
+      bw = w - 44.mm
+      th = 15.mm
+      tw = 40.mm
+      text_box "#{shelf.seqno}", :at => [2.mm, h-2.mm], :width => tw, :height => th, :size => 190, :align => :center, :valign => :top, :overflow => :shrink_to_fit
+      barcode_128(sprintf("S %04d", shelf.id), 42.mm, h-2.mm, bw, bh, true)
+    end
+
+    def shelf_label_old(shelf)
       w=bounds.right - bounds.left
       h=bounds.top - bounds.bottom
       bh = h - 20 - 2.mm - 2.mm
