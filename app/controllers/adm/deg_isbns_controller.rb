@@ -49,7 +49,7 @@ class Adm::DegIsbnsController < AdmController
  private
 
   def book_params
-    params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
+    params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher_name, :subtitle, :volume
   end
 
 end

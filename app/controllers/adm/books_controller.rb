@@ -1,4 +1,4 @@
-class Adm::BooksController < ApplicationController
+class Adm::BooksController < AdmController
   # TODO: re-enable autocomplete when a rails4 compatible version is out
   # autocomplete :publisher, :name, :full => true
 
@@ -102,7 +102,7 @@ class Adm::BooksController < ApplicationController
  private
 
   def book_params
-    params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher, :publisher_name, :subtitle, :volume
+    params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher_name, :subtitle, :volume
   end
 
 end
