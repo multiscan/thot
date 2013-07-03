@@ -67,7 +67,7 @@ class Book < ActiveRecord::Base
   end
 
   def publisher_name=(name)
-    self.publisher = Publisher.find_or_create_by_name(name) unless name.blank?
+    self.publisher = Publisher.find_or_create_by(name: name) unless name.blank?
   end
 
   def publisher_name

@@ -24,7 +24,7 @@
     -#%input{:name=>"deg_isbn[mergeables][]", :type=>"hidden"}
     .form-actions
       = ff.button :submit, "Save"
-    = simple_fields_for :book do |f|
+    = simple_fields_for @book do |f|
       .form-inputs{:id => "mergeform"}
         = f.input :isbn, :as => :hidden, :value=>@degisbn.isbn
         = f.input :author, :input_html=>{:class => "span10"}

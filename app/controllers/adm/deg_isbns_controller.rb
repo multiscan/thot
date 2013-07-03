@@ -20,7 +20,8 @@ class Adm::DegIsbnsController < AdmController
   def update
     @degisbn=DegIsbn.find(params["id"])
     isbn=@degisbn.isbn
-    @book=Book.new(book_params.merge({:isbn=>isbn}))
+    @book=Book.new(book_params)
+    @book.isbn=isbn
     if @book.save
       @degisbn.count = @degisbn.count + 1
       @degisbn.books.find(params["merge_book_ids"]).each do |b|
