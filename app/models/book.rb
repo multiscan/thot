@@ -135,8 +135,12 @@ class Book < ActiveRecord::Base
     lcb=LocBook.new(n)
     gbl = GoogleBookList.new(n)
     res = gbl.count > 0 ? gbl.to_ah : []
-    res << lcb.to_h
+    res << lcb.to_h if lcb.found?
     res
+  end
+
+  def duplicate
+    Book.create attributes.except("id", "created_at", "updated_at").merge(:parent_id => self.id)
   end
 
   def self.duplicated_isbn_count

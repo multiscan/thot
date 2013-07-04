@@ -14,6 +14,7 @@ class LocBook
     @isbn
   end
   def title
+    return nil unless found?
     begin
       @title ||= @data.locate("titleInfo/title/?[0]")[0]
     rescue
@@ -22,9 +23,11 @@ class LocBook
     @title
   end
   def author
+    return nil unless found?
     authors.join(", ")
   end
   def authors
+    return [] unless found?
     begin
       @authors ||= @data.locate("name/namePart").select {|np| np.attributes[:type]!="date"}.map{|n| n.text}
     rescue
@@ -33,6 +36,7 @@ class LocBook
     @authors
   end
   def publisher
+    return nil unless found?
     begin
       @publisher ||= @data.locate("originInfo/publisher")[0].text
     rescue
@@ -41,6 +45,7 @@ class LocBook
     @publisher
   end
   def pubyear
+    return nil unless found?
     begin
       @pubyear ||= @data.locate("originInfo/dateIssued")[0].text.gsub(/[^0-9]*/, "")
     rescue
@@ -49,6 +54,7 @@ class LocBook
     @pubyear
   end
   def series
+    return nil unless found?
     begin
       @series ||= @data.locate("relatedItem").select{|r| r.locate("@type")[0]=="series"}[0].locate("titleInfo")[0].nodes[0].text
     rescue
@@ -57,6 +63,7 @@ class LocBook
     @series
   end
   def collation
+    return nil unless found?
     begin
       @collation ||= @data.locate("physicalDescription/extent")[0].text
     rescue
@@ -69,6 +76,7 @@ class LocBook
   # 'QA166.17 .R34 1992' -> [QA, 166.17, .R34, 1992] = [call1, call2, call3, call4]
   #
   def lcc
+    return nil unless found?
     begin
       @lcc = @data.locate("classification").select{|ca| ca.attributes[:authority]=="lcc"}[0].text
     rescue
@@ -77,21 +85,27 @@ class LocBook
     @lcc
   end
   def lcc_array
+    return [] unless found?
     lcc.split(" ")
   end
   def call1
+    return nil unless found?
     lcc_array[0].gsub(/^([A-Z]+).*$/, '\1')
   end
   def call2
+    return nil unless found?
     lcc_array[0].gsub(/^[A-Z]*/, '')
   end
   def call3
+    return nil unless found?
     lcc_array[1] || ""
   end
   def call4
+    return nil unless found?
     lcc_array[2] || ""
   end
   def isbns
+    return [] unless found?
     begin
       @isbns ||= @data.locate("identifier").select{|i| i.attributes[:type]=="isbn"}.map{|i| i.text.gsub(/ .*$/, '')}
     rescue
@@ -100,16 +114,20 @@ class LocBook
     @isbns
   end
   def isbn_10
+    return nil unless found?
     isbns.select {|n| n.length==10}.uniq[0]
   end
   def isbn_13
+    return nil unless found?
     isbns.select {|n| n.length==13}.uniq[0]
   end
   def isbn
+    return nil unless found?
     @isbn || isbn_10 || isbn_13
   end
   def lccn
     # library of congress number
+    return nil unless found?
     begin
       @lccn ||= @data.locate("identifier").select{|i| i.attributes[:type]=="lccn"}[0].nodes[0]
     rescue
@@ -118,6 +136,7 @@ class LocBook
     @lccn
   end
   def uris
+    return nil unless found?
     begin
       @uris ||= @data.locate("identifier").select{|i| i.attributes[:type]=="uri"}.map{|u| u.nodes[0]}
     rescue
@@ -126,15 +145,18 @@ class LocBook
     @uris
   end
   def toc_uri
+    return nil unless found?
     uris.select{ |u| u =~ /-t.html/ }[0]
     # @data.locate("location/url").select{|u| u.attributes[:displayLabel]=~/content/}[0].nodes[0]
   end
   def desc_uri
+    return nil unless found?
     uris.select{ |u| u =~ /-d.html/ }[0]
     # @data.locate("location/url").select{|u| u.attributes[:displayLabel]=~/desciption/}[0].nodes[0]
   end
 
   def to_h
+    return {} unless found?
     b = {
         :title => title,
         :isbn => isbn,
@@ -154,145 +176,5 @@ class LocBook
     return b
   end
 
-  # def subtitle
-  #   volinfo["subtitle"]
-  # end
-  # def author
-  #   volinfo["authors"].join(", ")
-  # end
-  # def description
-  #   volinfo["description"]
-  # end
-  # def collation
-  #   unless @collation
-  #     p=[]
-  #     p << "#{pages} pages" if pages
-  #     p << size unless size.empty?
-  #     @collation = p.join("; ")
-  #   end
-  #   @collation
-  # end
-  # def isbn_10
-  #   identifiers["ISBN_10"]
-  # end
-  # def isbn_13
-  #   identifiers["ISBN_13"]
-  # end
-  # def isbn
-  #   isbn_10 || isbn_13
-  # end
-  # def pages
-  #   volinfo["pageCount"]
-  # end
-  # def categories
-  #   volinfo["categories"]
-  # end
-  # def tags
-  #   unless @tags
-  #     c=volinfo["categories"]
-  #     if c
-  #       t=[]
-  #       c.each {|cc| t += cc.split("/")}
-  #       t.delete("General")
-  #       @tags = t.sort.uniq
-  #     else
-  #       @tags=[]
-  #     end
-  #   end
-  #   @tags
-  # end
-  # def language
-  #   volinfo["language"]
-  # end
-
-  # def imagelink
-  #   images["large"] || images["medium"] || images["small"] || images["thumbnail"] || images["smallThumbnail"]
-  # end
-
-
  private
-
-#   def volinfo(i=0)
-#     @volinfo ||= @data["volumeInfo"] || {}
-#   end
-
-#   def authors
-#     volinfo["authors"] || []
-#   end
-
-#   def identifiers
-#     unless @identifiers
-#       @identifiers = {}
-#       (volinfo["industryIdentifiers"] || []).each do |i|
-#         @identifiers[i["type"]] = i["identifier"]
-#       end
-#     end
-#     @identifiers
-#   end
-
-#   def images
-#     volinfo["imageLinks"] || {}
-#   end
-
-#   def size
-#     unless @size
-#       dims=volinfo["dimensions"]
-#       if dims
-#         h,w,t=dims["height"], dims["width"], dims["thickness"]
-#         p=[]
-#         p << "h: #{h}" if h
-#         p << "w: #{w}" if w
-#         p << "t: #{t}" if t
-#         @size = p.join(", ")
-#       else
-#         @size = ""
-#       end
-#     end
-#     @size
-#   end
-
-#   # TODO:
-#   def parse_date(s)
-#     s ? s.gsub(/^.*([0-9][0-9][0-9][0-9]).*$/, '\1').to_i : nil
-#   end
 end
-
-# class LocBookList
-#   def initialize(isbn)
-#     url="https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}"
-#     @list=ActiveSupport::JSON.decode(open(url).read)
-#     @count=@list["totalItems"]
-#     if @count > 0
-#       # WARNING: I keep only the first page...
-#       @count = @list["items"].size
-#       @items=Array.new(@count, nil)
-#     end
-#   end
-
-#   def all
-#     @items.each_index {|i| at(i)}
-#     @items
-#   end
-
-#   def to_ah
-#     all.map {|i| i.to_h}
-#   end
-
-#   def count
-#     @count
-#   end
-
-#   def [](i)
-#     at(i)
-#   end
-
-#   def at(i)
-#     return nil unless i<@count
-#     @items[i] ||= LocBook.new(@list["items"][i]["id"])
-#   end
-
-#   def first
-#     at(0)
-#   end
-
-# end

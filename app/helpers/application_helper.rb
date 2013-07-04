@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def val_or_dash(s)
-    s.blank? ? "-" : s
+    s.present? ? s : "-"
   end
 
   def item_status(item)
@@ -239,7 +239,8 @@ module ApplicationHelper
     def item_label(item)
       sid=item.id.to_s
 
-      d=2.mm                            # margins
+      m=4.mm                            # margins
+      d=1.mm                            # min distance between boxes
       fs=12                             # font size
       maxtw=15.mm                       # max text box width
 
@@ -255,18 +256,18 @@ module ApplicationHelper
       ]
       w = bounds.right - bounds.left
       h = bounds.top - bounds.bottom
-      stroke_bounds
-      bh = h - 2*d
+      # stroke_bounds
+      bh = h - 2*m
       hw = 0.5 * w
-      tw = [lines.map{|e| width_of(e, :size=>fs)}.max, (2*w + 4*d)/3.0, 15.mm].min
-      y = h - d
-      x = d
+      tw = [lines.map{|e| width_of(e, :size=>fs)}.max, 2*(w + d + m)/3.0, 15.mm].min
+      y = h - m
+      x = m
       text_box(lines.join("\n"), at: [x,y], width: tw, height: bh, :align => :center, :overflow => :shrink_to_fit)
       x = hw - 0.5*tw
       text_box(lines.join("\n"), at: [x,y], width: tw, height: bh, :align => :center, :overflow => :shrink_to_fit)
       x = hw + 0.5*tw+d
-      rotate(90, :origin => [x,d]) do
-        barcode_25i(sid, x, d, bh, w-d-x, true)
+      rotate(90, :origin => [x,m]) do
+        barcode_25i(sid, x, m, bh, w-m-x, true)
       end
     end
 

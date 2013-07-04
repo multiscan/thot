@@ -8,7 +8,9 @@
 %p
   \... or
   = link_to 'add an item', new_adm_book_item_path(@book)
-  to this book.
+  to this book or
+  =link_to 'duplicate it', adm_book_duplicate_path(@book)
+  \.
 
 = render 'form'
 

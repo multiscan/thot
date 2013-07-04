@@ -21,6 +21,7 @@ Thot::Application.routes.draw do
     resources :admins
     resources :books do
       get :autocomplete_publisher_name, :on => :collection
+      get :duplicate
       resources :items, :only=>[:new, :create]
     end
     resources :deg_isbns

@@ -29,6 +29,15 @@ class Adm::BooksController < AdmController
     end
   end
 
+  # GET /adm/books/id
+  def duplicate
+    original = Book.find(params[:book_id])
+    @book = original.duplicate
+    respond_to do |format|
+      format.html
+    end
+  end
+
   # GET /adm/books/1/edit
   def edit
     @book = Book.find(params[:id])
@@ -48,7 +57,7 @@ class Adm::BooksController < AdmController
           @isbn_step = false
           render "new"
         else
-          flash[:notice] = "A book with the same ISBN number was found on our database. Please review the data."
+          flash[:notice] = "A book with the same ISBN number was found on our database. Please review the data or click on duplicate to add a different volume or edition."
           render "edit"
         end
       else

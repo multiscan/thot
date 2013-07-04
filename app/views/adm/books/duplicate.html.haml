@@ -1,0 +1,19 @@
+-content_for(:title) do
+  Edit a Book duplicate
+  %small
+    ISBN:
+    =@book.isbn
+
+= simple_form_for([:adm, @book]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    .row
+      .span1= f.input :volume, :input_html=>{:min => 1, :max => 10, :class=>"span1"}
+      .span2= f.input :pubyear, :input_html=>{:min => 1900, :max => 2100, :class=>"span1"}
+      .span4= f.input :edition, :input_html=>{:class=>"span4"}
+
+    =f.input :notes, :label=>false, :input_html=>{:class=>"span10"}
+
+  .form-actions
+    = f.button :submit
