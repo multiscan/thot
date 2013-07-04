@@ -237,6 +237,58 @@ module ApplicationHelper
     end
 
     def item_label(item)
+      sid=item.id.to_s
+
+      d=2.mm                            # margins
+      fs=12                             # font size
+      maxtw=15.mm                       # max text box width
+
+      lines = [
+        # "ABCDEFGH",
+        item.lab.nick,
+        item.book.call1 || "  ",
+        item.book.call2 || "  ",
+        item.book.call3 || "  ",
+        item.book.call4 || "  ",
+        " ",
+        sid
+      ]
+      w = bounds.right - bounds.left
+      h = bounds.top - bounds.bottom
+      stroke_bounds
+      bh = h - 2*d
+      hw = 0.5 * w
+      tw = [lines.map{|e| width_of(e, :size=>fs)}.max, (2*w + 4*d)/3.0, 15.mm].min
+      y = h - d
+      x = d
+      text_box(lines.join("\n"), at: [x,y], width: tw, height: bh, :align => :center, :overflow => :shrink_to_fit)
+      # bounding_box([x,y], :width => tw, :height => bh) do
+      #   stroke_bounds
+      #   lines.each do |l|
+      #     text l, :align => :center, :size => fs
+      #   end
+      #   # barcode_25i(sid, 0, 24, abw, 24, true)
+      # end
+      x = hw - 0.5*tw
+      text_box(lines.join("\n"), at: [x,y], width: tw, height: bh, :align => :center, :overflow => :shrink_to_fit)
+      # bounding_box([x,y], :width => tw, :height => bh) do
+      #   stroke_bounds
+      #   lines.each do |l|
+      #     text l, :align => :center, :size => fs
+      #   end
+        # barcode_25i(sid, 4.mm, 24, 16.mm, 24, true)
+        # text_box "#{item.inv.to_s.split("").join(" ")}", :at => [4.mm, 8], :size => 8, :width => 16.mm, :align => :center
+      # end
+      x = hw + 0.5*tw+d
+      # barcode_25i(sid, x, d, bh, w-d-x, true)
+      rotate(90, :origin => [x,d]) do
+        # barcode_25i(sid, (h-bh)/2, -2.mm, bh, (w-bw)/2-2.mm, false)
+        # barcode_25i(sid, d, x, bh, w-d-x, true)
+        barcode_25i(sid, x, d, bh, w-d-x, true)
+      end
+    end
+
+    def item_label_old(item)
       w=bounds.right - bounds.left
       h=bounds.top - bounds.bottom
       bh=28.mm

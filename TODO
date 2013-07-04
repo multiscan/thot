@@ -1,18 +1,23 @@
 Bugs:
  ☐ does admin_signed_in? work ?
  ☐ inactivity monitor: seems like the time is not restarted after reset
- ☐ operatorships not created when creating a new admin
+ ✔ book data misalignement in show @done (13-07-03 23:17)
+ ✔ operatorships not created when creating a new admin @done (13-07-03 23:16)
+
  Features:
  ✔ edit links for book and item in item view @done (13-07-03 10:29)
+ ☐ item labels without barcode on the left (for avoiding interference when scanning )
  ☐ item view and/or indexes add "add to inventory session" link
  ☐ grouped edits (e.g. search and then change room to all items of the search)
  ☐ ping user about borrowed book (email sent anonymously by thot server)
  ☐ do something with book subtitle (e.g. allow editing and display at least in show)
+ ☐ popup actions on item show/index (e.g. "add to inventory, print label, ping borrower")
+
 Inventory:
  ✔ when checking inventory return books that are checked out @done (13-07-01 12:55)
  ✔ show previous shelf and status in goods listing @done (13-07-01 12:55)
  ✔ goods listing in printable format for manual inventory checking @done (13-06-28 16:00)
- ☐ can owner in inventory session form be removed ?
+ ✔ can owner in inventory session form be removed ? @done (13-07-03 23:21)
  ☐ sort missing items by call numbers
 
 Sorting:
@@ -30,6 +35,8 @@ Rails 4:
 
 Optimization:
  ☐ reduce SELECT COUNT on listings (e.g. adm/locations, adm/users)
+ ☐ add db indexes where needed!
+ ☐ do we need form models for simpler code ?
 
 Security:
  ☐ add authorize! anywhere it is needed
