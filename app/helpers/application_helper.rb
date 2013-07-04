@@ -262,28 +262,10 @@ module ApplicationHelper
       y = h - d
       x = d
       text_box(lines.join("\n"), at: [x,y], width: tw, height: bh, :align => :center, :overflow => :shrink_to_fit)
-      # bounding_box([x,y], :width => tw, :height => bh) do
-      #   stroke_bounds
-      #   lines.each do |l|
-      #     text l, :align => :center, :size => fs
-      #   end
-      #   # barcode_25i(sid, 0, 24, abw, 24, true)
-      # end
       x = hw - 0.5*tw
       text_box(lines.join("\n"), at: [x,y], width: tw, height: bh, :align => :center, :overflow => :shrink_to_fit)
-      # bounding_box([x,y], :width => tw, :height => bh) do
-      #   stroke_bounds
-      #   lines.each do |l|
-      #     text l, :align => :center, :size => fs
-      #   end
-        # barcode_25i(sid, 4.mm, 24, 16.mm, 24, true)
-        # text_box "#{item.inv.to_s.split("").join(" ")}", :at => [4.mm, 8], :size => 8, :width => 16.mm, :align => :center
-      # end
       x = hw + 0.5*tw+d
-      # barcode_25i(sid, x, d, bh, w-d-x, true)
       rotate(90, :origin => [x,d]) do
-        # barcode_25i(sid, (h-bh)/2, -2.mm, bh, (w-bw)/2-2.mm, false)
-        # barcode_25i(sid, d, x, bh, w-d-x, true)
         barcode_25i(sid, x, d, bh, w-d-x, true)
       end
     end

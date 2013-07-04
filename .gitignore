@@ -9,6 +9,7 @@ config/application.yml
 config/database.yml
 config/development.sphinx.conf
 config/production.sphinx.conf
+TODO
 
 # Ignore bundler config
 /.bundle
