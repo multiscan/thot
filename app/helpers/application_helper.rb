@@ -239,7 +239,7 @@ module ApplicationHelper
     def item_label(item)
       sid=item.id.to_s
 
-      m=4.mm                            # margins
+      m=5.mm                            # margins
       d=1.mm                            # min distance between boxes
       fs=12                             # font size
       maxtw=15.mm                       # max text box width
