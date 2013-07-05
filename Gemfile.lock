@@ -230,7 +230,7 @@ DEPENDENCIES
   better_errors (>= 0.2.0)
   binding_of_caller (>= 0.6.8)
   bluecloth
-  bootstrap-sass (>= 2.1.1.0)
+  bootstrap-sass (~> 2.3.2.0)
   cancan (>= 1.6.8)
   capistrano (>= 2.15.4)
   capybara

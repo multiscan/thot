@@ -63,10 +63,9 @@ gem 'uglifier', '>= 1.3.0'
 gem "simple_form", github: 'plataformatec/simple_form'
 gem 'will_paginate', '~> 3.0.3'
 gem 'will_paginate-bootstrap'
-gem "bootstrap-sass", ">= 2.1.1.0"
-
-
+gem 'bootstrap-sass', '~> 2.3.2.0' # https://github.com/thomas-mcdonald/bootstrap-sass
 # ------------------------------------------------------------------------ devel
+
 gem 'memoist'
 
 group :development do
@@ -82,7 +81,6 @@ group :test do
   gem 'capybara'
   # gem 'turn'
 end
-
 
 # ------------------------------------------------------------------------ NOTES
 
