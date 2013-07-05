@@ -15,7 +15,7 @@ module ApplicationHelper
   def item_status(item)
     if item.status=="Library"
       if c=item.current_checkout
-        if can? :manage, item
+        if can? :update, item
           # link_to('<span class="label label-warning">on loan</span>'.html_safe, '#', class: "on_loan_popover", data: {item: item.id, loan: c.id})
           link_to('<span class="label label-warning">on loan</span>'.html_safe, '#',
             class: "on_loan_popover", id: "on_loan_#{c.id}",
