@@ -3,9 +3,13 @@ require 'open-uri'
 class LocBook
   def initialize(id)
     url="http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve&query=bath.isbn%3D#{id}&maximumRecords=1&recordSchema=mods"
-    @xml=open(url).read
-    @data=Ox.parse(@xml).locate("zs:searchRetrieveResponse/zs:records/zs:record/zs:recordData/mods")[0]
     @isbn = id
+    begin
+      @xml=open(url).read
+      @data=Ox.parse(@xml).locate("zs:searchRetrieveResponse/zs:records/zs:record/zs:recordData/mods")[0]
+    rescue
+      @data=nil
+    end
   end
   def found?
     !@data.nil?

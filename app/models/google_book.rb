@@ -3,13 +3,20 @@ require 'open-uri'
 class GoogleBook
   def initialize(id)
     url="https://www.googleapis.com/books/v1/volumes/#{id}"
-    @data=ActiveSupport::JSON.decode(open(url).read)
+    begin
+      @data=ActiveSupport::JSON.decode(open(url).read)
+    rescue
+      @data=nil
+    end
   end
-
+  def found?
+    !@data.nil?
+  end
   def id
     @data["id"]
   end
   def infolink
+    return nil unless found?
     @data["infoLink"] || "http://books.google.com/books?id=#{id}&hl=&source=gbs_api"
   end
   def title
@@ -25,12 +32,14 @@ class GoogleBook
     volinfo["publisher"]
   end
   def pubyear
+    return nil unless found?
     @pubyear ||= parse_date(volinfo["publishedDate"])
   end
   def description
     volinfo["description"]
   end
   def collation
+    return nil unless found?
     unless @collation
       p=[]
       p << "#{pages} pages" if pages
@@ -73,10 +82,12 @@ class GoogleBook
   end
 
   def imagelink
+    return nil unless found?
     images["large"] || images["medium"] || images["small"] || images["thumbnail"] || images["smallThumbnail"]
   end
 
   def to_h
+    return {} unless found?
     b={
         :title => title,
         :isbn => isbn,
@@ -92,14 +103,17 @@ class GoogleBook
  private
 
   def volinfo(i=0)
+    return nil unless found?
     @volinfo ||= @data["volumeInfo"] || {}
   end
 
   def authors
+    return [] unless found?
     volinfo["authors"] || []
   end
 
   def identifiers
+    return nil unless found?
     unless @identifiers
       @identifiers = {}
       (volinfo["industryIdentifiers"] || []).each do |i|
@@ -114,6 +128,7 @@ class GoogleBook
   end
 
   def size
+    return nil unless found?
     unless @size
       dims=volinfo["dimensions"]
       if dims
@@ -139,8 +154,13 @@ end
 class GoogleBookList
   def initialize(isbn)
     url="https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}"
-    @list=ActiveSupport::JSON.decode(open(url).read)
-    @count=@list["totalItems"]
+    begin
+      @list=ActiveSupport::JSON.decode(open(url).read)
+      @count=@list["totalItems"]
+    rescue
+      @list=nil
+      @count=0
+    end
     if @count > 0
       # WARNING: I keep only the first page...
       @count = @list["items"].size

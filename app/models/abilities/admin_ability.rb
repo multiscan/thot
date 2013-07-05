@@ -59,6 +59,9 @@ class Abilities::AdminAbility
         can :destroy, Shelf do |shelf|
             shelf.items.empty?
         end
+        can :manage, Good do |good|
+            good.inventory_session.admin_id == admin.id
+        end
     end
 
   end

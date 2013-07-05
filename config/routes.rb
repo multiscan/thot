@@ -29,6 +29,7 @@ Thot::Application.routes.draw do
     resources :inventory_sessions do
       resources :shelves, :only => [:show]
       post :check
+      post :uncheck
       get  :commit_moves
       get  :commit_missings
     end

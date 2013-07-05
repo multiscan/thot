@@ -29,6 +29,20 @@ class Adm::InventorySessionsController < AdmController
     end
   end
 
+  def uncheck
+    @inventory_session = InventorySession.find(params[:inventory_session_id])
+    @shelf = Shelf.find(params[:shelf])
+    @good = @inventory_session.goods.where(item_id: params[:inv]).first
+    respond_to do |format|
+      if @good
+        @good.update_attribute(:current_shelf_id, nil)
+        format.json { render json: { good: @good, status: @good.status(@shelf.id), id: "inv_#{@good.inv}", li: render_to_string(:partial => 'adm/goods/good', :layout => false, :formats => [:html], :locals => { :good => @good }) } }
+      else
+        format.json { render json: { good: false, message: "Not Found :("}, status: :not_found }
+      end
+    end
+  end
+
   # GET /adm/inventory_sessions/:id/commit_moves
   def commit_moves
     @inventory_session = InventorySession.find(params[:inventory_session_id])
