@@ -6,7 +6,7 @@ class Adm::LocationsController < AdmController
       @locations = Location.all.includes(:items, :shelves)
       @link_to_my = true
     else
-      @locations = current_admin.locations.includes(:items, :shelves)
+      @locations = current_admin.locations # .includes(:items, :shelves)
       @link_to_all = current_admin.admin?
     end
     respond_to do |format|
