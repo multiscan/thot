@@ -48,7 +48,7 @@ class Adm::LabsController < AdmController
 
     respond_to do |format|
       if @lab.save
-        format.html { redirect_to @lab, notice: 'Lab was successfully created.' }
+        format.html { redirect_to [:adm, @lab], notice: 'Lab was successfully created.' }
         format.json { render json: @lab, status: :created, location: @lab }
       else
         format.html { render action: "new" }
@@ -64,7 +64,7 @@ class Adm::LabsController < AdmController
 
     respond_to do |format|
       if @lab.update_attributes(lab_params)
-        format.html { redirect_to @lab, notice: 'Lab was successfully updated.' }
+        format.html { redirect_to [:adm, @lab], notice: 'Lab was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -88,7 +88,7 @@ class Adm::LabsController < AdmController
  private
 
   def lab_params
-    params.require(:adm_lab).permit :name, :nick
+    params.require(:lab).permit :name, :nick
   end
 
 end

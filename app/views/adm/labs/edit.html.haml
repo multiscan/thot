@@ -1,7 +1,8 @@
-%h1 Editing adm_lab
+-content_for(:title) do
+  Editing Lab
 
 = render 'form'
 
-= link_to 'Show', @adm_lab
+= link_to 'Show', adm_lab_path(@lab)
 \|
 = link_to 'Back', adm_labs_path

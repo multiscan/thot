@@ -1,7 +1,9 @@
-= simple_form_for(@adm_lab) do |f|
+= simple_form_for([:adm, @lab]) do |f|
   = f.error_notification
 
   .form-inputs
+    = f.input :nick
+    = f.input :name
 
   .form-actions
     = f.button :submit
