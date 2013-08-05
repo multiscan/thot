@@ -23,10 +23,8 @@ set :keep_releases, 3
 # set :normalize_asset_timestamps, false
 
 set :scm, :git
-set :repository,  " ssh://cangiani@lth.epfl.ch/repos/git/thot.git"
 set :branch, "master"
-set :scm_username, "cangiani"
-set :scm_passphrase, Proc.new { Capistrano::CLI.password_prompt "SCM Password: " }
+set :repository, "https://github.com/multiscan/thot.git"
 
 # ------------------------------------------------------------------------- DEPS
 # after 'deploy:finalize_update', 'deploy:make_symlinks'
