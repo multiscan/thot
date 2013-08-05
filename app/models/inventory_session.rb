@@ -130,7 +130,20 @@ class InventorySession < ActiveRecord::Base
   def commit_missings
     count=0
     missing_committable.each do |g|
-      g.item.update_attributes(shelf_id: nil, status: "Missing")
+      i = g.item
+      s = case i.status
+        when "Library"
+          "Missing once"
+        when "Missing once"
+          "Missing twice"
+        when "Missing twice"
+          "Missing three times"
+        when "Missing three times"
+          "Lost"
+        else
+          "Missing"
+        end
+      i.update_attribute("status", s)
       g.update_attribute(:commit, g.commit+2)
       count = count + 1
     end

@@ -24,7 +24,7 @@ set :keep_releases, 3
 
 set :scm, :git
 set :repository,  " ssh://cangiani@lth.epfl.ch/repos/git/thot.git"
-set :branch, "rails4"
+set :branch, "master"
 set :scm_username, "cangiani"
 set :scm_passphrase, Proc.new { Capistrano::CLI.password_prompt "SCM Password: " }
 

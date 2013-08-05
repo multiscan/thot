@@ -39,12 +39,13 @@
                 = yield
       #push
     #footer
-      .container
-        %p.muted.credit
-          Copyright (C) 2000-2013 Emre Telatar - Rüdiger Urbanke - Giovanni Cangiani
-        %p
+      %div
+        %p.credit
+          Copyright (C) 2000-2013 &loz;
+          Emre Telatar - Rüdiger Urbanke - Giovanni Cangiani &loz;
           =link_to "Administrator", "mailto:#{ENV['ADMIN_EMAIL']}"
           |
           =link_to "Source Code", "https://github.com/multiscan/thot", :target => :new
-
+          |
+          =link_to "Issues", "https://github.com/multiscan/thot/issues", :target => :new
     =render 'layouts/dialogs'
