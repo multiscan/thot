@@ -19,10 +19,15 @@ class SearchesController < ApplicationController
     @search = Search.find(params[:id])
     perpage = request.format == 'pdf' ? 999 : 48
     @search.search(page: params[:page], :per_page => perpage)
+    if @search.total_entries == 1
+      @entry = @search.items_oriented? ? @search.items.first : @search.books.first
+    end
     respond_to do |format|
       format.pdf  { @items = @search.items ; render 'adm/items/index' }
-      format.html # show.html.erb
-      format.json { render json: @search }
+      format.html do
+        redirect_to @entry unless @entry.nil?
+        # show.html.erb
+      end
     end
   end
 

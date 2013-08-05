@@ -15,8 +15,7 @@
 =render partial: "books/book_details"
 
 %h4 This Copy
-- if can? :update, @item
-  %p=link_to "Edit", edit_adm_item_path(@item)
+
 %table.table
   %thead
     %th Inv. Number
@@ -38,6 +37,19 @@
       %td=@item.borrower_name
       - if can? :manage, @item
         %td= item_price(@item)
+
+- if can?(:update, @item) || can?(:destroy, @item)
+  %h4 Do
+  %p
+    - if can? :update, @item
+      = link_to "Edit", edit_adm_item_path(@item)
+    - if can? :destroy, @item
+      |
+      = link_to 'Destroy', adm_item_path(@item), method: :delete, data: { confirm: 'Are you sure?' }
+  - if can? :update, @item
+    %p
+      Print label
+      = print_labels_links(adm_item_path(@item))
 
 %h4 More Infos
 .well

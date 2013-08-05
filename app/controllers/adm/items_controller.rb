@@ -29,6 +29,7 @@ class Adm::ItemsController < AdmController
     @book = @item.book
     respond_to do |format|
       format.html # show.html.erb
+      format.pdf  { @items = [@item] ; render 'adm/items/index' }
       format.json { render json: @item }
     end
   end
@@ -103,7 +104,7 @@ class Adm::ItemsController < AdmController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to items_url }
+      format.html { redirect_to root_path }
       format.json { head :no_content }
     end
   end
