@@ -4,6 +4,10 @@
     %br
     Contains #{@items.count} items
 
+- if current_admin
+  %h4 Labels for Items
+  = print_labels_links shelf_items_path(@shelf)
+
 - unless @items.empty?
   %h3 Items
   = render :partial => "items/items"
