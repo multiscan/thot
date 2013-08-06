@@ -21,4 +21,32 @@ class ItemsController < ApplicationController
     end
   end
 
+  # GET /shelf/:shelf_id/items
+  def index
+    if id=params["shelf_id"]
+      @shelf = Shelf.find(id)
+      @items = Item.where(shelf_id: id).includes(:inventoriable).sort do |a,b|
+        if a.inventoriable.is_a?(Book)
+          ai=a.inventoriable
+          bi=b.inventoriable
+          [ai.call1, ai.call2, ai.call3, ai.call4] <=> [bi.call1, bi.call2, bi.call3, bi.call4]
+        else
+          a.id <=> b.id
+        end
+      end
+    elsif id=prams["location_id"]
+      @room = Location.find(id)
+      @items = Item.where(location_id: id)
+    elsif id=params["lab_id"]
+      @lab = Lab.find(id)
+      @items = Item.where(lab_id: id)
+    else
+      @items = Item.order("created_at DESC").includes(:book).paginate(:page=>params[:page], :per_page=>50)
+    end
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
+  end
+
 end

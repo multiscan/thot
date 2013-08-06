@@ -18,4 +18,5 @@ class ShelvesController < ApplicationController
     @shelf = Shelf.find(params[:id], :include => "items")
     @items = @shelf.items.paginate(:page=>params[:page], :per_page => 50)
   end
+
 end

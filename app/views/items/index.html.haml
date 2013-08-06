@@ -1,0 +1,12 @@
+-content_for(:title) do
+  - if @shelf
+    Items on shelf #{@shelf.seqno}, room #{@shelf.location.name}
+  - elsif @room
+    Items on room #{@room.name}
+  - elsif @lab
+    Items belonging to #{@lab.name}
+  - else
+    Items
+
+= render :partial => "items"
+= might_paginate(@items)

@@ -6,7 +6,9 @@ Thot::Application.routes.draw do
   resources :loans, :only => [:create, :destroy]
   resources :publishers, :only => [:show]
   resources :searches
-  resources :shelves, :only => [:show]
+  resources :shelves, :only => [:show] do
+    resources :items, :only => [:index]
+  end
 
   # devise_for :users
   resources :users, :only => [:show]
