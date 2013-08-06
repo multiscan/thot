@@ -11,36 +11,21 @@ docinfo = {
 
 case params[:lf]
 when "3x8m"
-  prawn_document(
-                  page_size: "A4",
-                  page_layout: :portrait,
-                  margin: [13.mm, 8.mm],      # top/bottom, left/right as in css
-                  info: docinfo
-                ) do |p|
+  prawn_document(Prawn::Document::PAGE_PARAMS_38M.merge({info: docinfo})) do |p|
     p.auto_grid_start(:columns => 3, :rows => 8)
     @shelves.each do |shelf|
       p.auto_grid_next_bounding_box { p.shelf_label(shelf) }
     end
   end
 when "3x8"
-  prawn_document(
-                  page_size: "A4",
-                  page_layout: :portrait,
-                  margin: 0,
-                  info: docinfo
-                ) do |p|
+  prawn_document(Prawn::Document::PAGE_PARAMS_38.merge({info: docinfo})) do |p|
     p.auto_grid_start(:columns => 3, :rows => 8)
     @shelves.each do |shelf|
       p.auto_grid_next_bounding_box { p.shelf_label(shelf) }
     end
   end
 else # dymo
-  prawn_document(
-                  page_size: [89.mm, 36.mm],
-                  page_layout: :portrait,
-                  margin: 0,
-                  info: docinfo
-                ) do |p|
+  prawn_document(Prawn::Document::PAGE_PARAMS_DYMO.merge({info: docinfo})) do |p|
     fp = true
     @shelves.each do |shelf|
       p.start_new_page unless fp

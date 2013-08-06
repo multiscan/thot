@@ -23,7 +23,7 @@ class SearchesController < ApplicationController
       @entry = @search.items_oriented? ? @search.items.first : @search.books.first
     end
     respond_to do |format|
-      format.pdf  { @items = @search.items ; render 'adm/items/index' }
+      format.pdf  { @items = @search.items ; render 'items/index' }
       format.html do
         redirect_to @entry unless @entry.nil?
         # show.html.erb

@@ -104,7 +104,26 @@ module ApplicationHelper
     out.join(" | ").html_safe
   end
 
+
   class Prawn::Document
+
+    PAGE_PARAMS_DYMO = {
+      page_size: [89.mm, 36.mm],
+      page_layout: :portrait,
+      margin: [3.mm, 7.mm],
+    }
+
+    PAGE_PARAMS_38 = {
+      page_size: "A4",
+      page_layout: :portrait,
+      margin: 0,
+    }
+
+    PAGE_PARAMS_38M = {
+      page_size: "A4",
+      page_layout: :portrait,
+      margin: [13.mm, 8.mm],      # top/bottom, left/right as in css
+    }
 
     CODE25 = [
       [0, 0, 1, 1, 0], [1, 0, 0, 0, 1], [0, 1, 0, 0, 1], [1, 1, 0, 0, 0], [0, 0, 1, 0, 1],
@@ -237,6 +256,54 @@ module ApplicationHelper
     end
 
     def item_label(item)
+      sid=item.id.to_s
+
+      d=1.mm                            # min distance between boxes
+      fs=12                             # font size
+      cw=14.mm                          # width of the center part
+      sm=4.mm                           # margin between center and side boxes
+      bch=18.mm                         # center barcode height
+      bcm=1.mm                          # center barcode top margin
+
+      left_lines = [
+        item.lab.nick,
+        item.book.call1 || "",
+        item.book.call2 || "",
+        item.book.call3 || "",
+        item.book.call4 || "",
+        " ",
+        sid
+      ].map{|l| l.truncate(12, omission: "...")}
+      center_lines = [
+        item.lab.nick,
+        (item.book.call1 || "") + " " + (item.book.call2 || ""),
+        item.book.call3 || "",
+      ].map{|l| l.truncate(9, omission: "")}
+
+      w = bounds.right - bounds.left   # body width
+      h = bounds.top - bounds.bottom   # body height
+      hw = 0.5 * w                     # half width
+      sw = (w - cw) / 2 - sm           # sidebox width
+
+      # ---                                                             --- draw
+      font_size(fs)
+      # stroke_bounds
+      y = h
+      x = 0
+      text_box(left_lines.join("\n"), at: [x,y], width: sw, height: h, :align => :left, :overflow => :shrink_to_fit)
+      x = hw - 0.5*cw
+      text_box(center_lines.join("\n"), at: [x,y], width: cw, height: h-bch-bcm, :align => :left, :overflow => :shrink_to_fit)
+      rotate(90, :origin => [x,0]) do
+        barcode_25i(sid, x, 0, bch, cw, false)
+      end
+      rw = [0.75 * sw, 20.mm].min
+      x = w - rw
+      rotate(90, :origin => [x,0]) do
+        barcode_25i(sid, x, 0, h, rw, true)
+      end
+    end
+
+    def item_label_v2(item)
       sid=item.id.to_s
 
       m=3.mm                            # margins

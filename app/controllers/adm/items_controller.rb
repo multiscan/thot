@@ -29,7 +29,7 @@ class Adm::ItemsController < AdmController
     @book = @item.book
     respond_to do |format|
       format.html # show.html.erb
-      format.pdf  { @items = [@item] ; render 'adm/items/index' }
+      format.pdf  { @items = [@item] ; render 'items/index' }
       format.json { render json: @item }
     end
   end
