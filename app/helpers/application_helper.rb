@@ -88,7 +88,7 @@ module ApplicationHelper
   end
 
   def might_paginate(v)
-    will_paginate v, :renderer => BootstrapPagination::Rails
+    will_paginate v, :renderer => BootstrapPagination::Rails if v.respond_to?(:total_pages)
   end
 
   def render_markdown(t)
@@ -239,6 +239,58 @@ module ApplicationHelper
     def item_label(item)
       sid=item.id.to_s
 
+      m=3.mm                            # margins
+      d=1.mm                            # min distance between boxes
+      fs=12                             # font size
+      cw=16.mm                          # width of the center part
+      sm=5.mm                          # margin between center and side boxes
+      bch=18.mm                         # center barcode height
+      bcm=1.mm                          # center barcode top margin
+
+      left_lines = [
+        item.lab.nick,
+        item.book.call1 || "",
+        item.book.call2 || "",
+        item.book.call3 || "",
+        item.book.call4 || "",
+        " ",
+        sid
+      ].map{|l| l.truncate(12, omission: "...")}
+      center_lines = [
+        item.lab.nick,
+        (item.book.call1 || "") + " " + (item.book.call2 || ""),
+        item.book.call3 || "",
+      ].map{|l| l.truncate(9, omission: "")}
+
+      w = bounds.right - bounds.left
+      h = bounds.top - bounds.bottom
+
+      bw = w - 2*m                      # body width
+      bh = h - 2*m                      # body height
+      hw = 0.5 * w                      # half width
+      sw = (bw - cw ) / 2 - sm          # sidebox width
+
+      # ---                                                             --- draw
+      font_size(fs)
+      stroke_bounds
+      y = h - m
+      x = m
+      text_box(left_lines.join("\n"), at: [x,y], width: sw, height: bh, :align => :left, :overflow => :shrink_to_fit)
+      x = hw - 0.5*cw
+      text_box(center_lines.join("\n"), at: [x,y], width: cw, height: bh-bch-bcm, :align => :left, :overflow => :shrink_to_fit)
+      rotate(90, :origin => [x,m]) do
+        barcode_25i(sid, x, m, bch, cw, false)
+      end
+      rw = [0.75 * sw, 20.mm].min
+      x = w - m - rw
+      rotate(90, :origin => [x,m]) do
+        barcode_25i(sid, x, m, bh, rw, true)
+      end
+    end
+
+    def item_label_v1(item)
+      sid=item.id.to_s
+
       m=5.mm                            # margins
       d=1.mm                            # min distance between boxes
       fs=12                             # font size
@@ -271,7 +323,7 @@ module ApplicationHelper
       end
     end
 
-    def item_label_old(item)
+    def item_label_v0(item)
       w=bounds.right - bounds.left
       h=bounds.top - bounds.bottom
       bh=28.mm
