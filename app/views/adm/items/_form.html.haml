@@ -17,7 +17,7 @@
         = f.input :currency, :collection=>@currencies, :selected => @currencies.first
       .span4
         = f.input :price
-    = f.input :status, :collection=>["Library", "Missing", "Lost", "Mystery", "Never Received", "Out of Print", "Waiting for Delivery"], :selected=>"Library"
+    = f.input :status, :collection=>Item::STATUSES #, :selected=>"Library"
 
   .form-actions
     = f.button :submit

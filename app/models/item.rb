@@ -26,6 +26,8 @@ class Item < ActiveRecord::Base
     {desc: "call", order: "items.call1 ASC, items.call2 ASC, items.call3 ASC, items.call4 ASC"},
   ]
 
+  STATUSES=["Library", "Missing", "Lost", "Mystery", "Missing once", "Missing twice", "Missing three times", "Never Received", "Out of Print", "Waiting for Delivery"]
+
   # # Thinking Sphinx Stuff
   # define_index do
   #   indexes inventoriable(:title),  :as => :book_title
