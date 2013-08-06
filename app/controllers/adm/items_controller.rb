@@ -52,7 +52,7 @@ class Adm::ItemsController < AdmController
 
   # GET /items/1/edit
   def edit
-    @labs = current_admin.labs.order('nick ASC').all
+    @labs = current_admin.available_labs
     @locations = Location.order('name ASC').all
     @currencies = ENV['CURRENCIES'].split
     @item = Item.find(params[:id])
@@ -119,7 +119,7 @@ class Adm::ItemsController < AdmController
   end
 
   def item_params
-    @item_params ||= params.require(:item).permit(:currency, :lab_id, :location_name, :price, :status)
+    @item_params ||= params.require(:item).permit(:currency, :lab_id, :shelf_id, :location_name, :price, :status)
   end
 
 end

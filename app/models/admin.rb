@@ -32,6 +32,14 @@ class Admin < ActiveRecord::Base
     end
   end
 
+  def available_labs
+    if admin?
+      Lab.order('nick ASC').all
+    else
+      labs.order('nick ASC').all
+    end
+  end
+
   def role?(base_role)
     ROLES.index(base_role.to_s) <= ROLES.index(role)
   end

@@ -54,6 +54,18 @@ class Item < ActiveRecord::Base
     self.location = l
   end
 
+  def shelf_seqno
+    self.shelf.nil? ? nil : self.shelf.seqno
+  end
+
+  def shelf_seqno=(s)
+    unless self.location_id.nil?
+      s=Shelf.where(seqno: s, location_id: self.location_id).first
+      unless s.nil?
+        self.shelf_id = s.id
+      end
+    end
+  end
 
   def price
     attributes[:price] || book.price
