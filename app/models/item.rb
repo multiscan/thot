@@ -6,11 +6,11 @@ class Item < ActiveRecord::Base
   belongs_to :lab                          # , :counter_cache => true
   belongs_to :location
   belongs_to :shelf, :class_name => "Shelf", :foreign_key => "shelf_id"
-  has_many :loans, -> {includes :user}, :class_name => "Loan", :foreign_key => "item_id"
+  has_many :loans, -> {includes :user}, :class_name => "Loan", :foreign_key => "item_id", :dependent => :destroy
   has_one :current_checkout, -> {where return_date: nil}, :class_name => "Loan", :foreign_key => "item_id"
 
 
-  has_many :goods, :class_name => "good", :foreign_key => "item_id"
+  has_many :goods, :class_name => "good", :foreign_key => "item_id", :dependent => :destroy
 
   validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
   # validates_presence_of :inv
