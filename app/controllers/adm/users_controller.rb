@@ -49,8 +49,9 @@ class Adm::UsersController < AdmController
 
   # GET /admin/users/1/edit
   def edit
-    @labs = current_admin.labs
-    # @user = User.find(params[:id])
+    @labs = current_admin.available_labs
+    @user = User.find(params[:id])
+    authorize! :update, @user
   end
 
   # POST /admin/users
