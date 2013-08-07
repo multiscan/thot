@@ -1,4 +1,4 @@
-require "prawn/measurement_extensions"
+# require "prawn/measurement_extensions"
 
 docinfo = {
             :Title => "Thot Book Labels",

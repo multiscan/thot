@@ -105,6 +105,7 @@ module ApplicationHelper
   end
 
 
+  require "prawn/measurement_extensions"
   class Prawn::Document
 
     PAGE_PARAMS_DYMO = {

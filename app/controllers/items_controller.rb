@@ -29,7 +29,7 @@ class ItemsController < ApplicationController
         if a.inventoriable.is_a?(Book)
           ai=a.inventoriable
           bi=b.inventoriable
-          [ai.call1, ai.call2, ai.call3, ai.call4] <=> [bi.call1, bi.call2, bi.call3, bi.call4]
+          [ai.call1, ai.call2.to_f, ai.call3, ai.call4] <=> [bi.call1, bi.call2.to_f, bi.call3, bi.call4]
         else
           a.id <=> b.id
         end
