@@ -3,13 +3,9 @@
   %small user details
 
 %dl.dl-horizontal
-  %dt Id / Nebis User Id
+  %dt Id
   %dd
     =@user.id
-    ="/"
-    = @nebis_user ? @nebis_user.id : nil
-  %dt Location
-  %dd=@user.location
   -if can? :update, @user
     %dt Nebis
     %dd=link_to @user.nebis, nebis_url(@user.nebis)
