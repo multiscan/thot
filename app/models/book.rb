@@ -41,6 +41,11 @@ class Book < ActiveRecord::Base
   #   has publisher_id, created_at, updated_at, isbn
   # end
 
+  def sortable_call
+    [self.call1, self.call2, self.call3, self.call4].map{|c| c.gsub(/([0-9.]+)/, ' \1 ').split(" ").map{|s| s =~ /^[0-9.]+$/ ? s.to_f : s} }
+    "#{self.call1}#{self.call2}#{self.call3}#{self.call4}".gsub(/[^a-zA-Z.0-9]/,'').gsub(/([0-9.]+)/, ' \1 ').split(" ") # .map{|s| s =~ /^[0-9.]+$/ ? s.to_f : s}
+  end
+
   def currency
     self.attributes[:currency] || ( self.price ? ENV["DEFAULT_CURRENCY"] : nil )
   end

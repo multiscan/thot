@@ -27,9 +27,7 @@ class ItemsController < ApplicationController
       @shelf = Shelf.find(id)
       @items = Item.where(shelf_id: id).includes(:inventoriable).sort do |a,b|
         if a.inventoriable.is_a?(Book)
-          ai=a.inventoriable
-          bi=b.inventoriable
-          [ai.call1, ai.call2.to_f, ai.call3, ai.call4] <=> [bi.call1, bi.call2.to_f, bi.call3, bi.call4]
+          a.inventoriable.sortable_call <=> b.inventoriable.sortable_call
         else
           a.id <=> b.id
         end
