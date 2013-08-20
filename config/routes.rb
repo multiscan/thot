@@ -20,7 +20,9 @@ Thot::Application.routes.draw do
   # -------------------------------------------- for Operators and Administrator
   devise_for :admins
   namespace :adm do
-    resources :admins
+    resources :admins do
+      get :reset_password
+    end
     resources :books do
       get :autocomplete_publisher_name, :on => :collection
       get :duplicate

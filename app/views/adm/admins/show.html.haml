@@ -8,7 +8,8 @@
   =link_to "edit", edit_adm_admin_path(@admin)
   |
   =link_to "send an e-mail",  "mailto:#{@admin.email}"
-
+  |
+  =link_to "send reset password e-mail", adm_admin_reset_password_path(@admin)
 - if @admin.labs.count == 0
   %p #{@admin.name} is managing no labs.
 - else

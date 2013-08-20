@@ -1,0 +1,16 @@
+%p
+  Hello #{@admin.name}. Welcome to Thot.
+%p
+  An operator account was created forr you on
+  =link_to "thot", root_url
+  Please click on the link below to set your account and set your password.
+%p= link_to 'Click to initialize you account', edit_password_url(@admin, :reset_password_token => @admin.reset_password_token)
+
+%p
+  For any question, please don't hesitate to contact
+  = link_to "me", "mailto:#{ENV['ADMIN_EMAIL']}"
+
+%p
+  Best Regards,
+  %br
+  giovanni

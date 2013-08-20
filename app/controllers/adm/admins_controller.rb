@@ -83,6 +83,12 @@ class Adm::AdminsController < AdmController
     end
   end
 
+  # GET /adm/admins/1/reset_password
+  def reset_password
+    @admin = Admin.find(params[:admin_id])
+    @admin.send_welcome_email
+    redirect_to [:adm, @admin], notice: "Reset password email was sent to #{@admin.name}"
+  end
  private
 
   def admin_params

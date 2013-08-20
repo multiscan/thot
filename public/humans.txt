@@ -1,0 +1,28 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+/* TEAM */
+  Developer: Giovanni Cangiani
+  Site: http://algo.epfl.ch/en/group/members/giovanni
+  Twitter: @multiscan
+  Location: Lausanne, Switzerland
+
+  Concept: Prof. Emre Telatar
+  Site: http://people.epfl.ch/131639
+
+/* THANKS */
+  David Heinemeier Hansson (@dhh) and all the contributors of Ruby on Rails
+  Ryan Bates (@rbates) for his great railscasts tutorials
+  Steve Klabnik (@steveklabnik) for his work on improving Rails documentation
+  Thibaud Guillaume-Gentil (@thibaudgg) for great help on Ruby on Rails developments and for creating Guard
+  Zeno Crivelli (@zenoc) for introducing me to Ruby on Rails
+  Octave Zang (@octavez) for helpfull hints about css
+  Daniel Kehoe (@rails_apps) for the RailsApps project
+  Mike Bardet for kindly submittin many bugs and improvement suggestions
+
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: jQuery, Twitter Bootstrap
+  Software: Ruby on Rails, MySql, Linux
+

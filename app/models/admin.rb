@@ -52,4 +52,8 @@ class Admin < ActiveRecord::Base
     self.labs.map{|l| l.locations}.flatten!.uniq
   end
 
+  def send_welcome_email
+    generate_reset_password_token!
+    AdminMailer.welcome_email(self).deliver
+  end
 end
