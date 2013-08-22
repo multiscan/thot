@@ -42,7 +42,7 @@ class Book < ActiveRecord::Base
   # end
 
   def sortable_call
-    [self.call1, self.call2, self.call3, self.call4].map{|c| c.gsub(/([0-9.]+)/, ' \1 ').split(" ").map{|s| s =~ /^[0-9.]+$/ ? s.to_f : s} }
+    [self.call1, self.call2, self.call3, self.call4].map{|c| (c||"").gsub(/([0-9.]+)/, ' \1 ').split(" ").map{|s| s =~ /^[0-9.]+$/ ? s.to_f : s} }
     [self.call1, (self.call2 =~ /^[0-9.]+$/ ? self.call2.to_f : self.call2) ] + "#{self.call3}#{self.call4}".gsub(/[^a-zA-Z.0-9]/,'').gsub(/([0-9.]+)/, ' \1 ').split(" ") # .map{|s| s =~ /^[0-9.]+$/ ? s.to_f : s}
   end
 
