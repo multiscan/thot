@@ -1,0 +1,3 @@
+= form_tag(users_path, method: :get, class: "form-inline", placeholder: "e-mail") do
+  =text_field_tag :search, html: {class: "search-query", placeholder: "ciccio.pasticcio@epfl.ch"}
+  %button{type: "submit", class: "btn"} search user

@@ -11,7 +11,7 @@ Thot::Application.routes.draw do
   end
 
   # devise_for :users
-  resources :users, :only => [:show]
+  resources :users, :only => [:show, :index]
   namespace :nebis do
     get 'extend'
   end

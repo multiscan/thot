@@ -32,7 +32,11 @@
     -else
       %li= link_to('Admin login', new_admin_session_path)
       -#%li= link_to('Sign up', new_admin_registration_path)
-
+    %li=link_to("|", "#")
+    %li
+      %a{href: "#", class: "on_loan_popover", data: {html: "true", placement: "bottom", title: "Enter e-mail for user page", content: '<div><form action="/users" class="form-inline" method="get"><input id="email_login" class="input-large" name="email" type="text" placeholder="ciccio@epfl.ch"/></form></div>'}}
+        %i.icon-user
+        User
   =form_tag books_path, method: :get, :class=>"navbar-search pull-right" do
     =text_field_tag :search, params[:search], :class=>"search-query", :placeholder=> "Quick Search"
 

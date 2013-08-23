@@ -16,6 +16,7 @@
 //= require jquery.ui.selectable
 //= require bootstrap
 //= require bootstrap-datepicker
+//= require bootstrap-affix
 //= require jquery.tablesorter
 //= require thot
 //= require barcode_scanner

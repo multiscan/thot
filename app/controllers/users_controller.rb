@@ -14,6 +14,15 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /user?email=ciccio.pasticcio@epfl.ch
+  def index
+    if params[:email] && u=User.where(:email => params[:email]).first
+      redirect_to nebis_path(u.nebis)
+    else
+      redirect_to root_path
+    end
+  end
+
   # # GET /users
   # # GET /users.json
   # def index

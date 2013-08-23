@@ -1,0 +1,68 @@
+.container
+  %row
+    .span3
+      %ul{class: "nav nav-list bs-docs-sidenav affix-bottom", data: {spy: "affix"}}
+        %li.nav-header List Header
+        %li
+          %a{href: '#byImages'}
+            %i.icon-shevron-right
+            Gallery
+        %li
+          %a{href: '#newUser'}
+            %i.icon-shevron-right
+            Profile
+    .span8
+      %section{id: "byImages"}
+        .page-header
+          %h2 Thot by images
+        #introcarousel{class: "carousel slide", data: {interval: ""}}
+          %ol{class: "carousel-indicators"}
+            %li{:data => {"target" => "#introcarousel", "slide-to" => "0"}, :class => "active" }
+            %li{:data => {"target" => "#introcarousel", "slide-to" => "1"} }
+          %div{:class => "carousel-inner"}
+            .item.active
+              =image_tag image_path("docs/home_full.png") #, size: "367x143"
+              .carousel-caption
+                %h4 The main search form
+                %p
+                  Fill the form fields with informations about the book your are looking for and click on the
+                  %em Go Search! button
+            .item
+              =image_tag image_path("docs/quick_search.png")
+              .carousel-caption
+                %h4 Quick search form
+                %p  Use the quick search field that is always visible for searching books by author, editor, or title.
+            .item
+              =image_tag image_path("docs/user_login.png")
+              .carousel-caption
+                %h4 Searching a user by email
+                %p
+                  Click the
+                  %em User
+                  link and enter you e-mail address in the field for obtaining the
+                  %b user details view.
+                  In alternative, you can scan your NEBIS code with the barcode scanner.
+
+            .item
+              =image_tag image_path("docs/user_view.png")
+              .carousel-caption
+                %h4 User Details View
+                %p
+                  To borrow another book just enter its inventory number in the field on the top right of the page,
+                  or scan the book's barcode.
+                  To return a book, click on the
+                  %em return
+                  link, or scann the book's barcode.
+
+
+          %a{class: "carousel-control left",  href: "#introcarousel", data: {slide: "prev"}} &lsaquo;
+          %a{class: "carousel-control right", href: "#introcarousel", data: {slide: "next"}} &rsaquo;
+
+      %section{id: "newUser"}
+        .page-header
+          %h2 New user?
+          %p If you have never used thot, please ask the library manager to create an account for you.
+          .alert
+            Please
+            %strong do not take any book out of the library
+            without #{link_to "checking it out", "#checkout"} first.

@@ -32,6 +32,8 @@ gem "rolify", ">= 3.2.0"
 # --- app configuration: config/application.yml
 gem "figaro", ">= 0.6.0"
 
+# --- static pages
+gem 'high_voltage'
 
 # TODO: re-enable autocomplete when a rails4 compatible version is out
 # gem 'rails3-jquery-autocomplete', github: 'francisd/rails3-jquery-autocomplete'

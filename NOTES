@@ -1,3 +1,9 @@
+- sort labels by call number or shelf
+-
+
+
+
+
 document ready: just define a function when_ready() wherever is needed. It will be called from the main application.js
 
 

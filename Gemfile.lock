@@ -102,6 +102,7 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hashery (2.1.0)
+    high_voltage (1.2.4)
     highline (1.6.19)
     hike (1.2.3)
     i18n (0.6.4)
@@ -239,6 +240,7 @@ DEPENDENCIES
   figaro (>= 0.6.0)
   gon
   haml-rails (~> 0.4)
+  high_voltage
   jquery-rails
   jquery-ui-rails
   memoist
