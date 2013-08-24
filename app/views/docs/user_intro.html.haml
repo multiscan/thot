@@ -8,9 +8,13 @@
             %i.icon-shevron-right
             Gallery
         %li
+          %a{href: '#usage'}
+            %i.icon-shevron-right
+            Library usage
+        %li
           %a{href: '#newUser'}
             %i.icon-shevron-right
-            Profile
+            New user ?
     .span8
       %section{id: "byImages"}
         .page-header
@@ -19,6 +23,8 @@
           %ol{class: "carousel-indicators"}
             %li{:data => {"target" => "#introcarousel", "slide-to" => "0"}, :class => "active" }
             %li{:data => {"target" => "#introcarousel", "slide-to" => "1"} }
+            %li{:data => {"target" => "#introcarousel", "slide-to" => "2"} }
+            %li{:data => {"target" => "#introcarousel", "slide-to" => "3"} }
           %div{:class => "carousel-inner"}
             .item.active
               =image_tag image_path("docs/home_full.png") #, size: "367x143"
@@ -48,7 +54,7 @@
               .carousel-caption
                 %h4 User Details View
                 %p
-                  To borrow another book just enter its inventory number in the field on the top right of the page,
+                  To borrow (checkout) another book just enter its inventory number in the field on the top right of the page,
                   or scan the book's barcode.
                   To return a book, click on the
                   %em return
@@ -58,11 +64,27 @@
           %a{class: "carousel-control left",  href: "#introcarousel", data: {slide: "prev"}} &lsaquo;
           %a{class: "carousel-control right", href: "#introcarousel", data: {slide: "next"}} &rsaquo;
 
+      %section{id: "usage"}
+        %h2 Library Usage
+        %p
+          When you need to borrow a book from the library or you want to return a book to the library, please direct the browser to your user page. This can be done by either scanning the NEBIS code on the back of your camipro card if you are at EPFL, or by entering your e-mail address in the field that appears when you click on the
+          %em User
+          link that is shown on the top bar.
+        %p
+          Once you are on your user page, you can checkout a new book by scanning its barcode, or by entering its inventory number in the
+          %em checkout
+          text field on the top of the page.
+        %p
+          Similarly, to checkin (return) a book, please click on the correspondent
+          %em return
+          link, or scan the book's barcode with the barcode scanner.
+
+        %h4 Advice
+        .alert
+          Please
+          %strong do not take any book out of the library
+          without #{link_to "checking it out", "#checkout"} first.
+
       %section{id: "newUser"}
-        .page-header
-          %h2 New user?
-          %p If you have never used thot, please ask the library manager to create an account for you.
-          .alert
-            Please
-            %strong do not take any book out of the library
-            without #{link_to "checking it out", "#checkout"} first.
+        %h2 New user?
+        %p If you have never used thot, please ask the library manager to create an account for you.
