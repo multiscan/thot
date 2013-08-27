@@ -60,6 +60,10 @@ html, body {
 }
 /* -------------------------------------------------------------------------- */
 
+.open > .dropdown-form {
+  padding: 0.5em 2em;
+}
+
 .content {
   background-color: #eee;
   padding: 20px;
@@ -211,6 +215,9 @@ span.spacer {
   // color: rgb(192, 152, 83);
 }
 
+.carousel {
+  border: 1px solid #999;
+}
 /*
    Make rails3-jquery-autocomplete pick list appear correctly in Bootstrap.
    From https://gist.github.com/2168334

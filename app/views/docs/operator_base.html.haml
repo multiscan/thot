@@ -1,0 +1,198 @@
+.container
+  %row
+    .span3
+      %ul{class: "nav nav-list bs-docs-sidenav affix-bottom", data: {spy: "affix"}}
+        %li.nav-header List Header
+        %li
+          %a{href: '#NewBook'}
+            %i.icon-shevron-right
+            Add a new Book
+        %li
+          %a{href: '#inventory'}
+            %i.icon-shevron-right
+            Inventories
+    .span8
+      %section{id: "NewBook"}
+        .page-header
+          %h2 New Book
+        #nbcarousel{class: "carousel slide", data: {interval: ""}}
+          %ol{class: "carousel-indicators"}
+            %li{:data => {"target" => "#nbcarousel", "slide-to" => "0"}, :class => "active" }
+            %li{:data => {"target" => "#nbcarousel", "slide-to" => "1"} }
+            %li{:data => {"target" => "#nbcarousel", "slide-to" => "2"} }
+            %li{:data => {"target" => "#nbcarousel", "slide-to" => "3"} }
+            %li{:data => {"target" => "#nbcarousel", "slide-to" => "4"} }
+          %div{:class => "carousel-inner"}
+            .item.active
+              =image_tag image_path("docs/new_book_step1.png")
+              .carousel-caption
+                %h4 New book, first step
+                %p
+                  Fill the text field with the ISBN number of the book. You can also use the barcode scanner.
+            .item
+              =image_tag image_path("docs/new_book_step2A.png")
+              .carousel-caption
+                %h4 Book is known
+                %p
+                  If thot have a copy of the same book, then you can just review the data and
+                  %em add an item
+                  that is a new copy op the book.
+            .item
+              =image_tag image_path("docs/new_book_step2B.png")
+              .carousel-caption
+                %h4 Book is new
+                %p
+                  If thot have never seen the book before, then you'll have to fill the data but thot saves typing by
+                  automatically retriving informations about the on the internet.
+                %p
+                  You will have to just click on the values that you consider correct from those presented to you and...
+            .item
+              =image_tag image_path("docs/new_book_step2C.png")
+              .carousel-caption
+                %h4 Book is new / 2
+                %p
+                  \... eventually correct the fields and add those that are missing.
+            .item
+              =image_tag image_path("docs/new_book_step3.png")
+              .carousel-caption
+                %h4 New library entry for the book
+                %p Once the informations for the book are registered you can create a new item.
+
+          %a{class: "carousel-control left",  href: "#nbcarousel", data: {slide: "prev"}} &lsaquo;
+          %a{class: "carousel-control right", href: "#nbcarousel", data: {slide: "next"}} &rsaquo;
+
+        %p
+          The first step of registering a new book is to enter (or scan) its ISBN number. Please use ISBN 13 only if ISBN 10 is not available.
+          The second step depends on if the book was already present in the database or not.
+        %p
+          If the book were already known by Thot, then you can just quickly review the book data, correct what is eventually wrong or missing, and then click on the
+          %em "Add an Item"
+          link to register a new copy of the book with its distinct owner and inventory number.
+        %p
+          If the book is new to Thot, then you will have to create a new book title in the database by filling the form with informations about the publication.
+          To make things easier, Thot automatically searches for informations about the book on the internet (library of congress, and Google). When something is found, then the data is predsented on the top of the page and you can just click on the various values to automatically fill the form.
+        %p
+          Complete the form  and you're done.
+        %p
+          The final step is the same in both cases: create an entry in the database for this new copy of the book.
+
+      %section{id: "inventory"}
+        .page-header
+          %h2 Inventories
+        %p
+          It is a good practice to check all the books of the library to spot missing and incorrectly placed ones.
+          An inventory session starts by creating a new inventory session. This can be done selecting
+          %em "Inventories"
+          from the
+          %em Admin Menu
+          and then clicking on the
+          %em "New Inventory session"
+          link on the bottom of the page. If you don't have any inventory session yet, there is also a shortcut on the search result page.
+        #invcarousel{class: "carousel slide", data: {interval: ""}}
+          %ol{class: "carousel-indicators"}
+            %li{:data => {"target" => "#invcarousel", "slide-to" => "0"}, :class => "active" }
+            %li{:data => {"target" => "#invcarousel", "slide-to" => "1"} }
+            %li{:data => {"target" => "#invcarousel", "slide-to" => "2"} }
+            %li{:data => {"target" => "#invcarousel", "slide-to" => "3"} }
+          %div{:class => "carousel-inner"}
+            .item.active
+              =image_tag image_path("docs/inventory1B.png")
+              .carousel-caption
+                %h4 Create a new inventory session
+                %p
+                  Select "Inventories" from the Admin Menu to list all your inventories and click on the link at the bottom of the page.
+            .item
+              =image_tag image_path("docs/inventory1A.png")
+              .carousel-caption
+                %h4 If no inventory sessions are present in the database
+                %p
+                  A shortcut for creating your first inventory session appears on the search results page.
+            .item
+              =image_tag image_path("docs/inventory2.png")
+              .carousel-caption
+                %h4 Create and inventory session
+                %p
+                  Each time you want to check the inventory, you have to create a new inventory session.
+            .item
+              =image_tag image_path("docs/inventory3.png")
+              .carousel-caption
+                %h4 Add search result to an inventory session
+                %p
+                  In this case we searched all books that should be in room INR 120 (status "Library") and add them to the
+                  %em "Test inventory session"
+            .item
+              =image_tag image_path("docs/inventory4.png")
+              .carousel-caption
+                %h4 Creating shelves
+                %p Create new shelves for a given room from the room listing page
+            .item
+              =image_tag image_path("docs/inventory5.png")
+              .carousel-caption
+                %h4 Inventory session details page
+                %p
+                  Freshly created. No books scanned yet. Scan a shelf barcode or click on the corresponding
+                  %em Inventory
+                  link to start checking the books of a shelf
+            .item
+              =image_tag image_path("docs/inventory6.png")
+              .carousel-caption
+                %h4 Inventory shelf view
+                %p
+                  You can now scan the barcode of books in the shelf. There should be 3 books in the shelf.
+
+            .item
+              =image_tag image_path("docs/inventory7.png")
+              .carousel-caption
+                %h4 Inventory shelf view
+                %p
+                  As you scan books, they are moved/inserted in one of the four columns. In this case, one book were found (confirmed) at the right place, another should be on a different shelf: probably a misplaced item.
+            .item
+              =image_tag image_path("docs/inventory8.png")
+              .carousel-caption
+                %h4 Inventory session details page
+                %p After two books were scanned as found in the first shelf. Six are still to be checked.
+            .item
+              =image_tag image_path("docs/inventory9.png")
+              .carousel-caption
+                %h4 Toward the end
+                %p
+                  When enough books are checked, you start to see the
+                  %em Commit
+                  links in the inventory details page.
+
+          %a{class: "carousel-control left",  href: "#invcarousel", data: {slide: "prev"}} &lsaquo;
+          %a{class: "carousel-control right", href: "#invcarousel", data: {slide: "next"}} &rsaquo;
+        %p
+          The second step is to add to the inventory session all the books that should belong to it. This is done by searching the books and then clickin on the
+          %em "Inventorize"
+          button in the page that shows the search results. For example, in order to check all the books in a given room, just select the room in the drop-down menu of the search form as in the image above.
+        %p
+          Once the inventory session is populated with all the books that should be present, you can start checking the inventory by scanning the barcode of one shelf at a time and all the books therein.
+        %p
+          As you scan the books, they will be listed in four columns:
+        %dl.dl-horizontal
+          %dt Confirmed:
+          %dd books that are found in the shelf where they should be;
+          %dt Imported:
+          %dd books that were not assigned to any shelf yet;
+          %dt Moved in:
+          %dd books that used to be on a different shelf. This might indicate a missplaced book;
+          %dt Missing:
+          %dd books that should belong to the shelf but have not been checked yet.
+        %p
+          When you have scanned all the books that should belong to the inventory session, you can proceed committing the inventory findings to the item's database.
+        %p
+          In the inventory details page, there are two links for committing the results of the inventory session. One for confirmed and moved items that will update the items with their new locations, and one for books that were not found in any shelf. These will be declared missing when you commit.
+
+        %h3 First Inventory Ever
+        %p
+          If you have just switched from the legacy Thot system, then probably you don't have yet shelves assigned to your library room. Create as many shelves as
+          there are in your library by clicking on the
+          %em "Add a shelf"
+          link that appears next to each room in the room listing page (Admin Menu -> Rooms).
+          Then visit the room page (Show link) and print the labels for the shelves by clicking the corresponding link in the room details page.
+        %p
+          Now that you have your shelves labeled, you can start checking your inventory. All the books that you scan will be considered as
+          %em "Imported"
+          because they did not have any shelf assigned till now.
+

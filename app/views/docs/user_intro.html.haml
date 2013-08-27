@@ -15,6 +15,10 @@
           %a{href: '#newUser'}
             %i.icon-shevron-right
             New user ?
+        %li
+          %a{href: '#Login'}
+            %i.icon-shevron-right
+            Operator Login
     .span8
       %section{id: "byImages"}
         .page-header
@@ -88,3 +92,55 @@
       %section{id: "newUser"}
         %h2 New user?
         %p If you have never used thot, please ask the library manager to create an account for you.
+
+      %section{id: "Login"}
+        .page-header
+          %h2 Operator Login
+        #opcarousel{class: "carousel slide", data: {interval: ""}}
+          %ol{class: "carousel-indicators"}
+            %li{:data => {"target" => "#opcarousel", "slide-to" => "0"}, :class => "active" }
+            %li{:data => {"target" => "#opcarousel", "slide-to" => "1"} }
+          %div{:class => "carousel-inner"}
+            .item.active
+              =image_tag image_path("docs/op_login.png")
+              .carousel-caption
+                %h4 Operator Login
+                %p
+                  Clicking on the
+                  =link_to "Admin login", new_admin_session_path
+                  link you will be presented with the usual e-mail/password form for identification.
+            .item
+              =image_tag image_path("docs/op_menu.png")
+              .carousel-caption
+                %h4 Admin Menu.
+                %p  A drop down menu contains the links to all the actions needed by a library operator.
+          %a{class: "carousel-control left",  href: "#opcarousel", data: {slide: "prev"}} &lsaquo;
+          %a{class: "carousel-control right", href: "#opcarousel", data: {slide: "next"}} &rsaquo;
+        %p
+          To authenticate as a library operator, click on the
+          =link_to "Admin login", new_admin_session_path
+          link and fill the ususl e-mail/password form with your credentials.
+        %p
+          Once logged in, the
+          %em Admin Menu
+          as well as a
+          %em Logout
+          link
+          will be added to the top bar.
+          .alert
+            Don't forget to logout if you are working on the public library computer or the users will not be able to use the barcode scanner to check in/out the books.
+        %p
+          The
+          %em Admin Menu
+          contains links to all the actions needed by a library operator.
+          The main actions are
+          %em New Book
+          and
+          %em New User
+          to register a newly purchased book into the library and for creating a new user account.
+        %h6 New User
+        %p
+          Creating the account for a new user is as simple as filling the form. All fields are mandatory except the Nebis code that is necessary only if you have the barcode system inplace. For EPFL users, the Nebis code is printed on the back of the Camipro card.
+        %h6 New Book
+        %p
+          Registering a new book to the library consists in three steps as described below.

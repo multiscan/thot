@@ -6,7 +6,6 @@
         -#%i.icon-search
     -#%li=link_to "Thot ", root_path, :class=>"brand"
     -#%li=link_to('Full Search', new_search_path)
-    %li=link_to("|", "#")
     -if admin_signed_in?
       %li.dropdown
         %a{:href=> '#', :class=>"dropdown-toggle", :data=>{:toggle=>"dropdown"}}
@@ -29,33 +28,32 @@
             %li= link_to('Operators', adm_admins_path)
             %li= link_to('Publishers', adm_publishers_path)
       %li=link_to("Logout", destroy_admin_session_path, :method=>'delete')
+      %li=link_to 'Help', page_path("operator_base")
     -else
-      %li= link_to('Admin login', new_admin_session_path)
+      -#%li= link_to('Admin login', new_admin_session_path)
       -#%li= link_to('Sign up', new_admin_registration_path)
-    %li=link_to("|", "#")
-    %li
-      %a{href: "#", class: "on_loan_popover", data: {html: "true", placement: "bottom", title: "Enter e-mail for user page", content: '<div><form action="/users" class="form-inline" method="get"><input id="email_login" class="input-large" name="email" type="text" placeholder="ciccio@epfl.ch"/></form></div>'}}
-        %i.icon-user
-        User
-    %li=link_to("|", "#")
-    %li=link_to 'Help', page_path("user_intro")
+      %li.dropdown
+        %a{:href=> '#', :class=>"dropdown-toggle", :data=>{:toggle=>"dropdown"}}
+          %i.icon-cog
+          Admin
+        .dropdown-menu.dropdown-form
+          %h4 Sign in
+          = simple_form_for(Admin.new, :as => :admin, :url => session_path(:admin), :html => {:class => 'form-horizontal' }) do |f|
+            .form-inputs
+              = f.input :email, :required => false, :autofocus => true
+              = f.input :password, :required => false
+              = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
+            .form-actions
+              = f.button :submit, "Sign in"
+          = render "devise/shared/links"
+      %li.dropdown
+        %a{:href=> '#', :class=>"dropdown-toggle", :data=>{:toggle=>"dropdown"}}
+          %i.icon-user
+          User
+        .dropdown-menu.dropdown-form
+          Enter e-mail to see your user page
+          %form{action: "/users", class: "form-inline", method: "get"}
+            %input{id: "email_login", class: "input-large", name: "email", type: "text", placeholder: "ciccio.pasticcio@epfl.ch"}
+      %li=link_to 'Help', page_path("user_intro")
   =form_tag books_path, method: :get, :class=>"navbar-search pull-right" do
     =text_field_tag :search, params[:search], :class=>"search-query", :placeholder=> "Quick Search"
-
--#.logo.container-fluid
-  %ul.nav
-    %li
-      =link_to "Thot", root_path, :class=>"brand"
-    -if admin_signed_in?
-      %li=link_to('Logout', destroy_admin_session_path, :method=>'delete')
-      -#%li=link_to('Edit account', edit_admin_registration_path)
-      -#%li=link_to("Me", current_admin)
-      -if current_admin.role? :admin
-        %li= link_to('Admin', cpanel_path)
-    -else
-      %li= link_to('Login', new_admin_session_path)
-      -#%li= link_to('Sign up', new_admin_registration_path)
-      %li= link_to('Full Search', new_search_path)
-    %li
-      =form_tag books_path, method: :get, :class=>"navbar-search" do
-        =text_field_tag :search, params[:search], :class=>"search-query", :placeholder=> "Quick Search"
