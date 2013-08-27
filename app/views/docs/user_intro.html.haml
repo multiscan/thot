@@ -31,7 +31,7 @@
             %li{:data => {"target" => "#introcarousel", "slide-to" => "3"} }
           %div{:class => "carousel-inner"}
             .item.active
-              =image_tag image_path("docs/home_full.png") #, size: "367x143"
+              =image_tag image_path("docs/home_full.png")
               .carousel-caption
                 %h4 The main search form
                 %p
@@ -107,7 +107,7 @@
                 %h4 Operator Login
                 %p
                   Clicking on the
-                  =link_to "Admin login", new_admin_session_path
+                  =link_to "Admin", new_admin_session_path
                   link you will be presented with the usual e-mail/password form for identification.
             .item
               =image_tag image_path("docs/op_menu.png")
@@ -118,7 +118,7 @@
           %a{class: "carousel-control right", href: "#opcarousel", data: {slide: "next"}} &rsaquo;
         %p
           To authenticate as a library operator, click on the
-          =link_to "Admin login", new_admin_session_path
+          =link_to "Admin", new_admin_session_path
           link and fill the ususl e-mail/password form with your credentials.
         %p
           Once logged in, the
