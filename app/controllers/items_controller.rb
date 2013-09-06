@@ -26,9 +26,15 @@ class ItemsController < ApplicationController
     if id=params["shelf_id"]
       @shelf = Shelf.find(id)
       @items = Item.where(shelf_id: id).includes(:inventoriable).sort do |a,b|
-        if a.inventoriable.is_a?(Book)
-          a.inventoriable.sortable_call <=> b.inventoriable.sortable_call
-        else
+        begin
+          if a.inventoriable.is_a?(Book) && b.inventoriable.is_a?(Book)
+            a.inventoriable.sortable_call <=> b.inventoriable.sortable_call
+          else
+            a.id <=> b.id
+          end
+        rescue
+          puts "---------------------------------------------------------------"
+          puts "a=#{a.inspect}\nb=#{b.inspect}"
           a.id <=> b.id
         end
       end

@@ -1,7 +1,7 @@
 # require "prawn/measurement_extensions"
 
 @records = [["Inv", "Lab", "Call1", "Call2", "Call3", "Title"]]
-@records += @inventory_session.books_by_call_for_listing.map{|r| [r.id, r.lab_nick, r.call1, r.call2, r.call3, truncate(r.title, :length => 48)]}
+@records += @inventory_session.books_by_call_for_listing.sort{|a,b| a.sortable_call <=> b.sortable_call}.map{|r| [r.id, r.lab_nick, r.call1, r.call2, r.call3, truncate(r.title, :length => 48)]}
 
 docinfo = {
             :Title => @inventory_session.name,
