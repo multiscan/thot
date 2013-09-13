@@ -37,7 +37,7 @@ class window.BarcodeScanner
           # console.debug("Nebis Barcode")
           $.event.trigger( { type: "barcode_item", message: @inputString } )
           @inputString = ""
-        else if @inputString.match(/^[0-9][0-9][0-9][0-9][0-9]*$/)
+        else if @inputString.match(/^[0-9][0-9]*$/)
           # console.debug("Item Barcode")
           $.event.trigger( { type: "barcode_item", message: @inputString } )
           @inputString = ""
