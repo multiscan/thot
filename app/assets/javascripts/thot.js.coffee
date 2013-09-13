@@ -1,7 +1,7 @@
 class Thot
   constructor: () ->
     console.debug("Loadin Thot")
-    @BARCODE_KEYPRESS_MAXDELAY = 300        # milliseconds
+    @BARCODE_KEYPRESS_MAXDELAY = 600        # milliseconds
     @INACTIVITY_TIME_BEFORE_RESET = 300     # seconds
 
   ready: () ->
