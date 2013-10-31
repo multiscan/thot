@@ -62,6 +62,9 @@ class Abilities::AdminAbility
         can :manage, Good do |good|
             good.inventory_session.admin_id == admin.id
         end
+        can [:read, :update], Lab do |lab|
+            lab.operators.exists?(admin)
+        end
     end
 
   end

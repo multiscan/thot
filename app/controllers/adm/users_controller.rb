@@ -39,8 +39,11 @@ class Adm::UsersController < AdmController
   # GET /admin/users/new
   # GET /admin/users/new.json
   def new
+    authorize! :create, User
     @user = User.new
-    @labs = current_admin.labs
+    @labs = current_admin.available_labs
+    # @labs = current_admin.labs
+    # @labs = Lab.all if @labs.count == 0 && current_admin.admin?
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }
@@ -58,8 +61,9 @@ class Adm::UsersController < AdmController
   # POST /admin/users.json
   def create
     @user = User.new(user_params)
+    @labs = current_admin.available_labs
     authorize! :create, @user
-
+    authorize! :update, @user.lab
     respond_to do |format|
       if @user.save
         format.html { redirect_to [:adm, @user], notice: 'User was successfully created.' }

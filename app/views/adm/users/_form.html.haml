@@ -7,7 +7,7 @@
       .span4= f.input :nebis, :placeholder => "E1234567 (use barcode scanner)", :input_html => {:class => "span3"}
     .row
       .span6= f.input :email, :input_html => {:class => "span5"}
-      .span3= f.input :lab_id, :collection => @labs, :label_method => :nick
+      .span3= f.association :lab, :as => :select, :collection => @labs, :label_method => :nick
 
     = f.input :notes, :placeholder => "Any special note about this user goes here", :input_html => {:class => "span12"}
 

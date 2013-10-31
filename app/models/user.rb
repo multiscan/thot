@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   # attr_accessible :title, :body
   validates_presence_of :name
-  validates_presence_of :lab_id
+  validates_presence_of :lab
   validates_presence_of :email
   validates_uniqueness_of :email, :case_sensitive => false
 
