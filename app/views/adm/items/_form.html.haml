@@ -6,7 +6,8 @@
       .span4
         = f.association :lab, :collection => @labs, :label_method => lambda { |l| l.nick }, :prompt => "Select the owner"
       .span4
-        = f.input :location_name, :placeholder => "Room/Library name", :label => "Room", :input_html => {:class => "typeahead", :data => {:collection => Location.names_list}}
+        = f.association :location, :collection => @locations
+        -# = f.input :location_name, :placeholder => "Room/Library name", :label => "Room", :input_html => {:class => "typeahead", :data => {:collection => Location.names_list}}
       .span4
         - if @item.new_record? || @item.location_id.nil?
           = f.input :shelf_seqno, :placeholder => "123", :label => "Shelf Number"
