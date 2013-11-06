@@ -28,7 +28,7 @@ class Adm::ItemsController < AdmController
     @item = Item.find(params[:id])
     @book = @item.book
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render 'items/show' }
       format.pdf  { @items = [@item] ; render 'items/index' }
       format.json { render json: @item }
     end
@@ -119,7 +119,7 @@ class Adm::ItemsController < AdmController
   end
 
   def item_params
-    @item_params ||= params.require(:item).permit(:currency, :lab_id, :shelf_id, :location_name, :price, :status)
+    @item_params ||= params.require(:item).permit(:currency, :lab_id, :shelf_id, :location_name, :location_id, :price, :status)
   end
 
 end
