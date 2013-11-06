@@ -26,3 +26,5 @@
         =days_ago(loan.age_in_days)
       %br
       =link_to "Return", loan, :method => :delete, :remote => true, :data => {:item_id => loan.item_id}
+      \|
+      =link_to "Details", loan.item
