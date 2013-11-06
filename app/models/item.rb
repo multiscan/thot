@@ -10,7 +10,7 @@ class Item < ActiveRecord::Base
   has_one :current_checkout, -> {where return_date: nil}, :class_name => "Loan", :foreign_key => "item_id"
 
 
-  has_many :goods, :class_name => "good", :foreign_key => "item_id", :dependent => :destroy
+  has_many :goods, :class_name => "Good", :foreign_key => "item_id", :dependent => :destroy
 
   validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
   # validates_presence_of :inv
