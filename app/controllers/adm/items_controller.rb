@@ -38,12 +38,7 @@ class Adm::ItemsController < AdmController
   # GET /book/:book_id/items/new.json
   def new
     @item = @book.items.new
-    @labs = current_admin.labs.order('nick ASC').all
-    if @labs.empty? && current_admin.admin?
-      @labs = Lab.all
-    end
-    @locations = Location.order('name ASC').all
-    @currencies = ENV['CURRENCIES'].split
+    set_form_data
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @item }
@@ -52,10 +47,8 @@ class Adm::ItemsController < AdmController
 
   # GET /items/1/edit
   def edit
-    @labs = current_admin.available_labs
-    @locations = Location.order('name ASC').all
-    @currencies = ENV['CURRENCIES'].split
     @item = Item.find(params[:id])
+    set_form_data
   end
 
   # POST /book/:book_id/items
@@ -70,7 +63,10 @@ class Adm::ItemsController < AdmController
           format.html { redirect_to @book, notice: 'Item was successfully created.' }
           format.json { render json: @item, status: :created, location: @item }
         else
-          format.html { render action: "new" }
+          format.html {
+            set_form_data
+            render action: "new"
+          }
           format.json { render json: @item.errors, status: :unprocessable_entity }
         end
       end
@@ -90,7 +86,10 @@ class Adm::ItemsController < AdmController
         format.html { redirect_to @item, notice: 'Item was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html {
+          set_form_data
+          render action: "edit"
+        }
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end
@@ -120,6 +119,15 @@ class Adm::ItemsController < AdmController
 
   def item_params
     @item_params ||= params.require(:item).permit(:currency, :lab_id, :shelf_id, :location_name, :location_id, :price, :status)
+  end
+
+  def set_form_data
+    @locations = Location.order('name ASC').all
+    @currencies = ENV['CURRENCIES'].split
+    @labs = current_admin.available_labs
+    if @labs.empty? && current_admin.admin?
+      @labs = Lab.all
+    end
   end
 
 end

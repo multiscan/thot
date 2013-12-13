@@ -13,6 +13,8 @@ class Item < ActiveRecord::Base
   has_many :goods, :class_name => "Good", :foreign_key => "item_id", :dependent => :destroy
 
   validates_presence_of :inventoriable_id, :on => :save, :message => "can't be blank"
+  validates_presence_of :lab, :message => "can't be blank"
+
   # validates_presence_of :inv
   # validates_uniqueness_of :inv, :message => "must be unique"
 
