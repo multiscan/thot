@@ -437,4 +437,86 @@ module ApplicationHelper
 
   end
 
+  class Prawn::Table::Cell::Drawable < Prawn::Table::Cell
+    def initialize(pdf, point, options={})
+      @draw_options = {}
+      super
+    end
+    def draw=(p)
+      @drawable=p
+    end
+    def natural_content_width
+      @drawable.natural_width
+    end
+    def natural_content_height
+      @drawable.natural_height
+    end
+    def draw_content
+      if @drawable
+        @drawable.draw(@pdf, self.content_width, self.content_height)
+      end
+    end
+  end
+
+  class Prawn::Table::Cell
+    def self.make(pdf, content, options={})
+      at = options.delete(:at) || [0, pdf.cursor]
+      content = content.to_s if content.nil? || content.kind_of?(Numeric) ||
+        content.kind_of?(Date)
+
+      if content.is_a?(Hash)
+        if content[:image]
+          return Cell::Image.new(pdf, at, content)
+        end
+        if d=content[:draw]
+          if d.respond_to?(:draw) && d.respond_to?(:natural_width) && d.respond_to?(:natural_height)
+            return Prawn::Table::Cell::Drawable.new(pdf, at, content)
+          else
+            raise Errors::UnrecognizedTableContent
+          end
+        end
+        options.update(content)
+        content = options[:content]
+      else
+        options[:content] = content
+      end
+
+      options[:content] = content = "" if content.nil?
+
+      case content
+      when Prawn::Table::Cell
+        content
+      when String
+        Prawn::Table::Cell::Text.new(pdf, at, options)
+      when Prawn::Table
+        Cell::Subtable.new(pdf, at, options)
+      when Array
+        subtable = Prawn::Table.new(options[:content], pdf, {})
+        Cell::Subtable.new(pdf, at, options.merge(:content => subtable))
+      else
+        raise Errors::UnrecognizedTableContent
+      end
+    end
+  end
+
+end
+
+class BarcodeCell
+  def initialize(t, nw=10.mm, nh=5.mm)
+    @text=t.to_s
+    @nat_width = nw
+    @nat_height = nh
+  end
+  def text=(t)
+    @text=t
+  end
+  def natural_width
+    @nat_width
+  end
+  def natural_height
+    @nat_height
+  end
+  def draw(pdf, w, h)
+    pdf.barcode_25i(@text, 0, h, w, h, true)
+  end
 end

@@ -84,7 +84,10 @@ class Adm::InventorySessionsController < AdmController
     @shelves = @inventory_session.shelves
     gon.inventory = @inventory_session.id
     respond_to do |format|
-      format.pdf
+      format.pdf {
+        @records = []
+        @records += @inventory_session.books_by_shelf_call_for_listing
+      }
       format.html # show.html.erb
       format.json { render json: @inventory_session }
       format.csv {

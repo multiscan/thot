@@ -1,8 +1,5 @@
 # require "prawn/measurement_extensions"
 
-@records = [["Inv", "Lab", "Call1", "Call2", "Call3", "Title"]]
-@records += @inventory_session.books_by_call_for_listing.sort{|a,b| a.sortable_call <=> b.sortable_call}.map{|r| [r.id, r.lab_nick, r.call1, r.call2, r.call3, truncate(r.title, :length => 48)]}
-
 docinfo = {
             :Title => @inventory_session.name,
             :Author => current_admin.name,
@@ -12,16 +9,25 @@ docinfo = {
             :CreationDate => Time.now
           }
 
+
+cells=[]
+@records.each do |r|
+  s=r.shelf_id.present? ? Shelf.find(r.shelf_id).seqno : " "
+  c=[r.call1, r.call2, r.call3].join(" ")
+  t=truncate(r.title, :length=>100)
+  b={draw: BarcodeCell.new(r.id)}
+  cells << [r.id, s, c, t, b, nil]
+end
 prawn_document(
     page_size: "A4",
     page_layout: :portrait,
     margin: [13.mm, 10.mm],      # top/bottom, left/right as in css
     info: docinfo
   ) do |p|
-  p.font_size 10
+  p.font_size 9
   p.table(
-    @records,
-    :column_widths => [20.mm, 25.mm, 20.mm, 20.mm, 20.mm, 85.mm],
+    cells,
+    :column_widths => [20.mm, 10.mm, 30.mm, 80.mm, 30.mm, 10.mm],
     :cell_style => {border_width: 0.1, border_color: "CCCCCC"}
   )
   string = "page <page> of <total>"
