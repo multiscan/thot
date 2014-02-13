@@ -11,10 +11,11 @@ docinfo = {
 
 
 cells=[]
-@records.each do |r|
+@items.each do |r|
   s=r.shelf_id.present? ? Shelf.find(r.shelf_id).seqno : " "
-  c=[r.call1, r.call2, r.call3].join(" ")
-  t=truncate(r.title, :length=>100)
+  i=r.inventoriable
+  c=i.is_a?(Book) ? [i.call1, i.call2, i.call3].join(" ") : " "
+  t="<b>#{truncate(i.author, :length=>50)}</b>\n<i>#{truncate(i.title, :length=>150)}</i>"
   b={draw: BarcodeCell.new(r.id)}
   cells << [r.id, s, c, t, b, nil]
 end
@@ -28,7 +29,7 @@ prawn_document(
   p.table(
     cells,
     :column_widths => [20.mm, 10.mm, 30.mm, 80.mm, 30.mm, 10.mm],
-    :cell_style => {border_width: 0.1, border_color: "CCCCCC"}
+    :cell_style => {border_width: 0.1, border_color: "CCCCCC", :inline_format => true}
   )
   string = "page <page> of <total>"
   # Green page numbers 1 to 7

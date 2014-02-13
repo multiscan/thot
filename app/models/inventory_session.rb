@@ -25,18 +25,6 @@ class InventorySession < ActiveRecord::Base
       )
   end
 
-  def books_by_shelf_call_for_listing
-    items.joins(
-        "JOIN books ON books.id = items.inventoriable_id AND items.inventoriable_type = 'Book'"
-      ).joins(
-        "JOIN labs ON labs.id = items.lab_id"
-      ).order(
-        "shelf_id ASC, books.call1 ASC, books.call2 ASC, books.call3 ASC, books.call4 ASC, items.id ASC"
-      ).select(
-        "items.id, items.location_id, items.shelf_id, items.status, labs.nick as lab_nick, books.title, books.call1, books.call2, books.call3"
-      )
-  end
-
   def in_shelf_count(s)
     goods.where(current_shelf_id: s.id).count
   end

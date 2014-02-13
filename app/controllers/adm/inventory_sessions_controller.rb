@@ -84,17 +84,30 @@ class Adm::InventorySessionsController < AdmController
     @shelves = @inventory_session.shelves
     gon.inventory = @inventory_session.id
     respond_to do |format|
-      format.pdf {
-        @records = []
-        @records += @inventory_session.books_by_shelf_call_for_listing
-      }
+      format.pdf do
+        @items = @inventory_session.items.includes(:inventoriable, :shelf).order(:shelf_id).sort do |a,b|
+          if a.shelf_id == b.shelf_id
+            begin
+              if a.inventoriable.is_a?(Book) && b.inventoriable.is_a?(Book)
+                a.inventoriable.sortable_call <=> b.inventoriable.sortable_call
+              else
+                a.id <=> b.id
+              end
+            rescue
+              a.id <=> b.id
+            end
+          else
+            a.shelf ? a.shelf.seqno : 0  <=> b.shelf ? b.shelf.seqno : 0
+          end
+        end
+      end
       format.html # show.html.erb
       format.json { render json: @inventory_session }
-      format.csv {
+      format.csv do
         @records = [["Inv", "Lab", "Call1", "Call2", "Call3", "Title"]]
         @records += @inventory_session.books_by_call_for_listing.map{|r| [r.id, r.lab_nick, r.call1, r.call2, r.call3, r.title]}
         send_data CSV.generate {|csv| @records.each {|r| csv << r} }
-      }
+      end
       format.xls # renders show.xls.erb
       # format.xls {
       #   @records = [["Inv", "Lab", "Call1", "Call2", "Call3", "Title"]]

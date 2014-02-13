@@ -445,6 +445,9 @@ module ApplicationHelper
     def draw=(p)
       @drawable=p
     end
+    def inline_format=(p)
+      @inl
+    end
     def natural_content_width
       @drawable.natural_width
     end
@@ -502,7 +505,7 @@ module ApplicationHelper
 end
 
 class BarcodeCell
-  def initialize(t, nw=10.mm, nh=5.mm)
+  def initialize(t, nw=25.mm, nh=15.mm)
     @text=t.to_s
     @nat_width = nw
     @nat_height = nh
@@ -517,6 +520,6 @@ class BarcodeCell
     @nat_height
   end
   def draw(pdf, w, h)
-    pdf.barcode_25i(@text, 0, h, w, h, true)
+    pdf.barcode_25i(@text, 0, h, w, 0.75*h, true)
   end
 end
