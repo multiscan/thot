@@ -140,6 +140,16 @@ class Search < ActiveRecord::Base
     !query.blank? && nba.size==1
   end
 
+  def inv_number
+    return @inv_number if @inv_number
+    @inv_number = if inv_range.blank?
+      -1
+    else
+      r=parse_range(inv_range)
+      r.is_a?(Integer) ? r : -1
+    end
+  end
+
  # private
 
   # conditions for books

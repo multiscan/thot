@@ -10,9 +10,10 @@
       .span3= f.input :isbn, :input_html => {:class => "span3"}
       .span3= f.input :publisher_name, :input_html => {:class => "span3"}
       .span3= f.input :year_range, :label=>"An year, list of years or range", :placeholder=>"'2001' or '2001-2005' or '2001, 2004, 2007'", :input_html => {:class => "span3"}
+      .span3= f.input :inv_range, :label => "Inventory number, range or list", :placeholder => "123 or 123-166 or 123,125,189"
     .row
       - if admin_signed_in?
-        .span3= f.input :inv_range, :label => "Inventory number, range or list", :placeholder => "123 or 123-166 or 123,125,189"
+        -#.span3= f.input :inv_range, :label => "Inventory number, range or list", :placeholder => "123 or 123-166 or 123,125,189"
         .span3= f.input :inv_date_fr, :label => "Inventory created from", :as => :date_picker
         .span3= f.input :inv_date_to, :label => "Inventory created to", :as => :date_picker
         .span3= f.input :status, :collection => Item.statuses, :prompt => "Select a Status"

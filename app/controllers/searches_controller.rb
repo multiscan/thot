@@ -54,6 +54,8 @@ class SearchesController < ApplicationController
     @search = Search.new(search_params)
     if @search.simple_query?
       redirect_to books_path(:search=>@search.query)
+    elsif @search.inv_number > 0
+      redirect_to item_path(@search.inv_number)
     else
       respond_to do |format|
         if @search.save
@@ -98,7 +100,11 @@ class SearchesController < ApplicationController
  private
 
   def search_params
-    params.require(:search).permit(:query, :isbn, :publisher_name, :year_range, :inv_range, :lab_id, :location_id, :status, :inv_date_fr, :inv_date_to)
+    if admin_signed_in?
+      params.require(:search).permit(:query, :isbn, :publisher_name, :year_range, :inv_range, :lab_id, :location_id, :status, :inv_date_fr, :inv_date_to)
+    else
+      params.require(:search).permit(:query, :isbn, :publisher_name, :year_range, :inv_range, :lab_id, :location_id)
+    end
   end
 
 end
