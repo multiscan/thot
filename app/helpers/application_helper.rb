@@ -117,13 +117,13 @@ module ApplicationHelper
     PAGE_PARAMS_38 = {
       page_size: "A4",
       page_layout: :portrait,
-      margin: 0,
+      margin: [6, 6],
     }
 
     PAGE_PARAMS_38M = {
       page_size: "A4",
       page_layout: :portrait,
-      margin: [13.mm, 8.mm],      # top/bottom, left/right as in css
+      margin: [13.mm+4, 8.mm+4],      # top/bottom, left/right as in css
     }
 
     CODE25 = [
@@ -162,6 +162,7 @@ module ApplicationHelper
         start_new_page
         @np = false
       end
+      # grid(@ag_iy, @ag_ix).show
       grid(@ag_iy, @ag_ix).bounding_box do
         yield
       end
