@@ -5,4 +5,17 @@
   %small
     Can we merge something?
     =link_to "yes", edit_adm_deg_isbn_path(@degisbn)
+- if @degisbn.skip
+  .alert
+    This ISBN is marked as
+    %strong unmergeable
+
+.btn-group
+  - if @prev
+    = link_to "<i class='icon-arrow-left'></i> Prev".html_safe, adm_deg_isbn_path(@prev), :class => "btn"
+  = link_to "<i class='icon-list'></i> List".html_safe, adm_deg_isbns_path, :class => "btn"
+  =link_to "<i class='icon-resize-small'></i> merger".html_safe, edit_adm_deg_isbn_path(@degisbn), :class => "btn"
+  - if @next
+    = link_to "Next <i class='icon-arrow-right'></i> ".html_safe, adm_deg_isbn_path(@next), :class => "btn"
+
 = render :partial => "books/books"

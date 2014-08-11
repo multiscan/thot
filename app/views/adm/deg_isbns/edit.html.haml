@@ -4,7 +4,17 @@
 
 %p
   Check the books that will be merged and fill the form below with the final data.
-  You can click on data on the entries to fill the form automatically.
+  You can click on data on the entries to fill the form automatically. Or click the
+  %em skip
+  button to mark as unmergeable.
+
+.btn-group
+  - if @prev
+    = link_to "<i class='icon-arrow-left'></i> Prev".html_safe, edit_adm_deg_isbn_path(@prev), :class => "btn"
+  = link_to "<i class='icon-list'></i> List".html_safe, adm_deg_isbns_path, :class => "btn"
+  = link_to "<i class='icon-ban-circle'></i> Skip".html_safe, skip_adm_deg_isbn_path(@degisbn), data: { confirm: 'Are you sure?' }, :class => "btn"
+  - if @next
+    = link_to "Next <i class='icon-arrow-right'></i> ".html_safe, edit_adm_deg_isbn_path(@next), :class => "btn"
 
 #merger{:data=>{"no-turbolink"=>true}}
   .right

@@ -149,7 +149,7 @@ class Book < ActiveRecord::Base
   end
 
   def self.duplicated_isbn_count
-    self.select("COUNT(isbn) as total, isbn").group(:isbn).having("COUNT(isbn) > 1 AND isbn!=''").order('total').map{|b| [b.isbn,b.total]}
+    self.select("COUNT(isbn) as total, isbn").group(:isbn).having("COUNT(isbn) > 1 AND isbn!='none' AND isbn!=''").order('total').map{|b| [b.isbn,b.total]}
   end
 
   def isbn_checksum(isbn_string)

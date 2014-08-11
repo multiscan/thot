@@ -28,7 +28,9 @@ Thot::Application.routes.draw do
       get :duplicate
       resources :items, :only=>[:new, :create]
     end
-    resources :deg_isbns
+    resources :deg_isbns do
+      get :skip, :on => :member
+    end
     resources :goods
     resources :inventory_sessions do
       resources :shelves, :only => [:show]

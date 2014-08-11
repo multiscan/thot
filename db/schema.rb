@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130704134830) do
+ActiveRecord::Schema.define(version: 20140811091752) do
 
   create_table "admins", force: true do |t|
     t.string   "name",                                        null: false
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20130704134830) do
     t.integer  "count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "skip",       default: false
   end
 
   create_table "goods", force: true do |t|

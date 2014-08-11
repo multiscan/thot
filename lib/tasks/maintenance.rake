@@ -27,6 +27,21 @@ task :isbnmerge => [:environment, :cleanup_books] do
   puts "----- #{mergecount} Succesfull merging in total."
 end
 
+desc "Update table of degenerate ISBN numbers"
+task :update_degisbns => [:environment] do
+  n=0
+  t=0
+  Book.duplicated_isbn_count.each do |isbn,count|
+    i=DegIsbn.new(:isbn=>isbn, :count=>count)
+    n=n+1 if i.save
+    t=t+1
+  end
+  puts "Added #{n} new degenerate ISBNs out of #{t} found."
+  puts "Now there are #{DegIsbn.count} degenerate ISBNs in total."
+  puts "Out of which #{DegIsbn.where(skip: true).count} are marked as unmergeable"
+end
+
+
 desc "Destroy books with blank author, editor and isbn"
 task :cleanup_books => [:environment] do
   puts "Destroying books with no author, editor, isbn..."

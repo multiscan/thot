@@ -1,19 +1,32 @@
 class Adm::DegIsbnsController < AdmController
   def index
-    @degisbns=DegIsbn.order("count DESC").paginate(:page=>params[:page], :per_page=>200)
+    @degisbns=DegIsbn.paginate(:page=>params[:page], :per_page=>200)
   end
 
   # GET /isbn_dedup/1
   def show
     @degisbn=DegIsbn.find(params["id"])
-    @books=@degisbn.books
+    set_prev_next
+    set_books
   end
 
   # GET /isbn_dedup/1/edit
   def edit
     @degisbn=DegIsbn.find(params["id"])
-    @books=@degisbn.books
-    @book=Book.new
+    set_prev_next_editable
+    set_books
+  end
+
+  # GET /isbn_dedup/1/skip
+  def skip
+    skippand=DegIsbn.find(params["id"])
+    skippand.skip=true
+    skippand.save
+    @degisbn=DegIsbn.editable.where("id > #{skippand.id}").first
+    set_prev_next_editable
+    set_books
+    flash[:notice] = "Degenerate ISBN #{skippand.isbn} marked as unmergeable"
+    render action: "edit"
   end
 
   # TODO: prevent multiple users from merging the same isbn
@@ -33,12 +46,16 @@ class Adm::DegIsbnsController < AdmController
       end
       @degisbn.save
       if @degisbn.count==1
+        myid=@degisbn.id
         @degisbn.destroy
-        @degisbns=DegIsbn.order("count DESC").paginate(:page=>params[:page], :per_page=>200)
+        @degisbn=DegIsbn.editable.where("id > #{myid}").first
+        set_prev_next_editable
+        set_books
         flash[:notice] = "Isbn #{isbn} is no longer degenerate. Thank you!"
-        redirect_to :action => "index"
+        render :action => :edit
       else
-        @books = @degisbn.books
+        set_prev_next_editable
+        set_books
         flash[:notice] = "Still some degenerate books with ISBN #{isbn}"
         render :action => "edit"
       end
@@ -53,4 +70,18 @@ class Adm::DegIsbnsController < AdmController
     params.require(:book).permit :abstract, :author, :call1, :call2, :call3, :call4, :categories, :collation, :collection, :currency, :edition, :editor, :idx, :isbn, :language, :notes, :price, :pubyear, :title, :toc, :publisher_name, :subtitle, :volume
   end
 
+  def set_prev_next_editable
+    @prev = DegIsbn.editable.where("id < #{@degisbn.id}").last
+    @next = DegIsbn.editable.where("id > #{@degisbn.id}").first
+  end
+
+  def set_prev_next
+    @prev = DegIsbn.where("id < #{@degisbn.id}").last
+    @next = DegIsbn.where("id > #{@degisbn.id}").first
+  end
+
+  def set_books
+    @books=@degisbn.books
+    @book=Book.new
+  end
 end

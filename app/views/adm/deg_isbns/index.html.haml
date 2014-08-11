@@ -7,13 +7,17 @@
     %th ISBN
     %th Books
     %th
+    %th
   %tbody
     - @degisbns.each do |di|
       %tr
         %td=di.isbn
         %td=di.count
         %td
-          =link_to "merger", edit_adm_deg_isbn_path(di)
-          \|
+          - if di.skip
+            %i.icon-ban-circle
+          - else
+            =link_to "merger", edit_adm_deg_isbn_path(di)
+        %td
           =link_to "details", [:adm, di]
 = might_paginate @degisbns
