@@ -98,12 +98,12 @@ module ApplicationHelper
   def print_labels_links(url)
     out = []
     out << "<i class='icon-barcode'></i>"
-    out << link_to("3x8 label sheet with margins", url+".pdf?lf=3x8m")
-    out << link_to("3x8 label sheet", url+".pdf?lf=3x8")
     out << link_to("dymo label printer", url+".pdf?lf=dymo")
+    out << link_to("3x8 (Jacqueline's printer)", url+".pdf?lf=3x8j")
+    out << link_to("3x8 + margins", url+".pdf?lf=3x8m")
+    out << link_to("3x8", url+".pdf?lf=3x8")
     out.join(" | ").html_safe
   end
-
 
   require "prawn/measurement_extensions"
   class Prawn::Document
@@ -121,6 +121,13 @@ module ApplicationHelper
     }
 
     PAGE_PARAMS_38M = {
+      page_size: "A4",
+      page_layout: :portrait,
+      # margin: [13.mm+4, 6.mm+4],      # top/bottom, left/right as in css
+      margin: [13.mm+4, 4.mm+4, 12.mm+4, 6.mm+4],      # top right bottom left
+    }
+
+    PAGE_PARAMS_38J = {
       page_size: "A4",
       page_layout: :portrait,
       # margin: [13.mm+4, 6.mm+4],      # top/bottom, left/right as in css
@@ -293,17 +300,19 @@ module ApplicationHelper
       y = top_margin + h
       x = left_margin
 
-  # stroke_bounds
-  # stroke do
-  #   vertical_line y, y-5.mm, :at => x
-  #   horizontal_line x, x+5.mm, :at => y
-  #   vertical_line y-h, y-h+5.mm, :at => x
-  #   horizontal_line x, x+5.mm, :at => y-h
-  #   vertical_line y, y-5.mm, :at => x+w
-  #   horizontal_line x+w, x+w-5.mm, :at => y
-  #   vertical_line y-h, y-h+5.mm, :at => x+w
-  #   horizontal_line x+w, x+w-5.mm, :at => y-h
-  # end
+      # --- Print Label Bounds
+      # stroke_bounds
+      # stroke do
+      #   vertical_line y, y-5.mm, :at => x
+      #   horizontal_line x, x+5.mm, :at => y
+      #   vertical_line y-h, y-h+5.mm, :at => x
+      #   horizontal_line x, x+5.mm, :at => y-h
+      #   vertical_line y, y-5.mm, :at => x+w
+      #   horizontal_line x+w, x+w-5.mm, :at => y
+      #   vertical_line y-h, y-h+5.mm, :at => x+w
+      #   horizontal_line x+w, x+w-5.mm, :at => y-h
+      # end
+
       text_box(left_lines.join("\n"), at: [x,y], width: sw, height: h, :align => :left, :overflow => :shrink_to_fit)
       x = left_margin + hw - 0.5*cw
       text_box(center_lines.join("\n"), at: [x,y], width: cw, height: h-bch-bcm, :align => :left, :overflow => :shrink_to_fit)

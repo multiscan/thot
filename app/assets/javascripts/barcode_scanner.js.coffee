@@ -26,7 +26,7 @@ class window.BarcodeScanner
       return unless @scannerActive
       if kcode == 13 || kcode == 0
         if ( @inputString.charAt(0)=="E" && @inputString.length==8)
-          # console.debug("Nebis Barcode")
+          # console.debug("Nebis Barcode after")
           $.event.trigger( { type: "barcode_nebis", message: @inputString } )
           @inputString = ""
         else if ( @inputString.charAt(0)=="S" && @inputString.length > 3 )
@@ -46,9 +46,11 @@ class window.BarcodeScanner
       else if kcode == 69
         @inputString = "E"
       else if (kcode>47 && kcode<58)
-        if now - @lastKeypressTime < @scannerKeypressMaxDelay
+        dt = now - @lastKeypressTime
+        if dt < @scannerKeypressMaxDelay
           @inputString += kchar
         else
+          console.debug("scanner: new string when strlen="+@inputString.length + "   dt="+dt)
           @inputString = kchar
     @lastKeypressTime = now
 
