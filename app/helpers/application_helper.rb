@@ -123,7 +123,8 @@ module ApplicationHelper
     PAGE_PARAMS_38M = {
       page_size: "A4",
       page_layout: :portrait,
-      margin: [13.mm+4, 8.mm+4],      # top/bottom, left/right as in css
+      # margin: [13.mm+4, 6.mm+4],      # top/bottom, left/right as in css
+      margin: [9.mm+4, 8.mm+4, 16.mm+4, 2.mm+4],      # top right bottom left
     }
 
     CODE25 = [
@@ -257,7 +258,7 @@ module ApplicationHelper
       end
     end
 
-    def item_label(item)
+    def item_label(item, left_margin=0, top_margin=0)
       sid=item.id.to_s
 
       d=1.mm                            # min distance between boxes
@@ -282,26 +283,37 @@ module ApplicationHelper
         item.book.call3 || "",
       ].map{|l| l.truncate(9, omission: "")}
 
-      w = bounds.right - bounds.left   # body width
-      h = bounds.top - bounds.bottom   # body height
+      w = bounds.right - bounds.left - 2 * left_margin   # body width
+      h = bounds.top - bounds.bottom - 2 * top_margin    # body height
       hw = 0.5 * w                     # half width
       sw = (w - cw) / 2 - sm           # sidebox width
 
       # ---                                                             --- draw
       font_size(fs)
-      # stroke_bounds
-      y = h
-      x = 0
+      y = top_margin + h
+      x = left_margin
+
+  # stroke_bounds
+  # stroke do
+  #   vertical_line y, y-5.mm, :at => x
+  #   horizontal_line x, x+5.mm, :at => y
+  #   vertical_line y-h, y-h+5.mm, :at => x
+  #   horizontal_line x, x+5.mm, :at => y-h
+  #   vertical_line y, y-5.mm, :at => x+w
+  #   horizontal_line x+w, x+w-5.mm, :at => y
+  #   vertical_line y-h, y-h+5.mm, :at => x+w
+  #   horizontal_line x+w, x+w-5.mm, :at => y-h
+  # end
       text_box(left_lines.join("\n"), at: [x,y], width: sw, height: h, :align => :left, :overflow => :shrink_to_fit)
-      x = hw - 0.5*cw
+      x = left_margin + hw - 0.5*cw
       text_box(center_lines.join("\n"), at: [x,y], width: cw, height: h-bch-bcm, :align => :left, :overflow => :shrink_to_fit)
-      rotate(90, :origin => [x,0]) do
-        barcode_25i(sid, x, 0, bch, cw, false)
+      rotate(90, :origin => [x,top_margin]) do
+        barcode_25i(sid, x, top_margin, bch, cw, false)
       end
       rw = [0.75 * sw, 20.mm].min
-      x = w - rw
-      rotate(90, :origin => [x,0]) do
-        barcode_25i(sid, x, 0, h, rw, true)
+      x = left_margin+w - rw
+      rotate(90, :origin => [x,top_margin]) do
+        barcode_25i(sid, x, top_margin, h, rw, true)
       end
     end
 
