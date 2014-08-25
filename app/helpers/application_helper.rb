@@ -98,8 +98,8 @@ module ApplicationHelper
   def print_labels_links(url)
     out = []
     out << "<i class='icon-barcode'></i>"
-    out << link_to("dymo label printer", url+".pdf?lf=dymo")
-    out << link_to("3x8 (Jacqueline's printer)", url+".pdf?lf=3x8j")
+    out << link_to("dymo (Muriel)", url+".pdf?lf=dymo")
+    out << link_to("3x8 (Jacqueline)", url+".pdf?lf=3x8j")
     out << link_to("3x8 + margins", url+".pdf?lf=3x8m")
     out << link_to("3x8", url+".pdf?lf=3x8")
     out.join(" | ").html_safe
