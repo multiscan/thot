@@ -45,9 +45,9 @@ class Abilities::AdminAbility
         end
         can :create, Item
         can [:read, :update, :destroy], Item, :lab_id => lab_ids
-        # can [:read, :update, :destroy], Item do |item|
-        #    admin.labs.include?(item.lab)
-        # end
+        can [:destroy, :update], Loan do |loan|
+            can? :update, loan.item
+        end
         can [:read, :create, :update], [Book, Publisher, DegIsbn, Location]
         can :destroy, Book do |book|
           book.items.empty?
