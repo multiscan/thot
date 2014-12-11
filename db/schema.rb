@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811091752) do
+ActiveRecord::Schema.define(version: 20141208144229) do
 
   create_table "admins", force: true do |t|
     t.string   "name",                                        null: false
@@ -101,6 +101,25 @@ ActiveRecord::Schema.define(version: 20140811091752) do
     t.string   "currency"
     t.integer  "inventoriable_id"
     t.string   "inventoriable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "label_layouts", force: true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "pw"
+    t.integer  "ph"
+    t.integer  "nr"
+    t.integer  "nc"
+    t.integer  "mt",          default: 0
+    t.integer  "mb",          default: 0
+    t.integer  "ml",          default: 0
+    t.integer  "mr",          default: 0
+    t.integer  "hs",          default: 0
+    t.integer  "vs",          default: 0
+    t.integer  "vp",          default: 2
+    t.integer  "hp",          default: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

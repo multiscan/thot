@@ -1,5 +1,6 @@
 Thot::Application.routes.draw do
 
+
   # ---------------------------------------------------------- for library users
   resources :books, :only => [:index, :show]
   resources :items, :only=>[:show]
@@ -45,6 +46,7 @@ Thot::Application.routes.draw do
     resources :locations do
       resources :shelves, :only=>[:new, :create, :index]
     end
+    resources :label_layouts, :except => [:destroy]
     resources :publishers, :only => [:index, :new, :edit, :create, :update, :destroy]
     resources :publisher_mergers, :only=>[:new, :create, :update]
     resources :shelves, :only => [:index, :show, :update, :destroy]

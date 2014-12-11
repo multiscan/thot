@@ -50,6 +50,7 @@ gem 'gon'
 # -------------------------------------------------------------------- rendering
 # --- PDF rendering
 gem 'prawn'
+gem 'prawn-table'
 gem 'prawn_rails'
 
 # --- markdown rendering

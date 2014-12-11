@@ -9,35 +9,20 @@ docinfo = {
             :CreationDate => Time.now
           }
 
-case params[:lf]
-when "3x8j"
-  prawn_document(Prawn::Document::PAGE_PARAMS_38J.merge({info: docinfo})) do |p|
-    p.auto_grid_start(:columns => 3, :rows => 8, :gutter => 0) #, :row_gutter => 16, :column_gutter => 8)
-    @items.each do |item|
-      p.auto_grid_next_bounding_box { p.item_label(item, 2.mm, 2.mm) }
-    end
+ll = LabelLayout.find(params[:lf])
+ll.pretty_print
+if ll
+  # pre prawn 1.3 (when no Prawn::View where available)
+  # prawn_document(ll.page_params.merge({info: docinfo, print_scaling: :none})) do |p|
+  #   p.auto_grid_start(ll.grid_params)
+  #   @items.each do |item|
+  #     p.auto_grid_next_bounding_box { p.item_label(item) }
+  #   end
+  # end
+  p = PrawnLabelSheet.new(ll)
+  p.auto_grid_start
+  @items.each do |item|
+    p.auto_grid_next_bounding_box { p.item_label(item) }
   end
-when "3x8m"
-  prawn_document(Prawn::Document::PAGE_PARAMS_38M.merge({info: docinfo})) do |p|
-    p.auto_grid_start(:columns => 3, :rows => 8, :gutter => 0) #, :row_gutter => 16, :column_gutter => 8)
-    @items.each do |item|
-      p.auto_grid_next_bounding_box { p.item_label(item, 2.mm, 2.mm) }
-    end
-  end
-when "3x8"
-  prawn_document(Prawn::Document::PAGE_PARAMS_38.merge({info: docinfo})) do |p|
-    p.auto_grid_start(:columns => 3, :rows => 8, :gutter => 12)
-    @items.each do |item|
-      p.auto_grid_next_bounding_box { p.item_label(item, 5.mm, 5.mm) }
-    end
-  end
-else # dymo
-  prawn_document(Prawn::Document::PAGE_PARAMS_DYMO.merge({info: docinfo})) do |p|
-    fp = true
-    @items.each do |item|
-      p.start_new_page unless fp
-      p.item_label(item)
-      fp = false
-    end
-  end
+  p.render
 end
