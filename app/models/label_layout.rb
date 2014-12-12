@@ -64,20 +64,37 @@ class LabelLayout < ActiveRecord::Base
   end
 
   def label_w_mm
-    @label_w ||= (pw - ml - mr - (nc - 1) * hs).to_f/nc
+    @label_w_mm ||= (pw - ml - mr - (nc - 1) * hs).to_f/nc
   end
 
   def label_h_mm
-    @label_h ||= (ph - mt - mb - (nr - 1) * vs).to_f/nr
+    @label_h_mm ||= (ph - mt - mb - (nr - 1) * vs).to_f/nr
+  end
+
+  def label_w
+    @label_w ||= MM2PT * label_w_mm
+  end
+
+  def label_h
+    @label_h ||= MM2PT * label_h_mm
+  end
+
+  # writable box width/height
+  def box_w_mm
+    @box_w_mm ||= label_w_mm - 2 * hp
+  end
+
+  def box_h_mm
+    @box_h_mm ||= label_h_mm - 2 * vp
   end
 
   # writable box width/height
   def box_w
-    @box_w ||= MM2PT*(label_w_mm - 2 * hp)
+    @box_w ||= MM2PT*box_w_mm
   end
 
   def box_h
-    @box_h ||= MM2PT*(label_h_mm - 2 * vp)
+    @box_h ||= MM2PT*box_h_mm
   end
 
   # gutter is the distance between rows of writable boxes
@@ -118,8 +135,14 @@ class LabelLayout < ActiveRecord::Base
 end
 
 # TODO This should probably go in a separate file into lib
+require "prawn/measurement_extensions"
 class PrawnLabelSheet
   include Prawn::View
+
+  MM2PT = 2.834645669
+  CM2PT = 10 * MM2PT
+  PT2MM = 1.0 / MM2PT
+  PT2CM = 1.0 / CM2PT
 
   CODE25 = [
     [0, 0, 1, 1, 0], [1, 0, 0, 0, 1], [0, 1, 0, 0, 1], [1, 1, 0, 0, 0], [0, 0, 1, 0, 1],
@@ -143,9 +166,57 @@ class PrawnLabelSheet
     "211214", "211232", "2331112"
   ]
 
-  def initialize(layout)
-    @layout = layout
+  def initialize(l, t="Thot librarian printout")
+    @layout = l
+    @title  = t
   end
+
+  def document
+    doc_params = @layout.page_params.merge( {
+      info: {
+              :Title => @title,
+              :Author => "Thot library system",
+              :Subject => "Printable Labels for Library Books",
+              :Creator => "thot.epfl.ch",
+              :Producer => "EPFL",
+              :CreationDate => Time.now
+            },
+      print_scaling: :none
+    })
+    @document ||= Prawn::Document.new(doc_params)
+  end
+
+  def preview
+    first=true
+    # stroke_circle [0, 0], 2
+    # stroke_circle [0, 0], @layout.box_w
+    # stroke_rectangle [0, bounds.top], (bounds.right - bounds.left), (bounds.top - bounds.bottom)
+    # stroke_circle [@layout.label_w - @layout.column_gutter, 0], @layout.hp.mm
+    # stroke_circle [@layout.label_w - @layout.column_gutter, 0], @layout.column_gutter/2
+    # stroke_circle [@layout.label_w - 2 * @layout.hp.mm, 0], @layout.hp.mm
+    auto_grid_start
+    (1..@layout.nr).each do |ir|
+      (1..@layout.nc).each do |ic|
+        auto_grid_next_bounding_box(true) {
+          w = (bounds.right - bounds.left)
+          h = (bounds.top - bounds.bottom)
+          sw = ((w-4*MM2PT)*PT2CM).to_i
+          sh = ((h-4*MM2PT)*PT2CM).to_i
+          stroke_size_ref(2.mm, 2.mm, sw, sh)
+          if first
+            text_box "The grey rectangle represent the area that will be printed (~2 mm inside the actual label). The ticks on the left should represent centimeters unless your printer is arbitrarily scaling the pdf.", :at => [10.mm, h-5.mm], :width => w-15.mm, :height => h-10.mm, :align => :left, :valign => :top, :overflow => :shrink_to_fit
+            first = false
+          end
+        }
+      end
+    end
+    (0..@layout.nr).each do |ir|
+      (0..@layout.nc).each do |ic|
+        stroke_circle [ic*@layout.label_w - 0.5*@layout.column_gutter, ir*@layout.label_h - 0.5*@layout.row_gutter], 2
+      end
+    end
+  end
+
 
   def auto_grid_start(opts=@layout.grid_params)
     define_grid(opts)
@@ -164,7 +235,10 @@ class PrawnLabelSheet
     # grid(@ag_iy, @ag_ix).show
     grid(@ag_iy, @ag_ix).bounding_box do
       if print_bounds
-        transparent(0.1) {stroke_bounds}
+        stroke_color "cccccc"
+        stroke_bounds
+        stroke_color "000000"
+        # transparent(0.1) {stroke_bounds}
         # stroke_axis_without_text(at: [2.mm, 2.mm], height: 25.mm, width: 5.cm, step_length: 1.cm, negative_axes_length: 0)
       end
       yield
@@ -322,4 +396,17 @@ class PrawnLabelSheet
     font "Helvetica", :style => :normal
     barcode_128(sprintf("S %04d", shelf.id), 42.mm, h-2.mm, bw, bh, true)
   end
+
+  def stroke_size_ref(ox, oy, w, h)
+    stroke_horizontal_line(ox, ox + w*CM2PT, :at => oy)
+    stroke_vertical_line(oy, oy + h*CM2PT, :at => ox)
+    t=1*MM2PT
+    (1..w).each do |i|
+      stroke_vertical_line(oy-t, oy+t, :at => (ox + i*CM2PT) )
+    end
+    (1..h).each do |i|
+      stroke_horizontal_line(ox-t, ox+t, :at => (oy + i*CM2PT) )
+    end
+  end
+
 end

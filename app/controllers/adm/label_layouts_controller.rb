@@ -11,7 +11,11 @@ class Adm::LabelLayoutsController < AdmController
   # GET /admin/label_layouts/1
   def show
     @label_layout = LabelLayout.find(params[:id])
-    respond_with @label_layout
+    @label_layout.pretty_print
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
   end
 
   # GET /admin/label_layouts/new
@@ -74,7 +78,7 @@ class Adm::LabelLayoutsController < AdmController
  private
 
   def label_layout_params
-    params.require(:label_layout).permit(:name, :description, :pw, :ph, :mt, :mr, :mb, :ml, :nr, :nc, :vs, :hs, :page)
+    params.require(:label_layout).permit(:name, :description, :pw, :ph, :mt, :mr, :mb, :ml, :nr, :nc, :vs, :hs, :vp, :hp, :page)
   end
 
 end
