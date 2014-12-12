@@ -65,6 +65,7 @@ class Abilities::AdminAbility
         can [:read, :update], Lab do |lab|
             lab.operators.exists?(admin)
         end
+        can [:read, :create, :update], LabelLayout
     end
 
   end

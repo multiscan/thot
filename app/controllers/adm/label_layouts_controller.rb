@@ -11,7 +11,6 @@ class Adm::LabelLayoutsController < AdmController
   # GET /admin/label_layouts/1
   def show
     @label_layout = LabelLayout.find(params[:id])
-    @label_layout.pretty_print
     respond_to do |format|
       format.html
       format.pdf
@@ -60,20 +59,19 @@ class Adm::LabelLayoutsController < AdmController
     end
   end
 
-  # # DELETE /admin/label_layouts/1
-  # # DELETE /admin/label_layouts/1.json
-  # def destroy
-  #   @label_layout = LabelLayout.find(params[:id])
-  #   authorize! :destroy, @label_layout
+  # DELETE /admin/label_layouts/1
+  def destroy
+    @label_layout = LabelLayout.find(params[:id])
+    authorize! :destroy, @label_layout
 
-  #   respond_to do |format|
-  #     if @label_layout.destroy
-  #       format.html { redirect_to adm_label_layouts_url, notice: "LabelLayout #{@label_layout.name} destroyed." }
-  #     else
-  #       format.html { redirect_to [:adm, @label_layout], notice: 'Could not destroy label layout' }
-  #     end
-  #   end
-  # end
+    respond_to do |format|
+      if @label_layout.destroy
+        format.html { redirect_to adm_label_layouts_url, notice: "LabelLayout #{@label_layout.name} destroyed." }
+      else
+        format.html { redirect_to [:adm, @label_layout], notice: 'Could not destroy label layout' }
+      end
+    end
+  end
 
  private
 

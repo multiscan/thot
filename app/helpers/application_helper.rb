@@ -98,9 +98,7 @@ module ApplicationHelper
   def print_labels_links(url)
     out = []
     out << "<i class='icon-barcode'></i>"
-    out << link_to("dymo (Muriel)", url+".pdf?lf=1")
-    out << link_to("3x8 (Jacqueline)", url+".pdf?lf=2")
-    out << link_to("3x8", url+".pdf?lf=3")
+    LabelLayout.all.each {|l| out << link_to(l.name, url+".pdf?lf=#{l.id}")}
     out.join(" | ").html_safe
   end
 

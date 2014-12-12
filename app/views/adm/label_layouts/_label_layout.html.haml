@@ -4,6 +4,11 @@
   %td=label_layout.description
   %td
     -#=link_to "Details", adm_label_layout_path(label_layout d)
-    =link_to "Details", [:adm, label_layout]
+    =link_to "Details", adm_label_layout_path(label_layout)
+    \|
+    =link_to "Preview", adm_label_layout_path(label_layout)+".pdf"
     \|
     =link_to "Edit", edit_adm_label_layout_path(label_layout)
+    -if can? :destroy, label_layout
+      \|
+      = link_to 'Destroy', [:adm, label_layout], method: :delete, data: { confirm: 'Are you sure?' }

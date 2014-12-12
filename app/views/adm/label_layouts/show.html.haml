@@ -37,5 +37,9 @@
   TODO: add an svg preview built from actual measures
   using  or http://raphaeljs.com or http://snapsvg.io
 
-= link_to 'all', adm_label_layouts_path
-= link_to 'edit', edit_adm_label_layout_path(@label_layout)
+= link_to 'All', adm_label_layouts_path
+\|
+= link_to 'Edit', edit_adm_label_layout_path(@label_layout)
+\|
+=link_to "Preview", adm_label_layout_path(@label_layout)+".pdf"
+

@@ -6,7 +6,8 @@
     %hr
       %th Name
       %th Description
+      %th
   %tbody
     =render :partial => "adm/label_layouts/label_layout", :collection => @label_layouts
 
-= link_to 'New', new_adm_label_layout_path
+= link_to 'New', new_adm_label_layout_path, class: 'btn'

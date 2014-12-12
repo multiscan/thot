@@ -54,6 +54,7 @@ class LabelLayout < ActiveRecord::Base
     }
   end
 
+  # this is the grid for actual labels
   def grid_params
     {
       columns: self.nc,
@@ -99,11 +100,11 @@ class LabelLayout < ActiveRecord::Base
 
   # gutter is the distance between rows of writable boxes
   def column_gutter
-    @row_gutter ||= MM2PT*(hs + 2 * hp)
+    @row_gutter ||= MM2PT*hs
   end
 
   def row_gutter
-    @row_gutter ||= MM2PT*(vs + 2 * vp)
+    @row_gutter ||= MM2PT*vs
   end
 
   # page size as required by prawn (predefined page name or custom dimensions)
@@ -112,13 +113,12 @@ class LabelLayout < ActiveRecord::Base
   end
 
   def page_margin_mm
-    @page_margin_mm ||= [mt+vp, mr+hp, mb+vp, ml+hp]
+    @page_margin_mm ||= [mt, mr, mb, ml]
   end
 
   def page_margin
     @page_margin ||= page_margin_mm.map{|d| d*MM2PT}
   end
-
 
   def pretty_print
     puts "---------------------------------------- #{name}"
@@ -188,35 +188,23 @@ class PrawnLabelSheet
 
   def preview
     first=true
-    # stroke_circle [0, 0], 2
-    # stroke_circle [0, 0], @layout.box_w
-    # stroke_rectangle [0, bounds.top], (bounds.right - bounds.left), (bounds.top - bounds.bottom)
-    # stroke_circle [@layout.label_w - @layout.column_gutter, 0], @layout.hp.mm
-    # stroke_circle [@layout.label_w - @layout.column_gutter, 0], @layout.column_gutter/2
-    # stroke_circle [@layout.label_w - 2 * @layout.hp.mm, 0], @layout.hp.mm
     auto_grid_start
     (1..@layout.nr).each do |ir|
       (1..@layout.nc).each do |ic|
         auto_grid_next_bounding_box(true) {
-          w = (bounds.right - bounds.left)
-          h = (bounds.top - bounds.bottom)
+          w = bounds.width
+          h = bounds.height
           sw = ((w-4*MM2PT)*PT2CM).to_i
           sh = ((h-4*MM2PT)*PT2CM).to_i
           stroke_size_ref(2.mm, 2.mm, sw, sh)
           if first
-            text_box "The grey rectangle represent the area that will be printed (~2 mm inside the actual label). The ticks on the left should represent centimeters unless your printer is arbitrarily scaling the pdf.", :at => [10.mm, h-5.mm], :width => w-15.mm, :height => h-10.mm, :align => :left, :valign => :top, :overflow => :shrink_to_fit
+            text_box "The white area represents the printable (used) region of the label. If the ticks on the lines are not separated by 1 cm then your printer is arbitrarily scaling the pdf and we have a problem.", :at => [10.mm, h-5.mm], :width => w-15.mm, :height => h-10.mm, :align => :left, :valign => :top, :overflow => :shrink_to_fit
             first = false
           end
         }
       end
     end
-    (0..@layout.nr).each do |ir|
-      (0..@layout.nc).each do |ic|
-        stroke_circle [ic*@layout.label_w - 0.5*@layout.column_gutter, ir*@layout.label_h - 0.5*@layout.row_gutter], 2
-      end
-    end
   end
-
 
   def auto_grid_start(opts=@layout.grid_params)
     define_grid(opts)
@@ -227,20 +215,40 @@ class PrawnLabelSheet
     @np = false
   end
 
-  def auto_grid_next_bounding_box(print_bounds=Rails.env.development?)
+  def auto_grid_reset
+    @ag_ix = 0
+    @ag_iy = 0
+    @np = false
+  end
+
+  def label_bound_style
+    @label_bound_style ||= begin
+      if Rails.env.development?
+        {border: true, crop_marks: true, origin: false, fill: 'eeeeee'}
+      else
+        {border: false, crop_marks: false, origin: false, fill: 'eeeeee'}
+      end
+    end
+  end
+
+  def box_bound_style
+    @box_bound_style ||= begin
+      if Rails.env.development?
+        {border: true, crop_marks: false, crop_marks: false, origin: false, fill: 'ffffff'}
+      else
+        {border: false, crop_marks: false, crop_marks: false, origin: false, fill: 'ffffff'}
+      end
+    end
+  end
+
+  def auto_grid_next_label(print_bounds=Rails.env.development?)
     if @np
       start_new_page
       @np = false
     end
     # grid(@ag_iy, @ag_ix).show
     grid(@ag_iy, @ag_ix).bounding_box do
-      if print_bounds
-        stroke_color "cccccc"
-        stroke_bounds
-        stroke_color "000000"
-        # transparent(0.1) {stroke_bounds}
-        # stroke_axis_without_text(at: [2.mm, 2.mm], height: 25.mm, width: 5.cm, step_length: 1.cm, negative_axes_length: 0)
-      end
+      nice_bounds(label_bound_style) if print_bounds
       yield
     end
     @ag_ix = ( @ag_ix + 1 ) % @ag_nx
@@ -248,6 +256,52 @@ class PrawnLabelSheet
       @ag_iy = ( @ag_iy + 1 ) % @ag_ny
       @np = @ag_iy == 0
     end
+  end
+
+  def auto_grid_next_bounding_box(print_bounds=Rails.env.development?)
+    auto_grid_next_label(print_bounds) do
+      bounding_box([@layout.hp.mm, bounds.top-@layout.vp.mm], :width => bounds.width - 2 * @layout.hp.mm, :height => bounds.height - 2 * @layout.vp.mm ) do
+        nice_bounds(box_bound_style) if print_bounds
+        yield
+      end
+    end
+  end
+
+  def nice_bounds(opts={})
+    o={border: true, origin: false, crop_marks: true, fill: false}.merge(opts)
+    # save color settings
+    sc=stroke_color
+    fc=fill_color
+    lw=line_width
+    if o[:border]
+      line_width 0.4
+      stroke_color "cccccc"
+      stroke_bounds
+    end
+    if o[:fill]
+      fill_color o[:fill]
+      fill_rectangle bounds.top_left, bounds.width, bounds.height
+    end
+    if o[:origin]
+      fill_color "cccccc"
+      fill_circle [0, 0], 2
+    end
+    if o[:crop_marks]
+      line_width 0.75
+      stroke_color "000000"
+      stroke_horizontal_line(-4, 4, at: 0)
+      stroke_horizontal_line(-4, 4, at: bounds.top)
+      stroke_horizontal_line(bounds.right-4, bounds.right+4, at: 0)
+      stroke_horizontal_line(bounds.right-4, bounds.right+4, at: bounds.top)
+      stroke_vertical_line(-4, 4, at: 0)
+      stroke_vertical_line(-4, 4, at: bounds.right)
+      stroke_vertical_line(bounds.top-4, bounds.top+4, at: 0)
+      stroke_vertical_line(bounds.top-4, bounds.top+4, at: bounds.right)
+    end
+    # restore color settings
+    stroke_color sc
+    fill_color fc
+    line_width lw
   end
 
   # interleaved 2 of 5 barcode: http://en.wikipedia.org/wiki/Interleaved_2_of_5
@@ -360,8 +414,8 @@ class PrawnLabelSheet
       item.book.call3 || "",
     ].map{|l| l.truncate(9, omission: "")}
 
-    w = bounds.right - bounds.left
-    h = bounds.top - bounds.bottom
+    w = bounds.width
+    h = bounds.height
     hw = 0.5 * w                     # half width
     sw = (w - cw) / 2 - sm           # sidebox width
 
@@ -385,8 +439,8 @@ class PrawnLabelSheet
 
   # use only top ~1.5 cm of the label for it to be sticket to the shelf
   def shelf_label(shelf)
-    w=bounds.right - bounds.left
-    h=bounds.top - bounds.bottom
+    w=bounds.width
+    h=bounds.height
     bh = 15.mm
     bw = w - 44.mm
     th = 15.mm
